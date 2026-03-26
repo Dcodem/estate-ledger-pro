@@ -14,6 +14,12 @@ const categories = [
   "Capital Improvement",
 ];
 
+const properties = [
+  "Downtown Plaza",
+  "Main St. Loft",
+  "Oak Ridge Estate",
+];
+
 interface ReviewCard {
   id: number;
   vendor: string;
@@ -216,6 +222,7 @@ export default function TransactionReviewPage() {
   // Edit modal state
   const [editingCard, setEditingCard] = useState<ReviewCard | null>(null);
   const [editCategory, setEditCategory] = useState("");
+  const [editProperty, setEditProperty] = useState("");
   const [conciergeToast, setConciergeToast] = useState(false);
 
   const pendingCards = cards.filter(
@@ -276,18 +283,22 @@ export default function TransactionReviewPage() {
   const openEditModal = (card: ReviewCard) => {
     setEditingCard(card);
     setEditCategory(card.suggestion);
+    setEditProperty(card.property);
   };
 
   const closeEditModal = () => {
     setEditingCard(null);
     setEditCategory("");
+    setEditProperty("");
   };
 
-  const saveCategory = () => {
+  const saveEdits = () => {
     if (!editingCard) return;
     setCards((prev) =>
       prev.map((c) =>
-        c.id === editingCard.id ? { ...c, suggestion: editCategory } : c
+        c.id === editingCard.id
+          ? { ...c, suggestion: editCategory, property: editProperty }
+          : c
       )
     );
     closeEditModal();
@@ -682,6 +693,42 @@ export default function TransactionReviewPage() {
                     </div>
                   </div>
 
+                  {/* Property + Category Assignment */}
+                  <div className="pt-5 border-t border-slate-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+                        AI Assignment
+                      </p>
+                      <button
+                        onClick={() => openEditModal(activeItem)}
+                        className="text-[11px] font-bold text-primary hover:underline flex items-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">edit</span>
+                        Edit
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-surface-container-low p-3 rounded-xl">
+                        <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Property</p>
+                        <p className="text-[13px] font-bold text-on-surface flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px] text-primary">location_on</span>
+                          {activeItem.property}
+                        </p>
+                      </div>
+                      <div className="bg-surface-container-low p-3 rounded-xl">
+                        <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Category</p>
+                        <p className="text-[13px] font-bold text-on-surface flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[14px] text-primary">label</span>
+                          {activeItem.suggestion}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-on-surface-variant mt-2 flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">auto_awesome</span>
+                      Inferred from vendor location, payment source, and historical patterns
+                    </p>
+                  </div>
+
                   {/* AI Recommendation */}
                   <div className="pt-5 border-t border-slate-50">
                     <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">
@@ -790,27 +837,51 @@ export default function TransactionReviewPage() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-on-surface">
-                  Edit Category
+                  Modify Transaction
                 </h3>
                 <p className="text-sm text-on-surface-variant">
                   {editingCard.vendor} &middot; {editingCard.amount}
                 </p>
               </div>
             </div>
-            <label className="block text-sm font-semibold text-on-surface-variant mb-2">
-              Category
-            </label>
-            <select
-              value={editCategory}
-              onChange={(e) => setEditCategory(e.target.value)}
-              className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface font-semibold text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all cursor-pointer"
-            >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-on-surface-variant mb-2">
+                  Category
+                </label>
+                <select
+                  value={editCategory}
+                  onChange={(e) => setEditCategory(e.target.value)}
+                  className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface font-semibold text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all cursor-pointer"
+                >
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-on-surface-variant mb-2">
+                  Property
+                </label>
+                <select
+                  value={editProperty}
+                  onChange={(e) => setEditProperty(e.target.value)}
+                  className="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 text-on-surface font-semibold text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all cursor-pointer"
+                >
+                  {properties.map((prop) => (
+                    <option key={prop} value={prop}>
+                      {prop}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-[11px] text-on-surface-variant mt-2 flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+                  AI assigned based on vendor location and payment source
+                </p>
+              </div>
+            </div>
             <div className="flex items-center justify-end gap-3 mt-8">
               <button
                 onClick={closeEditModal}
@@ -819,7 +890,7 @@ export default function TransactionReviewPage() {
                 Cancel
               </button>
               <button
-                onClick={saveCategory}
+                onClick={saveEdits}
                 className="px-6 py-2.5 rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:opacity-90 active:scale-95 transition-all"
               >
                 Save
