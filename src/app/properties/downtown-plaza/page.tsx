@@ -1,48 +1,137 @@
+"use client";
+
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import KPICard from "@/components/KPICard";
 
 const units = [
-  { unit: "Unit 1", tenant: "Acme Corp", rent: "$2,200", status: "Current", statusColor: "text-green-600" },
-  { unit: "Unit 2", tenant: "StartupXYZ", rent: "$1,800", status: "Current", statusColor: "text-green-600" },
-  { unit: "Unit 3", tenant: "—", rent: "—", status: "Vacant", statusColor: "text-red-500" },
-  { unit: "Unit 4", tenant: "Legal Associates", rent: "$2,000", status: "Current", statusColor: "text-green-600" },
+  { unit: "Unit 1", tenant: "Acme Corp", rent: "$2,200", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700" },
+  { unit: "Unit 2", tenant: "StartupXYZ", rent: "$1,800", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700" },
+  { unit: "Unit 3", tenant: "\u2014", rent: "\u2014", status: "Vacant", statusBg: "bg-red-100", statusText: "text-red-700" },
+  { unit: "Unit 4", tenant: "Legal Associates", rent: "$2,000", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700" },
 ];
 const txns = [
-  { date: "Mar 15", desc: "Rent - Unit 1", cat: "Rental Income", amount: "+$2,200", color: "text-green-600" },
-  { date: "Mar 14", desc: "Rent - Unit 2", cat: "Rental Income", amount: "+$1,800", color: "text-green-600" },
-  { date: "Mar 12", desc: "HVAC Repair", cat: "Maintenance", amount: "-$1,200", color: "text-red-500" },
-  { date: "Mar 10", desc: "Rent - Unit 4", cat: "Rental Income", amount: "+$2,000", color: "text-green-600" },
+  { date: "Mar 15", desc: "Rent - Unit 1", cat: "Rental Income", amount: "+$2,200", amountClass: "text-emerald-600" },
+  { date: "Mar 14", desc: "Rent - Unit 2", cat: "Rental Income", amount: "+$1,800", amountClass: "text-emerald-600" },
+  { date: "Mar 12", desc: "HVAC Repair", cat: "Maintenance", amount: "-$1,200", amountClass: "text-on-surface" },
+  { date: "Mar 10", desc: "Rent - Unit 4", cat: "Rental Income", amount: "+$2,000", amountClass: "text-emerald-600" },
 ];
 
 export default function DowntownPlazaPage() {
   return (
     <AppLayout>
-      <PageHeader title="Downtown Plaza" subtitle="789 Commercial Ave, Manhattan, NY" breadcrumb={{ label: "Back to Properties", href: "/properties" }} actions={<><button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700">Edit Details</button><button className="px-4 py-2 bg-[#7C3AED] text-white rounded-lg text-sm font-medium">View Financials</button></>} />
-      <div className="h-48 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl mb-6" />
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-        <p className="text-sm text-amber-800">1 unit vacant since Oct 2023 — consider listing or adjusting rent</p>
+      <PageHeader
+        title="Downtown Plaza"
+        subtitle="789 Commercial Ave, Manhattan, NY"
+        breadcrumb={{ label: "Back to Properties", href: "/properties" }}
+        actions={
+          <div className="flex items-center gap-3">
+            <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface shadow-sm hover:shadow-md transition-all">
+              <span className="material-symbols-outlined text-[18px]">edit</span>
+              Edit Details
+            </button>
+            <button className="flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all">
+              <span className="material-symbols-outlined text-[18px]">bar_chart</span>
+              View Financials
+            </button>
+          </div>
+        }
+      />
+
+      {/* Hero Gradient */}
+      <div className="h-48 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl" />
+
+      {/* Alert Banner */}
+      <div className="bg-[#FEF3C7] text-[#92400E] p-4 rounded-xl flex items-center justify-between shadow-sm border border-[#FDE68A]/50">
+        <div className="flex items-center gap-3">
+          <span className="material-symbols-outlined text-[20px]">warning</span>
+          <span className="text-sm font-medium tracking-tight">
+            1 unit vacant since Oct 2023 &mdash; consider listing or adjusting rent
+          </span>
+        </div>
       </div>
-      <div className="flex gap-6 mb-8">
-        <KPICard label="Units" value="4" />
-        <KPICard label="Occupancy" value="75%" />
-        <KPICard label="Revenue" value="$6,000" />
-        <KPICard label="Cap Rate" value="5.9%" />
+
+      {/* KPI Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <KPICard label="Units" value="4" icon="apartment" />
+        <KPICard label="Occupancy" value="75%" icon="group" iconBg="bg-[#FEF3C7]" iconColor="text-[#92400E]" />
+        <KPICard label="Revenue" value="$6,000" icon="payments" iconBg="bg-emerald-100" iconColor="text-emerald-600" />
+        <KPICard label="Cap Rate" value="5.9%" icon="trending_up" iconBg="bg-secondary-fixed-dim" iconColor="text-secondary" />
       </div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Unit Breakdown</h2>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50"><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Unit</th><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Tenant</th><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Rent</th><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Status</th></tr></thead>
-          <tbody>{units.map((u, i) => (<tr key={i} className="border-b border-gray-100"><td className="px-6 py-4 text-sm font-medium text-gray-800">{u.unit}</td><td className="px-6 py-4 text-sm text-gray-700">{u.tenant}</td><td className="px-6 py-4 text-sm text-gray-700">{u.rent}</td><td className={`px-6 py-4 text-sm font-medium ${u.statusColor}`}>{u.status}</td></tr>))}</tbody>
-        </table>
+
+      {/* Unit Breakdown */}
+      <div>
+        <h2 className="text-xl font-bold mb-6">Unit Breakdown</h2>
+        <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-surface-container-low/50">
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Unit</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Tenant</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Rent</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {units.map((u, i) => (
+                <tr key={i} className="hover:bg-slate-50/50 transition-all">
+                  <td className="px-8 py-5 text-sm font-bold text-on-surface">{u.unit}</td>
+                  <td className="px-8 py-5 text-sm text-on-surface-variant">{u.tenant}</td>
+                  <td className="px-8 py-5 text-sm font-semibold text-on-surface">{u.rent}</td>
+                  <td className="px-8 py-5 text-right">
+                    <span className={`px-3 py-1 ${u.statusBg} ${u.statusText} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
+                      {u.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Recent Transactions</h2>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
-        <table className="w-full"><thead><tr className="bg-gray-50"><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Date</th><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Description</th><th className="text-left text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Category</th><th className="text-right text-xs font-semibold uppercase text-gray-500 tracking-wider px-6 py-3">Amount</th></tr></thead>
-          <tbody>{txns.map((t, i) => (<tr key={i} className="border-b border-gray-100"><td className="px-6 py-4 text-sm text-gray-600">{t.date}</td><td className="px-6 py-4 text-sm font-medium text-gray-800">{t.desc}</td><td className="px-6 py-4 text-sm text-gray-600">{t.cat}</td><td className={`px-6 py-4 text-sm text-right font-semibold ${t.color}`}>{t.amount}</td></tr>))}</tbody>
-        </table>
+
+      {/* Recent Transactions */}
+      <div>
+        <h2 className="text-xl font-bold mb-6">Recent Transactions</h2>
+        <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-surface-container-low/50">
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Date</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Description</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Category</th>
+                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {txns.map((t, i) => (
+                <tr key={i} className="hover:bg-slate-50/50 transition-all">
+                  <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">{t.date}</td>
+                  <td className="px-8 py-5 text-sm font-bold text-on-surface">{t.desc}</td>
+                  <td className="px-8 py-5">
+                    <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                      t.cat === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                    }`}>
+                      {t.cat}
+                    </span>
+                  </td>
+                  <td className={`px-8 py-5 text-right font-bold text-sm ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    {t.amount}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700">Add Transaction</button>
+
+      {/* Add Transaction */}
+      <div>
+        <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface shadow-sm hover:shadow-md transition-all">
+          <span className="material-symbols-outlined text-[18px]">add</span>
+          Add Transaction
+        </button>
+      </div>
     </AppLayout>
   );
 }

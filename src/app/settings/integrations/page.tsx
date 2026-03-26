@@ -1,8 +1,8 @@
 "use client";
 import AppLayout from "@/components/AppLayout";
+import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Plus } from "lucide-react";
 
 function SettingsTabs() {
   const pathname = usePathname();
@@ -12,48 +12,140 @@ function SettingsTabs() {
     { label: "Notifications", href: "/settings/notifications" },
   ];
   return (
-    <div className="flex gap-6 border-b border-gray-200 mb-8">
+    <div className="flex gap-8 border-b border-outline-variant/30">
       {tabs.map((t) => {
         const active = pathname === t.href;
-        return <Link key={t.href} href={t.href} className={`pb-3 text-sm font-medium border-b-2 ${active ? "border-[#7C3AED] text-[#7C3AED]" : "border-transparent text-gray-500 hover:text-gray-700"}`}>{t.label}</Link>;
+        return (
+          <Link
+            key={t.href}
+            href={t.href}
+            className={`pb-3 text-sm font-medium transition-colors relative ${
+              active
+                ? "font-semibold text-primary"
+                : "text-on-surface-variant hover:text-primary"
+            }`}
+          >
+            {t.label}
+            {active && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary" />
+            )}
+          </Link>
+        );
       })}
     </div>
   );
 }
 
-const banks = [
-  { name: "Chase Bank", status: "Connected", statusColor: "bg-green-100 text-green-700", sync: "Synced 2 min ago", action: "Disconnect", actionColor: "text-red-500 border-red-200" },
-  { name: "Wells Fargo", status: "Syncing", statusColor: "bg-blue-100 text-blue-700", sync: "In progress", action: "Cancel", actionColor: "text-gray-700 border-gray-200" },
-  { name: "American Express", status: "Error", statusColor: "bg-red-100 text-red-700", sync: "Last sync 3 days ago", action: "Reconnect", actionColor: "text-white bg-[#7C3AED] border-[#7C3AED]" },
-  { name: "Vanguard", status: "Connected", statusColor: "bg-green-100 text-green-700", sync: "Synced 4 hours ago", action: "Disconnect", actionColor: "text-red-500 border-red-200" },
-];
-
 export default function IntegrationsPage() {
   return (
     <AppLayout>
-      <h1 className="text-[28px] font-bold text-gray-900">Settings</h1>
-      <p className="text-sm text-gray-500 mt-1 mb-6">Manage your account and preferences</p>
+      <PageHeader
+        title="Settings"
+        subtitle="Manage your account and preferences"
+      />
       <SettingsTabs />
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Bank Connections</h2>
-      <div className="space-y-4 mb-6">
-        {banks.map((b) => (
-          <div key={b.name} className="bg-white rounded-xl shadow-sm p-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg font-bold text-gray-400">{b.name[0]}</div>
-              <div>
-                <h3 className="font-semibold text-gray-900">{b.name}</h3>
-                <p className="text-xs text-gray-500">{b.sync}</p>
+
+      {/* Bank Connections Section */}
+      <section className="space-y-6 max-w-4xl">
+        <h3 className="text-[20px] font-semibold text-on-surface">Bank Connections</h3>
+
+        <div className="grid grid-cols-1 gap-6">
+          {/* Chase Bank */}
+          <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between group">
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+                <span className="material-symbols-outlined text-[28px]">account_balance</span>
               </div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${b.statusColor}`}>{b.status}</span>
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-semibold text-on-surface">Chase Bank</span>
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                    Connected
+                  </span>
+                </div>
+                <p className="text-xs text-on-surface-variant mt-1">Synced 2 min ago</p>
+              </div>
             </div>
-            <button className={`px-4 py-2 text-sm font-medium rounded-lg border ${b.actionColor}`}>{b.action}</button>
+            <button className="px-4 py-2 text-sm font-medium text-error hover:bg-error-container/20 rounded-lg transition-colors">
+              Disconnect
+            </button>
           </div>
-        ))}
-      </div>
-      <button className="w-full border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-gray-400 transition-colors">
-        <Plus className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-        <span className="text-sm font-semibold text-gray-600">Add Bank Account</span>
-      </button>
+
+          {/* Wells Fargo */}
+          <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-red-50 text-red-700">
+                <span className="material-symbols-outlined text-[28px]">account_balance</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-semibold text-on-surface">Wells Fargo</span>
+                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                    Syncing
+                  </span>
+                </div>
+                <p className="text-xs text-on-surface-variant mt-1 italic">In progress...</p>
+              </div>
+            </div>
+            <button className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+              Cancel
+            </button>
+          </div>
+
+          {/* American Express */}
+          <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between border-l-4 border-error">
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-900 text-white">
+                <span className="material-symbols-outlined text-[28px]">credit_card</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-semibold text-on-surface">American Express</span>
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700 rounded-full border border-red-100">
+                    Error
+                  </span>
+                </div>
+                <p className="text-xs text-on-surface-variant mt-1">Last sync 3 days ago</p>
+              </div>
+            </div>
+            <button className="px-5 py-2 text-sm font-semibold text-primary hover:bg-primary/10 border border-primary/20 rounded-lg transition-all">
+              Reconnect
+            </button>
+          </div>
+
+          {/* Vanguard */}
+          <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-fixed-dim text-primary">
+                <span className="material-symbols-outlined text-[28px]">monitoring</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-3">
+                  <span className="text-base font-semibold text-on-surface">Vanguard</span>
+                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                    Connected
+                  </span>
+                </div>
+                <p className="text-xs text-on-surface-variant mt-1">Synced 4 hours ago</p>
+              </div>
+            </div>
+            <button className="px-4 py-2 text-sm font-medium text-error hover:bg-error-container/20 rounded-lg transition-colors">
+              Disconnect
+            </button>
+          </div>
+
+          {/* Add Bank Card */}
+          <button className="group w-full border-2 border-dashed border-slate-200 hover:border-primary/50 hover:bg-primary-fixed/20 transition-all duration-300 p-8 rounded-xl flex flex-col items-center justify-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center">
+              <span className="material-symbols-outlined text-lg">add</span>
+            </div>
+            <span className="text-sm font-semibold text-slate-600 group-hover:text-primary transition-colors">
+              + Add Bank Account
+            </span>
+          </button>
+        </div>
+      </section>
     </AppLayout>
   );
 }

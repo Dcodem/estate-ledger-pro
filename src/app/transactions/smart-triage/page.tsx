@@ -1,11 +1,42 @@
 "use client";
+
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 
 const triageCards = [
-  { vendor: "Stripe - Mktplace", amount: "$1,102.55", date: "Mar 13", suggestion: "Maintenance", confidence: 72, confColor: "bg-yellow-100 text-yellow-700" },
-  { vendor: "Amazon Business", amount: "$234.99", date: "Mar 11", suggestion: "Office Supplies", confidence: 91, confColor: "bg-green-100 text-green-700" },
-  { vendor: "Square Payment", amount: "$567.00", date: "Mar 10", suggestion: "Contractor", confidence: 45, confColor: "bg-red-100 text-red-700" },
+  {
+    vendor: "Stripe - Mktplace",
+    date: "Mar 13",
+    icon: "payments",
+    suggestion: "Maintenance",
+    confidence: 72,
+    confDotClass: "bg-yellow-500",
+    confBgClass: "bg-yellow-50",
+    confTextClass: "text-yellow-700",
+    amount: "$1,102.55",
+  },
+  {
+    vendor: "Amazon Business",
+    date: "Mar 11",
+    icon: "shopping_bag",
+    suggestion: "Office Supplies",
+    confidence: 91,
+    confDotClass: "bg-green-500",
+    confBgClass: "bg-green-50",
+    confTextClass: "text-green-700",
+    amount: "$234.99",
+  },
+  {
+    vendor: "Square Payment",
+    date: "Mar 10",
+    icon: "person",
+    suggestion: "Contractor",
+    confidence: 45,
+    confDotClass: "bg-error",
+    confBgClass: "bg-error-container",
+    confTextClass: "text-on-error-container",
+    amount: "$567.00",
+  },
 ];
 
 const tabs = ["All", "High Confidence", "Medium", "Low"];
@@ -13,33 +44,112 @@ const tabs = ["All", "High Confidence", "Medium", "Low"];
 export default function SmartTriagePage() {
   return (
     <AppLayout>
-      <PageHeader title="Smart Triage" subtitle="AI-suggested categorizations for review" />
-      <div className="flex gap-2 mb-6">
+      {/* Header */}
+      <PageHeader
+        title="Smart Triage"
+        subtitle="AI-suggested categorizations for review"
+      />
+
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl w-fit">
         {tabs.map((t, i) => (
-          <button key={t} className={`px-4 py-2 rounded-full text-sm font-medium ${i === 0 ? "bg-[#7C3AED] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>{t}</button>
+          <button
+            key={t}
+            className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
+              i === 0
+                ? "bg-white shadow-sm text-primary"
+                : "text-on-surface-variant hover:bg-white/50 font-medium"
+            }`}
+          >
+            {t}
+          </button>
         ))}
       </div>
+
+      {/* Triage Cards */}
       <div className="space-y-6">
         {triageCards.map((c, i) => (
-          <div key={i} className="bg-white rounded-xl shadow-sm p-6 flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-gray-900">{c.vendor}</h3>
-              <p className="text-2xl font-bold text-gray-800 mt-1">{c.amount}</p>
-              <p className="text-sm text-gray-500 mt-1">{c.date}</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-xs text-gray-500 mb-1">AI Suggests</p>
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${c.confColor}`}>{c.suggestion} ({c.confidence}%)</span>
+          <div
+            key={i}
+            className="bg-surface-container-lowest rounded-2xl p-8 card-shadow flex items-center justify-between group hover:-translate-y-0.5 transition-all duration-300"
+          >
+            {/* Left side: icon + info */}
+            <div className="flex items-center gap-6">
+              <div className="w-14 h-14 rounded-xl bg-surface-container-high flex items-center justify-center">
+                <span className="material-symbols-outlined text-primary text-2xl">
+                  {c.icon}
+                </span>
               </div>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600">Accept</button>
-                <button className="px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-600">Reject</button>
-                <button className="px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">Edit</button>
+              <div>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-lg font-bold text-on-surface">
+                    {c.vendor}
+                  </h3>
+                  <span className="text-on-surface-variant text-sm font-medium">
+                    {c.date}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2 gap-4">
+                  <div className="flex items-center">
+                    <span className="text-on-surface-variant text-sm mr-2">
+                      AI suggests:
+                    </span>
+                    <span className="bg-surface-container px-3 py-1 rounded-full text-xs font-bold text-primary uppercase tracking-wider">
+                      {c.suggestion}
+                    </span>
+                  </div>
+                  <div
+                    className={`flex items-center ${c.confBgClass} px-3 py-1 rounded-full`}
+                  >
+                    <div
+                      className={`w-1.5 h-1.5 rounded-full ${c.confDotClass} mr-2`}
+                    />
+                    <span className={`${c.confTextClass} text-xs font-bold`}>
+                      {c.confidence}% confidence
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side: amount + actions */}
+            <div className="flex items-center gap-10 text-right">
+              <div>
+                <div
+                  className="text-xl font-bold text-on-surface"
+                  style={{ fontFamily: "'Manrope', sans-serif" }}
+                >
+                  {c.amount}
+                </div>
+                <div className="text-xs text-on-surface-variant mt-1 font-semibold uppercase tracking-widest">
+                  Amount
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-primary hover:text-white transition-all">
+                  <span className="material-symbols-outlined text-[20px]">edit</span>
+                </button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-error hover:text-white transition-all">
+                  <span className="material-symbols-outlined text-[20px]">close</span>
+                </button>
+                <button className="px-6 py-2 rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                  Accept
+                </button>
               </div>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Footer Help */}
+      <div className="mt-6 text-center border-t border-dashed border-outline-variant pt-10">
+        <p className="text-on-surface-variant font-medium mb-4">
+          Need help categorizing a complex transaction?
+        </p>
+        <button className="text-primary font-bold hover:underline flex items-center justify-center mx-auto">
+          <span className="material-symbols-outlined mr-2">support_agent</span>
+          Ask your concierge
+        </button>
       </div>
     </AppLayout>
   );

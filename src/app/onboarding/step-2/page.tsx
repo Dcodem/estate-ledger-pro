@@ -1,37 +1,128 @@
 "use client";
 import Link from "next/link";
-import { CheckCircle, FileText, X } from "lucide-react";
-
-function StepDots({ step }: { step: number }) {
-  return <div className="flex gap-2">{[1,2,3,4].map(s=><div key={s} className={`w-3 h-3 rounded-full ${s<=step?"bg-[#7C3AED]":"bg-gray-300"}`}/>)}</div>;
-}
 
 export default function OnboardingStep2() {
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex items-start justify-center">
-      <div className="max-w-xl w-full mx-auto mt-20 bg-white rounded-2xl shadow-sm p-8">
-        <div className="flex items-center justify-between mb-8">
-          <span className="text-xl font-bold text-[#7C3AED]">Estate Ledger</span>
-          <StepDots step={2} />
+    <div className="bg-background font-[Inter] text-on-surface min-h-screen flex flex-col">
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-center items-center py-8 z-50">
+        <div className="font-[Manrope] font-bold text-lg tracking-tight text-violet-700">
+          <span className="text-2xl font-extrabold text-violet-700">Estate Ledger</span>
         </div>
-        <h1 className="text-[28px] font-bold text-gray-900 mb-2">File Uploaded</h1>
-        <p className="text-sm text-gray-500 mb-8">Your file is ready for processing</p>
-        <div className="border-2 border-dashed border-green-300 bg-green-50 rounded-xl p-8 mb-8">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"><FileText className="w-6 h-6 text-green-600" /></div>
-            <div className="flex-1">
-              <p className="font-semibold text-gray-900">2023_property_transactions.csv</p>
-              <p className="text-sm text-gray-500">2.4 MB</p>
+      </header>
+
+      {/* Main Content Canvas */}
+      <main className="flex-grow flex items-center justify-center px-4 pt-24 pb-32">
+        <div className="max-w-[1440px] w-full flex justify-center">
+          {/* Centered Onboarding Card */}
+          <div className="w-full max-w-2xl bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] p-12 relative overflow-hidden">
+            {/* Background Accent Gradient */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary-fixed-dim/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+
+            <div className="relative z-10 flex flex-col items-center text-center">
+              {/* Title Section */}
+              <h1 className="font-[Manrope] font-extrabold text-[2rem] leading-tight mb-4 text-on-surface">
+                File Uploaded
+              </h1>
+              <p className="text-on-surface-variant max-w-md mb-10">
+                Your transaction history has been successfully parsed. We are ready to structure your estate ledger.
+              </p>
+
+              {/* Success Upload Zone */}
+              <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-between border-2 border-dashed border-transparent transition-all">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+                    <span className="material-symbols-outlined">description</span>
+                  </div>
+                  <div className="text-left">
+                    <div className="font-[Manrope] font-bold text-on-surface">
+                      2023_property_transactions.csv
+                    </div>
+                    <div className="text-xs text-on-surface-variant">2.4 MB</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-6">
+                  <div className="flex items-center text-emerald-600 font-semibold text-sm">
+                    <span
+                      className="material-symbols-outlined mr-1"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      check_circle
+                    </span>
+                    Verified
+                  </div>
+                  <button className="text-sm font-semibold text-error hover:opacity-80 transition-opacity">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+              {/* Action Area */}
+              <div className="w-full space-y-6">
+                <Link
+                  href="/onboarding/step-3"
+                  className="block w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-[Manrope] font-bold py-4 rounded-lg shadow-lg hover:opacity-90 active:scale-95 transition-all duration-150 text-center"
+                >
+                  Continue
+                </Link>
+                <Link
+                  href="/onboarding/step-3"
+                  className="inline-block text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  Skip for now
+                </Link>
+              </div>
             </div>
-            <CheckCircle className="w-6 h-6 text-green-500" />
-            <button className="text-sm text-red-500 hover:underline flex items-center gap-1"><X size={14} />Remove</button>
           </div>
         </div>
-        <div className="flex items-center justify-between">
-          <Link href="/onboarding/step-1" className="text-sm text-gray-500 hover:text-gray-700">Back</Link>
-          <Link href="/onboarding/step-3" className="px-6 py-2.5 rounded-lg bg-[#7C3AED] text-white text-sm font-medium hover:bg-[#6D28D9]">Continue</Link>
+      </main>
+
+      {/* Bottom Nav - Step Indicator */}
+      <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center px-4 pb-12">
+        <div className="flex items-center justify-center space-x-8">
+          <div className="flex items-center space-x-3">
+            {/* Step 1 (Complete) */}
+            <div className="flex items-center justify-center space-x-2 text-slate-300">
+              <span
+                className="material-symbols-outlined text-[10px]"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                fiber_manual_record
+              </span>
+            </div>
+            {/* Step 2 (Active) */}
+            <div className="flex items-center justify-center space-x-2 text-violet-600">
+              <span className="font-[Manrope] text-xs font-semibold uppercase tracking-widest">
+                Step 2 of 4
+              </span>
+              <span
+                className="material-symbols-outlined text-[10px]"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                fiber_manual_record
+              </span>
+            </div>
+            {/* Step 3 */}
+            <div className="flex items-center justify-center space-x-2 text-slate-300">
+              <span
+                className="material-symbols-outlined text-[10px]"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                fiber_manual_record
+              </span>
+            </div>
+            {/* Step 4 */}
+            <div className="flex items-center justify-center space-x-2 text-slate-300">
+              <span
+                className="material-symbols-outlined text-[10px]"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                fiber_manual_record
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
+      </nav>
     </div>
   );
 }

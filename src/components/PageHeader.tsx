@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
 
 interface PageHeaderProps {
   title: string;
   subtitle?: string;
+  badge?: string;
   breadcrumb?: { label: string; href: string };
   actions?: React.ReactNode;
 }
@@ -11,29 +11,39 @@ interface PageHeaderProps {
 export default function PageHeader({
   title,
   subtitle,
+  badge,
   breadcrumb,
   actions,
 }: PageHeaderProps) {
   return (
-    <div className="mb-6">
-      {breadcrumb && (
-        <Link
-          href={breadcrumb.href}
-          className="inline-flex items-center gap-1 text-[13px] text-primary hover:underline mb-3"
-        >
-          <ChevronLeft size={14} />
-          {breadcrumb.label}
-        </Link>
-      )}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-[28px] font-bold text-text-primary">{title}</h1>
-          {subtitle && (
-            <p className="text-sm text-text-muted mt-1">{subtitle}</p>
+    <div className="flex items-center justify-between">
+      <div className="space-y-1">
+        {breadcrumb && (
+          <Link
+            href={breadcrumb.href}
+            className="flex items-center gap-1 text-primary text-sm font-medium group"
+          >
+            <span className="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">
+              arrow_back
+            </span>
+            <span className="tracking-tight">{breadcrumb.label}</span>
+          </Link>
+        )}
+        <div className="flex items-baseline gap-4 mt-2">
+          <h2 className="text-[28px] font-extrabold text-on-surface leading-tight">
+            {title}
+          </h2>
+          {badge && (
+            <span className="px-3 py-1 bg-surface-container-high text-on-surface-variant text-[11px] font-bold rounded-full uppercase tracking-widest">
+              {badge}
+            </span>
           )}
         </div>
-        {actions && <div className="flex items-center gap-3">{actions}</div>}
+        {subtitle && (
+          <p className="text-sm text-on-surface-variant">{subtitle}</p>
+        )}
       </div>
+      {actions && <div className="flex items-center gap-3">{actions}</div>}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import AppLayout from "@/components/AppLayout";
+import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,10 +12,25 @@ function SettingsTabs() {
     { label: "Notifications", href: "/settings/notifications" },
   ];
   return (
-    <div className="flex gap-6 border-b border-gray-200 mb-8">
+    <div className="flex gap-8 border-b border-outline-variant/30">
       {tabs.map((t) => {
         const active = pathname === t.href;
-        return <Link key={t.href} href={t.href} className={`pb-3 text-sm font-medium border-b-2 ${active ? "border-[#7C3AED] text-[#7C3AED]" : "border-transparent text-gray-500 hover:text-gray-700"}`}>{t.label}</Link>;
+        return (
+          <Link
+            key={t.href}
+            href={t.href}
+            className={`pb-3 text-sm font-medium transition-colors relative ${
+              active
+                ? "font-semibold text-primary"
+                : "text-on-surface-variant hover:text-primary"
+            }`}
+          >
+            {t.label}
+            {active && (
+              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary" />
+            )}
+          </Link>
+        );
       })}
     </div>
   );
@@ -23,35 +39,133 @@ function SettingsTabs() {
 export default function SettingsAccountPage() {
   return (
     <AppLayout>
-      <h1 className="text-[28px] font-bold text-gray-900">Settings</h1>
-      <p className="text-sm text-gray-500 mt-1 mb-6">Manage your account and preferences</p>
+      <PageHeader
+        title="Settings"
+        subtitle="Manage your account and preferences"
+      />
       <SettingsTabs />
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Profile Information</h2>
-        <div className="space-y-4 max-w-md">
-          <div><label className="text-[13px] font-semibold text-gray-700 block mb-1">Full Name</label><input type="text" defaultValue="Jonathan Sterling" className="w-full h-11 px-4 rounded-lg border border-gray-200 text-sm" /></div>
-          <div><label className="text-[13px] font-semibold text-gray-700 block mb-1">Email</label><input type="email" defaultValue="j.sterling@estatetrust.com" className="w-full h-11 px-4 rounded-lg border border-gray-200 text-sm" /></div>
-          <button className="px-4 py-2 bg-[#7C3AED] text-white rounded-lg text-sm font-medium">Save Changes</button>
+
+      <div className="max-w-4xl space-y-6">
+        {/* Profile Information Card */}
+        <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary">person</span>
+            <h3 className="font-headline text-lg font-bold text-on-surface">Profile Information</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-on-surface-variant tracking-wide uppercase">
+                Full Name
+              </label>
+              <input
+                type="text"
+                defaultValue="Jonathan Sterling"
+                className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-on-surface-variant tracking-wide uppercase">
+                Email Address
+              </label>
+              <input
+                type="email"
+                defaultValue="j.sterling@estatetrust.com"
+                className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+              />
+            </div>
+          </div>
+          <div className="mt-8 flex justify-end">
+            <button className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+              Save Changes
+            </button>
+          </div>
+        </div>
+
+        {/* Security & Password Card */}
+        <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="material-symbols-outlined text-primary">security</span>
+            <h3 className="font-headline text-lg font-bold text-on-surface">Security &amp; Password</h3>
+          </div>
+          <div className="flex items-center justify-between p-4 bg-surface-container-low rounded-lg mb-8">
+            <div className="flex items-center gap-4">
+              <div className="h-10 w-10 rounded-full bg-primary-fixed-dim flex items-center justify-center">
+                <span
+                  className="material-symbols-outlined text-primary"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  phonelink_lock
+                </span>
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-on-surface">Two-Factor Authentication</p>
+                <p className="text-xs text-on-surface-variant">Last verified Nov 12, 2023</p>
+              </div>
+            </div>
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-full tracking-wider uppercase">
+              Enabled
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-on-surface-variant tracking-wide uppercase">
+                Current Password
+              </label>
+              <input
+                type="password"
+                defaultValue="••••••••••••"
+                className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-on-surface-variant tracking-wide uppercase">
+                New Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter new password"
+                className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
+              />
+            </div>
+          </div>
+          <div className="mt-8 flex justify-end">
+            <button className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+              Update Password
+            </button>
+          </div>
+        </div>
+
+        {/* Onboarding Card */}
+        <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-dashed border-outline-variant/40">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="max-w-md">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="material-symbols-outlined text-primary">auto_awesome</span>
+                <h3 className="font-headline text-lg font-bold text-on-surface">Onboarding</h3>
+              </div>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Want to see the introduction tour again? Restart the onboarding flow to review key features.
+              </p>
+            </div>
+            <Link
+              href="/onboarding/step-1"
+              className="px-6 py-2.5 border border-outline-variant/60 rounded-lg text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors whitespace-nowrap"
+            >
+              Restart Onboarding
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Security &amp; Password</h2>
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-sm text-gray-700">Two-Factor Authentication</span>
-          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Enabled</span>
-          <span className="text-xs text-gray-500">Last verified Nov 12, 2023</span>
+
+      {/* Footer Meta */}
+      <footer className="pt-8 flex justify-between items-center text-[11px] text-on-surface-variant/60 font-medium uppercase tracking-widest max-w-4xl">
+        <div>Estate Ledger Pro v4.2.0</div>
+        <div className="flex gap-4">
+          <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+          <span>•</span>
+          <a className="hover:text-primary transition-colors" href="#">Terms of Service</a>
         </div>
-        <div className="space-y-4 max-w-md">
-          <div><label className="text-[13px] font-semibold text-gray-700 block mb-1">Current Password</label><input type="password" className="w-full h-11 px-4 rounded-lg border border-gray-200 text-sm" /></div>
-          <div><label className="text-[13px] font-semibold text-gray-700 block mb-1">New Password</label><input type="password" className="w-full h-11 px-4 rounded-lg border border-gray-200 text-sm" /></div>
-          <button className="px-4 py-2 bg-[#7C3AED] text-white rounded-lg text-sm font-medium">Update Password</button>
-        </div>
-      </div>
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">Onboarding</h2>
-        <p className="text-sm text-gray-600 mb-4">Want to see the introduction tour again? Restart the onboarding flow to review key features.</p>
-        <Link href="/onboarding/step-1" className="inline-block px-4 py-2 border-2 border-[#7C3AED] text-[#7C3AED] rounded-lg text-sm font-medium hover:bg-[#F3F0FF]">Restart Onboarding</Link>
-      </div>
+      </footer>
     </AppLayout>
   );
 }
