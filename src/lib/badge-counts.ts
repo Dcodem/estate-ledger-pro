@@ -3,7 +3,6 @@
 // Update here to change counts across the app.
 
 export const badgeCounts = {
-  smartTriage: 3,
-  aiReview: 4,
+  transactionReview: 7,
   needsReview: 1,
 } as const;

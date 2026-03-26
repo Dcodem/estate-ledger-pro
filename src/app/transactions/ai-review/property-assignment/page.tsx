@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { useState } from "react";
 
 const transactions = [
   {
@@ -53,6 +54,14 @@ const breakdown = [
 ];
 
 export default function PropertyAssignmentPage() {
+  const [autoAssigning, setAutoAssigning] = useState(false);
+  const [autoAssigned, setAutoAssigned] = useState(false);
+
+  const handleAutoAssign = () => {
+    setAutoAssigning(true);
+    setTimeout(() => { setAutoAssigning(false); setAutoAssigned(true); }, 2000);
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -159,14 +168,24 @@ export default function PropertyAssignmentPage() {
               </div>
             </div>
 
-            <button className="w-full bg-primary text-white py-4 rounded-xl font-bold text-base shadow-xl shadow-primary/30 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <button
+              onClick={handleAutoAssign}
+              disabled={autoAssigning || autoAssigned}
+              className={`w-full py-4 rounded-xl font-bold text-base shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+                autoAssigned
+                  ? "bg-emerald-500 text-white shadow-emerald-500/30"
+                  : autoAssigning
+                  ? "bg-primary/70 text-white shadow-primary/30 cursor-wait"
+                  : "bg-primary text-white shadow-primary/30 hover:opacity-90"
+              }`}
+            >
               <span
-                className="material-symbols-outlined text-[20px]"
-                style={{ fontVariationSettings: "'FILL' 1" }}
+                className={`material-symbols-outlined text-[20px] ${autoAssigning ? "animate-spin" : ""}`}
+                style={!autoAssigning && !autoAssigned ? { fontVariationSettings: "'FILL' 1" } : undefined}
               >
-                bolt
+                {autoAssigned ? "check_circle" : autoAssigning ? "progress_activity" : "bolt"}
               </span>
-              Auto-Assign Remaining
+              {autoAssigned ? "All Assigned!" : autoAssigning ? "Assigning..." : "Auto-Assign Remaining"}
             </button>
 
             <div className="mt-6 flex items-center justify-center gap-2 text-on-surface-variant text-xs font-medium">

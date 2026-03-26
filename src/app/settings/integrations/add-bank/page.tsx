@@ -14,6 +14,8 @@ const banks = [
 
 export default function AddBankPage() {
   const [search, setSearch] = useState("");
+  const [connecting, setConnecting] = useState<string | null>(null);
+  const [connected, setConnected] = useState<string[]>([]);
 
   const filtered = banks.filter((b) =>
     b.name.toLowerCase().includes(search.toLowerCase())
@@ -65,8 +67,29 @@ export default function AddBankPage() {
               <span className="text-base font-semibold text-on-surface">
                 {bank.name}
               </span>
-              <button className="w-full mt-auto px-4 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
-                Connect
+              <button
+                onClick={() => {
+                  if (connected.includes(bank.name)) return;
+                  setConnecting(bank.name);
+                  setTimeout(() => {
+                    setConnecting(null);
+                    setConnected((prev) => [...prev, bank.name]);
+                  }, 1500);
+                }}
+                disabled={connecting === bank.name}
+                className={`w-full mt-auto px-4 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+                  connected.includes(bank.name)
+                    ? "bg-emerald-500 text-white"
+                    : connecting === bank.name
+                    ? "bg-primary/70 text-white cursor-wait"
+                    : "text-white bg-primary hover:bg-primary/90"
+                }`}
+              >
+                {connected.includes(bank.name)
+                  ? "Connected"
+                  : connecting === bank.name
+                  ? "Connecting..."
+                  : "Connect"}
               </button>
             </div>
           ))}

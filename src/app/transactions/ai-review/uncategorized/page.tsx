@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { useState } from "react";
 
 const transactions = [
   {
@@ -45,6 +46,19 @@ const sources = [
 ];
 
 export default function UncategorizedPage() {
+  const [savedCards, setSavedCards] = useState<Record<number, boolean>>({});
+  const [bulkDone, setBulkDone] = useState<string | null>(null);
+
+  const handleSave = (index: number) => {
+    setSavedCards((prev) => ({ ...prev, [index]: true }));
+    setTimeout(() => setSavedCards((prev) => ({ ...prev, [index]: false })), 2000);
+  };
+
+  const handleBulkAction = (action: string) => {
+    setBulkDone(action);
+    setTimeout(() => setBulkDone(null), 2500);
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -112,8 +126,15 @@ export default function UncategorizedPage() {
 
               {/* Save */}
               <div className="flex justify-end">
-                <button className="bg-primary text-on-primary px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-90 shadow-md shadow-primary/10">
-                  Save
+                <button
+                  onClick={() => handleSave(i)}
+                  className={`px-6 py-2 rounded-lg text-sm font-semibold shadow-md transition-all ${
+                    savedCards[i]
+                      ? "bg-emerald-500 text-white shadow-emerald-500/10"
+                      : "bg-primary text-on-primary hover:opacity-90 shadow-primary/10"
+                  }`}
+                >
+                  {savedCards[i] ? "Saved!" : "Save"}
                 </button>
               </div>
             </div>
@@ -167,18 +188,35 @@ export default function UncategorizedPage() {
           <section>
             <h2 className="text-[20px] font-bold mb-6">Quick Actions</h2>
             <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow space-y-3">
-              <button className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-3.5 rounded-xl text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors">
-                <span className="material-symbols-outlined text-lg">auto_fix_high</span>
-                Assign all to Maintenance
+              <button
+                onClick={() => handleBulkAction("maintenance")}
+                className={`w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-3.5 rounded-xl text-sm font-semibold transition-colors ${
+                  bulkDone === "maintenance" ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-primary hover:bg-surface-container-low"
+                }`}
+              >
+                <span className="material-symbols-outlined text-lg">{bulkDone === "maintenance" ? "check_circle" : "auto_fix_high"}</span>
+                {bulkDone === "maintenance" ? "All Assigned to Maintenance!" : "Assign all to Maintenance"}
               </button>
-              <button className="w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-3.5 rounded-xl text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors">
-                <span className="material-symbols-outlined text-lg">home_work</span>
-                Assign all to Main St. Loft
+              <button
+                onClick={() => handleBulkAction("property")}
+                className={`w-full flex items-center justify-center gap-2 border border-outline-variant/30 py-3.5 rounded-xl text-sm font-semibold transition-colors ${
+                  bulkDone === "property" ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-primary hover:bg-surface-container-low"
+                }`}
+              >
+                <span className="material-symbols-outlined text-lg">{bulkDone === "property" ? "check_circle" : "home_work"}</span>
+                {bulkDone === "property" ? "All Assigned to Main St. Loft!" : "Assign all to Main St. Loft"}
               </button>
               <div className="pt-2">
-                <button className="w-full py-4 rounded-xl text-sm font-bold text-on-primary bg-primary shadow-lg shadow-primary/30 hover:shadow-xl hover:translate-y-[-1px] transition-all flex items-center justify-center gap-2">
-                  <span className="material-symbols-outlined">done_all</span>
-                  Mark All as Reviewed
+                <button
+                  onClick={() => handleBulkAction("reviewed")}
+                  className={`w-full py-4 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl hover:translate-y-[-1px] transition-all flex items-center justify-center gap-2 ${
+                    bulkDone === "reviewed"
+                      ? "bg-emerald-500 text-white shadow-emerald-500/30"
+                      : "text-on-primary bg-primary shadow-primary/30"
+                  }`}
+                >
+                  <span className="material-symbols-outlined">{bulkDone === "reviewed" ? "check_circle" : "done_all"}</span>
+                  {bulkDone === "reviewed" ? "All Marked as Reviewed!" : "Mark All as Reviewed"}
                 </button>
               </div>
             </div>

@@ -35,6 +35,7 @@ export default function ExportsPage() {
   const [dateRange, setDateRange] = useState("2023 Tax Year");
   const [generating, setGenerating] = useState(false);
   const [generated, setGenerated] = useState(false);
+  const [archiveToast, setArchiveToast] = useState(false);
 
   const handleGenerate = () => {
     setGenerating(true);
@@ -270,7 +271,12 @@ export default function ExportsPage() {
                 </table>
               </div>
               <div className="p-4 bg-slate-50/50 text-center">
-                <button className="text-[11px] font-bold text-violet-600 hover:text-violet-700 transition-colors">View All Archive</button>
+                <button
+                  onClick={() => { setArchiveToast(true); setTimeout(() => setArchiveToast(false), 2500); }}
+                  className="text-[11px] font-bold text-violet-600 hover:text-violet-700 transition-colors"
+                >
+                  {archiveToast ? "Full archive coming soon!" : "View All Archive"}
+                </button>
               </div>
             </div>
           </section>

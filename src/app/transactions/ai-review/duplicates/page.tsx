@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { useState } from "react";
 
 const pairs = [
   {
@@ -46,6 +47,20 @@ function isHighlighted(pair: (typeof pairs)[number], field: "vendor" | "amount")
 }
 
 export default function DuplicatesPage() {
+  const [resolvedPairs, setResolvedPairs] = useState<Record<number, string>>({});
+
+  const handlePairAction = (index: number, action: string) => {
+    setResolvedPairs((prev) => ({ ...prev, [index]: action }));
+  };
+
+  const handleBulkResolve = (level: string, action: string) => {
+    const updates: Record<number, string> = {};
+    pairs.forEach((p, i) => {
+      if (p.level === level && !resolvedPairs[i]) updates[i] = action;
+    });
+    setResolvedPairs((prev) => ({ ...prev, ...updates }));
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -127,16 +142,33 @@ export default function DuplicatesPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-3 pt-4 border-t border-slate-100">
-                  <button className="px-5 py-2 rounded-lg text-sm font-bold text-on-surface border border-outline-variant hover:bg-surface-container-low transition-colors">
-                    Keep Both
-                  </button>
-                  <button className="flex-1 px-5 py-2 rounded-lg text-sm font-bold text-white bg-primary shadow-sm hover:shadow-primary/20 transition-all">
-                    Merge Transactions
-                  </button>
-                  <button className="px-5 py-2 rounded-lg text-sm font-bold text-error hover:bg-error/5 transition-colors">
-                    Mark as Duplicate
-                  </button>
+                <div className="pt-4 border-t border-slate-100">
+                  {resolvedPairs[i] ? (
+                    <div className="flex items-center justify-between bg-emerald-50 rounded-lg px-5 py-3">
+                      <div className="flex items-center gap-2 text-emerald-700 font-bold text-sm">
+                        <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                        {resolvedPairs[i]}
+                      </div>
+                      <button
+                        onClick={() => setResolvedPairs((prev) => { const next = { ...prev }; delete next[i]; return next; })}
+                        className="text-xs font-bold text-emerald-600 hover:underline"
+                      >
+                        Undo
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <button onClick={() => handlePairAction(i, "Kept Both")} className="px-5 py-2 rounded-lg text-sm font-bold text-on-surface border border-outline-variant hover:bg-surface-container-low transition-colors">
+                        Keep Both
+                      </button>
+                      <button onClick={() => handlePairAction(i, "Merged")} className="flex-1 px-5 py-2 rounded-lg text-sm font-bold text-white bg-primary shadow-sm hover:shadow-primary/20 transition-all">
+                        Merge Transactions
+                      </button>
+                      <button onClick={() => handlePairAction(i, "Marked as Duplicate")} className="px-5 py-2 rounded-lg text-sm font-bold text-error hover:bg-error/5 transition-colors">
+                        Mark as Duplicate
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -180,7 +212,10 @@ export default function DuplicatesPage() {
             </div>
 
             <div className="space-y-3">
-              <button className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+              <button
+                onClick={() => handleBulkResolve("high", "Auto-Resolved (High Confidence)")}
+                className="w-full py-4 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              >
                 <span
                   className="material-symbols-outlined text-[18px]"
                   style={{ fontVariationSettings: "'FILL' 1" }}
@@ -189,7 +224,10 @@ export default function DuplicatesPage() {
                 </span>
                 Resolve All High-Confidence
               </button>
-              <button className="w-full py-4 border border-outline-variant text-on-surface font-bold rounded-xl hover:bg-surface-container-low active:scale-[0.98] transition-all">
+              <button
+                onClick={() => handleBulkResolve("low", "Ignored (Low Confidence)")}
+                className="w-full py-4 border border-outline-variant text-on-surface font-bold rounded-xl hover:bg-surface-container-low active:scale-[0.98] transition-all"
+              >
                 Ignore All Low-Confidence
               </button>
             </div>

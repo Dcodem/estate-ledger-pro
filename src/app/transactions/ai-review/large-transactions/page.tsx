@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { useState } from "react";
 
 const transactions = [
   {
@@ -49,6 +50,18 @@ const transactions = [
 ];
 
 export default function LargeTransactionsPage() {
+  const [flagged, setFlagged] = useState<Record<number, boolean>>(
+    () => Object.fromEntries(transactions.map((tx, i) => [i, tx.flagged]))
+  );
+  const [verified, setVerified] = useState<Record<number, boolean>>({});
+  const [exporting, setExporting] = useState(false);
+  const [exported, setExported] = useState(false);
+
+  const handleExport = () => {
+    setExporting(true);
+    setTimeout(() => { setExporting(false); setExported(true); }, 2000);
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -123,8 +136,11 @@ export default function LargeTransactionsPage() {
                   )}
                 </div>
                 <div className="flex gap-3">
-                  {tx.flagged ? (
-                    <button className="px-4 py-2 text-[13px] font-bold text-orange-600 bg-orange-50 rounded-lg transition-colors flex items-center gap-2">
+                  {flagged[i] ? (
+                    <button
+                      onClick={() => setFlagged((prev) => ({ ...prev, [i]: false }))}
+                      className="px-4 py-2 text-[13px] font-bold text-orange-600 bg-orange-50 rounded-lg transition-colors flex items-center gap-2"
+                    >
                       <span
                         className="material-symbols-outlined text-[18px]"
                         style={{ fontVariationSettings: "'FILL' 1" }}
@@ -134,14 +150,24 @@ export default function LargeTransactionsPage() {
                       Flagged for Review
                     </button>
                   ) : (
-                    <button className="px-4 py-2 text-[13px] font-bold text-slate-500 bg-slate-100 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2">
+                    <button
+                      onClick={() => setFlagged((prev) => ({ ...prev, [i]: true }))}
+                      className="px-4 py-2 text-[13px] font-bold text-slate-500 bg-slate-100 rounded-lg hover:bg-orange-50 hover:text-orange-600 transition-colors flex items-center gap-2"
+                    >
                       <span className="material-symbols-outlined text-[18px]">flag</span>
                       Flag for Review
                     </button>
                   )}
-                  <button className="px-4 py-2 text-[13px] font-bold text-white bg-emerald-600 rounded-lg shadow-md shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center gap-2">
+                  <button
+                    onClick={() => setVerified((prev) => ({ ...prev, [i]: true }))}
+                    className={`px-4 py-2 text-[13px] font-bold rounded-lg shadow-md transition-all flex items-center gap-2 ${
+                      verified[i]
+                        ? "bg-emerald-700 text-white shadow-emerald-300"
+                        : "text-white bg-emerald-600 shadow-emerald-200 hover:bg-emerald-700"
+                    }`}
+                  >
                     <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                    Verify and Approve
+                    {verified[i] ? "Verified" : "Verify and Approve"}
                   </button>
                 </div>
               </div>
@@ -207,9 +233,21 @@ export default function LargeTransactionsPage() {
 
               {/* Export */}
               <div className="pt-6">
-                <button className="w-full py-3.5 border-2 border-outline-variant text-on-surface text-[14px] font-bold rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
-                  <span className="material-symbols-outlined text-[20px]">ios_share</span>
-                  Export Flagged Report
+                <button
+                  onClick={handleExport}
+                  disabled={exporting}
+                  className={`w-full py-3.5 border-2 text-[14px] font-bold rounded-xl transition-colors flex items-center justify-center gap-2 ${
+                    exported
+                      ? "border-emerald-500 text-emerald-700 bg-emerald-50"
+                      : exporting
+                      ? "border-outline-variant text-on-surface-variant cursor-wait"
+                      : "border-outline-variant text-on-surface hover:bg-slate-50"
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-[20px] ${exporting ? "animate-spin" : ""}`}>
+                    {exported ? "check_circle" : exporting ? "progress_activity" : "ios_share"}
+                  </span>
+                  {exported ? "Report Exported!" : exporting ? "Exporting..." : "Export Flagged Report"}
                 </button>
                 <p className="text-[11px] text-center text-on-surface-variant mt-4 leading-relaxed">
                   Exported as a detailed PDF with high-resolution receipt attachments for audit purposes.

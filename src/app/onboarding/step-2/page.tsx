@@ -1,7 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function OnboardingStep2() {
+  const [fileRemoved, setFileRemoved] = useState(false);
+
   return (
     <div className="bg-background font-[Inter] text-on-surface min-h-screen flex flex-col">
       {/* TopAppBar */}
@@ -29,33 +32,45 @@ export default function OnboardingStep2() {
               </p>
 
               {/* Success Upload Zone */}
-              <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-between border-2 border-dashed border-transparent transition-all">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
-                    <span className="material-symbols-outlined">description</span>
+              {fileRemoved ? (
+                <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-center border-2 border-dashed border-outline-variant/40 transition-all">
+                  <div className="text-center py-4">
+                    <span className="material-symbols-outlined text-on-surface-variant/40 text-4xl mb-2">upload_file</span>
+                    <p className="text-sm text-on-surface-variant font-medium">File removed. Upload a new file to continue.</p>
                   </div>
-                  <div className="text-left">
-                    <div className="font-[Manrope] font-bold text-on-surface">
-                      2023_property_transactions.csv
+                </div>
+              ) : (
+                <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-between border-2 border-dashed border-transparent transition-all">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+                      <span className="material-symbols-outlined">description</span>
                     </div>
-                    <div className="text-xs text-on-surface-variant">2.4 MB</div>
+                    <div className="text-left">
+                      <div className="font-[Manrope] font-bold text-on-surface">
+                        2023_property_transactions.csv
+                      </div>
+                      <div className="text-xs text-on-surface-variant">2.4 MB</div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-6">
-                  <div className="flex items-center text-emerald-600 font-semibold text-sm">
-                    <span
-                      className="material-symbols-outlined mr-1"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
+                  <div className="flex items-center space-x-6">
+                    <div className="flex items-center text-emerald-600 font-semibold text-sm">
+                      <span
+                        className="material-symbols-outlined mr-1"
+                        style={{ fontVariationSettings: "'FILL' 1" }}
+                      >
+                        check_circle
+                      </span>
+                      Verified
+                    </div>
+                    <button
+                      onClick={() => setFileRemoved(true)}
+                      className="text-sm font-semibold text-error hover:opacity-80 transition-opacity"
                     >
-                      check_circle
-                    </span>
-                    Verified
+                      Remove
+                    </button>
                   </div>
-                  <button className="text-sm font-semibold text-error hover:opacity-80 transition-opacity">
-                    Remove
-                  </button>
                 </div>
-              </div>
+              )}
 
               {/* Action Area */}
               <div className="w-full space-y-6">

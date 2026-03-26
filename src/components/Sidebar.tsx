@@ -28,8 +28,7 @@ const navSections: NavSection[] = [
   {
     heading: "Analysis",
     items: [
-      { label: "Smart Triage", href: "/transactions/smart-triage", icon: "rule_folder", badge: badgeCounts.smartTriage },
-      { label: "AI Review", href: "/transactions/ai-review", icon: "auto_awesome", badge: badgeCounts.aiReview },
+      { label: "Transaction Review", href: "/transactions/smart-triage", icon: "auto_awesome", badge: badgeCounts.transactionReview },
       { label: "Properties", href: "/properties", icon: "domain" },
     ],
   },
