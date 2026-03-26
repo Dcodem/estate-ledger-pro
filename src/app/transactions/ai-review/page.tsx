@@ -257,7 +257,7 @@ export default function AIReviewPage() {
           <div className="mt-4 px-4 text-center">
             <p className="text-[11px] text-on-surface-variant">
               Automated by Estate Ledger AI.{" "}
-              <a className="text-primary font-semibold underline" href="#">
+              <a className="text-primary font-semibold underline" href="/transactions/ai-review/duplicates">
                 Learn how analysis works
               </a>
             </p>

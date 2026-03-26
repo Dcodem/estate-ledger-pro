@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Header() {
   return (
     <header className="fixed top-0 right-0 w-[calc(100%-220px)] h-16 z-40 bg-white/80 backdrop-blur-xl flex items-center justify-between px-8 shadow-sm">
@@ -16,20 +18,20 @@ export default function Header() {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <button className="bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
+        <Link href="/properties" className="bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
           <span className="material-symbols-outlined text-sm">add</span>
           Add Property
-        </button>
+        </Link>
         <div className="flex items-center gap-2 text-slate-400">
-          <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+          <Link href="/settings/notifications" className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
             <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+          </Link>
+          <Link href="/settings" className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
             <span className="material-symbols-outlined">help_outline</span>
-          </button>
-          <button className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+          </Link>
+          <Link href="/settings" className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
             <span className="material-symbols-outlined">account_circle</span>
-          </button>
+          </Link>
         </div>
       </div>
     </header>

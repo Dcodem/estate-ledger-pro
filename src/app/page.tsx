@@ -3,6 +3,7 @@
 import AppLayout from "@/components/AppLayout";
 import KPICard from "@/components/KPICard";
 import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
 import {
   BarChart,
   Bar,
@@ -25,6 +26,7 @@ const chartData = [
 const propertyRows = [
   {
     name: "Main St. Loft",
+    slug: "main-st-loft",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVymTACY9v0mFrSi8Uy7lrlUj1ZOIOpw9KkM9Sy7xJDoH1Z4AZd6wyIVoO8kPcqbwJGtLP9qCnS523Nq861qySqCjZi9sgA1MTRjDEEZ9H_Hha4xFKkYQ_gArHOJeVrzkj1bkanww9Ns_Bpj78raU_QSn0qxrPRFRZRiSnjA0QzekSFjfBfFRHQqy0wicy1UN4zNhrshWdKr5PCcodrs8TKK9Fgw4Ker20PGzQ3Ik86F-VOwtYeKO_Pw2kB1idsa7nT_HAchfDo7TL",
     alt: "Interior",
     revenue: "$3,500",
@@ -37,6 +39,7 @@ const propertyRows = [
   },
   {
     name: "Oak Ridge",
+    slug: "oak-ridge",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiH4ucfBZq-aBKooIKDgMKm5sifp-sI3GpZ_L786rFhJqOUgtFmxMc3F4K8Tt-vBFAmIZMYZ11lka0FlDY3eECX2hhV3AJcMq6V1SPnod7Vs5YB47B1wX2ZXYpRu6P-_35LTdRaXcsp6YC8W1QvKBiI4Rd1gdUUKm6dquhRPCfBVatptV_IWxeNKUoTmgirdIHIW765jLUi3asi_QpIi-vtDpDLztOSPY3lT_2SruyMR8wCYYrAR_pRTO0bL3kPrzcI8UF0w-qTWz9",
     alt: "Exterior",
     revenue: "$8,400",
@@ -49,6 +52,7 @@ const propertyRows = [
   },
   {
     name: "Downtown Plaza",
+    slug: "downtown-plaza",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBMjOXxwYwr_TBnC21p3gxBMD4DDlhsYqU7WdMgtW1u01lACME2BxKkj2j7HgNY45UGKuxDJp8dR2bs96gGxP2aShbNXeFNsfJ7XpnH3SulesbzRrwWFuJozi3SAXGo7rfP-Ezc8OA1d0U6vGgj1wRmLXwrd57ws5mRg-IBVRcyH1n6TMTAyqOHWQW2L1_6x4773dqC5zCwphM0CeE-4ou7Kr0_KEmUh14pk77_PlOrsXG1hlu70nbm2Wi9jTjVNBTsDULV9xtumNmq",
     alt: "Commercial",
     revenue: "$6,800",
@@ -205,7 +209,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Asset Insight Card */}
-        <div className="bg-surface-container-lowest overflow-hidden rounded-2xl card-shadow flex flex-col">
+        <Link href="/properties/oak-ridge" className="bg-surface-container-lowest overflow-hidden rounded-2xl card-shadow flex flex-col group hover:shadow-lg transition-shadow">
           <div className="relative h-48">
             <img
               alt="Luxury Modern Property"
@@ -243,17 +247,17 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Property Comparison Table */}
       <div className="bg-surface-container-lowest p-8 rounded-2xl card-shadow">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-xl font-bold">Property Comparison</h3>
-          <div className="flex items-center gap-2 text-xs font-semibold text-primary cursor-pointer">
+          <Link href="/properties" className="flex items-center gap-2 text-xs font-semibold text-primary cursor-pointer hover:underline">
             View Detailed Metrics
             <span className="material-symbols-outlined text-sm">chevron_right</span>
-          </div>
+          </Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
@@ -269,9 +273,9 @@ export default function DashboardPage() {
             </thead>
             <tbody className="text-sm">
               {propertyRows.map((row) => (
-                <tr key={row.name} className="hover:bg-slate-50 transition-colors">
+                <tr key={row.name} className="hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => window.location.href = `/properties/${row.slug}`}>
                   <td className="py-6 px-6 font-bold">
-                    <div className="flex items-center gap-3">
+                    <Link href={`/properties/${row.slug}`} className="flex items-center gap-3 hover:text-primary transition-colors">
                       <div className="w-10 h-10 rounded bg-slate-100 overflow-hidden shrink-0">
                         <img
                           alt={row.alt}
@@ -280,7 +284,7 @@ export default function DashboardPage() {
                         />
                       </div>
                       {row.name}
-                    </div>
+                    </Link>
                   </td>
                   <td className="py-6 px-6">{row.revenue}</td>
                   <td className="py-6 px-6">{row.expenses}</td>

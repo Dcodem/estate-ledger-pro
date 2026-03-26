@@ -1,10 +1,12 @@
 "use client";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
 
 const properties = [
   {
     name: "Main St. Loft",
+    slug: "main-st-loft",
     location: "Downtown District",
     occupancy: "92%",
     occupancyNote: "6 units total",
@@ -16,6 +18,7 @@ const properties = [
   },
   {
     name: "Oak Ridge Estate",
+    slug: "oak-ridge",
     location: "North Highlands",
     occupancy: "100%",
     occupancyNote: "Single unit",
@@ -27,6 +30,7 @@ const properties = [
   },
   {
     name: "Downtown Plaza",
+    slug: "downtown-plaza",
     location: "Business District",
     occupancy: "75%",
     occupancyNote: "4 units total",
@@ -66,9 +70,10 @@ export default function PropertiesPage() {
       {/* Property Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {properties.map((p) => (
-          <div
+          <Link
             key={p.name}
-            className="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden group hover:translate-y-[-4px] transition-all duration-300"
+            href={`/properties/${p.slug}`}
+            className="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden group hover:translate-y-[-4px] transition-all duration-300 block"
           >
             <div className="h-48 relative overflow-hidden">
               <img
@@ -110,13 +115,13 @@ export default function PropertiesPage() {
                     </div>
                   ))}
                 </div>
-                <button className="text-primary text-xs font-bold flex items-center gap-1 hover:underline">
+                <span className="text-primary text-xs font-bold flex items-center gap-1 group-hover:underline">
                   View Details
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
+                </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -165,9 +170,9 @@ export default function PropertiesPage() {
               </div>
             </div>
             <div className="mt-8 pt-8 border-t border-white/10">
-              <button className="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-slate-50 transition-colors">
+              <Link href="/reports/exports" className="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-slate-50 transition-colors block text-center">
                 Download Statement
-              </button>
+              </Link>
             </div>
           </div>
         </div>

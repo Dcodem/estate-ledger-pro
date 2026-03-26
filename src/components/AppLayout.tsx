@@ -13,9 +13,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <footer className="mt-auto py-8 px-10 border-t border-surface-container text-on-surface-variant flex justify-between items-center text-xs">
           <p>© 2024 The Wealth Architect. Institutional Real Estate Analytics.</p>
           <div className="flex gap-6 font-semibold">
-            <a className="hover:text-primary" href="#">Documentation</a>
-            <a className="hover:text-primary" href="#">Privacy Policy</a>
-            <a className="hover:text-primary" href="#">Data Integrity</a>
+            <a className="hover:text-primary" href="/settings">Documentation</a>
+            <a className="hover:text-primary" href="/settings">Privacy Policy</a>
+            <a className="hover:text-primary" href="/settings/integrations">Data Integrity</a>
           </div>
         </footer>
       </main>

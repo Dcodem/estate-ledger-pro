@@ -161,9 +161,9 @@ export default function SettingsAccountPage() {
       <footer className="pt-8 flex justify-between items-center text-[11px] text-on-surface-variant/60 font-medium uppercase tracking-widest max-w-4xl">
         <div>Estate Ledger Pro v4.2.0</div>
         <div className="flex gap-4">
-          <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+          <a className="hover:text-primary transition-colors" href="/settings">Privacy Policy</a>
           <span>•</span>
-          <a className="hover:text-primary transition-colors" href="#">Terms of Service</a>
+          <a className="hover:text-primary transition-colors" href="/settings">Terms of Service</a>
         </div>
       </footer>
     </AppLayout>

@@ -66,10 +66,10 @@ export default function TransactionsPage() {
         title="Transactions"
         subtitle="Last synced 12 minutes ago"
         actions={
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 rounded-lg text-sm font-medium text-on-surface hover:bg-slate-50 transition-all shadow-sm">
+          <Link href="/reports/exports" className="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 rounded-lg text-sm font-medium text-on-surface hover:bg-slate-50 transition-all shadow-sm">
             <span className="material-symbols-outlined text-[18px]">download</span>
             Export
-          </button>
+          </Link>
         }
       />
 
@@ -224,9 +224,9 @@ export default function TransactionsPage() {
               </h3>
             </div>
             <div className="mt-8">
-              <button className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all">
+              <Link href="/reports" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all inline-block">
                 Optimization Report
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -238,9 +238,9 @@ export default function TransactionsPage() {
           <p className="text-xs text-on-surface-variant mt-1 px-4">
             See how your expenses are distributed across assets.
           </p>
-          <button className="mt-4 text-primary text-xs font-bold hover:underline">
+          <Link href="/reports" className="mt-4 text-primary text-xs font-bold hover:underline inline-block">
             View Analytics
-          </button>
+          </Link>
         </div>
       </div>
     </AppLayout>

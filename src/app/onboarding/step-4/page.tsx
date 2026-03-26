@@ -257,7 +257,7 @@ export default function OnboardingStep4() {
           {/* Contextual Note */}
           <p className="mt-8 text-center text-on-surface-variant text-sm font-medium">
             By confirming, you agree to our{" "}
-            <a className="underline text-primary hover:opacity-80" href="#">
+            <a className="underline text-primary hover:opacity-80" href="/settings">
               Data Aggregation Policy
             </a>{" "}
             and automated reconciliation.
