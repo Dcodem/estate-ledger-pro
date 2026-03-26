@@ -63,7 +63,7 @@ export default function LargeTransactionsPage() {
           {transactions.map((tx, i) => (
             <div
               key={i}
-              className={`bg-surface-container-lowest rounded-xl p-6 card-shadow transition-transform hover:scale-[1.01] duration-300 ${tx.flagged ? "border-l-4 border-orange-400" : ""}`}
+              className={`bg-surface-container-lowest rounded-xl p-6 card-shadow transition-colors duration-200 ${tx.flagged ? "border-l-4 border-orange-400" : ""}`}
             >
               {/* Top section */}
               <div className="flex justify-between items-start mb-4">

@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { useState } from "react";
 
 const triageCards = [
   {
@@ -42,21 +43,31 @@ const triageCards = [
 const tabs = ["All", "High Confidence", "Medium", "Low"];
 
 export default function SmartTriagePage() {
+  const [activeTab, setActiveTab] = useState("All");
+  const filteredCards = triageCards.filter((c) => {
+    if (activeTab === "High Confidence") return c.confidence >= 85;
+    if (activeTab === "Medium") return c.confidence >= 50 && c.confidence < 85;
+    if (activeTab === "Low") return c.confidence < 50;
+    return true;
+  });
+
   return (
     <AppLayout>
       {/* Header */}
       <PageHeader
         title="Smart Triage"
         subtitle="AI-suggested categorizations for review"
+        breadcrumb={{ label: "Back to Transactions", href: "/transactions" }}
       />
 
       {/* Filter Tabs */}
       <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl w-fit">
-        {tabs.map((t, i) => (
+        {tabs.map((t) => (
           <button
             key={t}
+            onClick={() => setActiveTab(t)}
             className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all ${
-              i === 0
+              activeTab === t
                 ? "bg-white shadow-sm text-primary"
                 : "text-on-surface-variant hover:bg-white/50 font-medium"
             }`}
@@ -68,10 +79,10 @@ export default function SmartTriagePage() {
 
       {/* Triage Cards */}
       <div className="space-y-6">
-        {triageCards.map((c, i) => (
+        {filteredCards.map((c, i) => (
           <div
             key={i}
-            className="bg-surface-container-lowest rounded-2xl p-8 card-shadow flex items-center justify-between group hover:-translate-y-0.5 transition-all duration-300"
+            className="bg-surface-container-lowest rounded-2xl p-8 card-shadow flex items-center justify-between group transition-colors duration-200"
           >
             {/* Left side: icon + info */}
             <div className="flex items-center gap-6">
@@ -132,7 +143,7 @@ export default function SmartTriagePage() {
                 <button className="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-error hover:text-white transition-all">
                   <span className="material-symbols-outlined text-[20px]">close</span>
                 </button>
-                <button className="px-6 py-2 rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                <button className="px-6 py-2 rounded-full bg-primary text-white font-bold text-sm shadow-md shadow-primary/20 hover:opacity-90 active:scale-95 transition-all">
                   Accept
                 </button>
               </div>

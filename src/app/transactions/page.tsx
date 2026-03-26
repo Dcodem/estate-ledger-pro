@@ -3,6 +3,7 @@
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
+import { useState } from "react";
 
 const transactions = [
   {
@@ -59,6 +60,13 @@ const transactions = [
 ];
 
 export default function TransactionsPage() {
+  const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
+  const filteredTransactions = transactions.filter((t) => {
+    if (filter === "Income") return t.amount.startsWith("+");
+    if (filter === "Expenses") return t.amount.startsWith("-");
+    return true;
+  });
+
   return (
     <AppLayout>
       {/* Page Header */}
@@ -98,15 +106,19 @@ export default function TransactionsPage() {
           </button>
           <div className="h-6 w-px bg-outline-variant/30" />
           <div className="flex gap-2">
-            <span className="px-3 py-1.5 bg-primary/5 text-primary text-xs font-bold rounded-full border border-primary/10">
-              All
-            </span>
-            <span className="px-3 py-1.5 text-on-surface-variant text-xs font-semibold hover:bg-slate-100 rounded-full cursor-pointer transition-all">
-              Income
-            </span>
-            <span className="px-3 py-1.5 text-on-surface-variant text-xs font-semibold hover:bg-slate-100 rounded-full cursor-pointer transition-all">
-              Expenses
-            </span>
+            {(["All", "Income", "Expenses"] as const).map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
+                  filter === f
+                    ? "bg-primary/5 text-primary border border-primary/10"
+                    : "text-on-surface-variant font-semibold hover:bg-slate-100 cursor-pointer"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -131,7 +143,7 @@ export default function TransactionsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
-            {transactions.map((t, i) => (
+            {filteredTransactions.map((t, i) => (
               <tr
                 key={i}
                 className={`hover:bg-slate-50/50 transition-all cursor-pointer group ${

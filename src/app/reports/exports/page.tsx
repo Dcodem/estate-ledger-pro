@@ -156,7 +156,7 @@ export default function ExportsPage() {
                   <div className="h-full bg-primary rounded-full" style={{ width: "33.68%" }} />
                 </div>
               </div>
-              <button className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-violet-500/20 hover:scale-[1.01] active:scale-95 transition-all">
+              <button className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-violet-500/20 hover:opacity-90 active:scale-95 transition-all">
                 Generate 2023 Report
               </button>
             </footer>

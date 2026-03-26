@@ -59,7 +59,7 @@ export default function UncategorizedPage() {
           {transactions.map((tx, i) => (
             <div
               key={i}
-              className="bg-surface-container-lowest p-6 rounded-xl card-shadow transition-transform hover:scale-[1.005]"
+              className="bg-surface-container-lowest p-6 rounded-xl card-shadow"
             >
               {/* Header */}
               <div className="flex justify-between items-start mb-6">

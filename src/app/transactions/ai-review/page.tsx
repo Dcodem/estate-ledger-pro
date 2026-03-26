@@ -67,6 +67,7 @@ export default function AIReviewPage() {
       <PageHeader
         title="AI Review"
         subtitle="Automated analysis of your transactions across 12 connected accounts."
+        breadcrumb={{ label: "Back to Transactions", href: "/transactions" }}
       />
 
       {/* Two Column Layout */}
