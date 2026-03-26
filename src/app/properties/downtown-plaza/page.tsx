@@ -2,7 +2,6 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
-import KPICard from "@/components/KPICard";
 
 const units = [
   { unit: "Unit 1", tenant: "Acme Corp", rent: "$2,200", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700" },
@@ -22,7 +21,7 @@ export default function DowntownPlazaPage() {
     <AppLayout>
       <PageHeader
         title="Downtown Plaza"
-        subtitle="789 Commercial Ave, Manhattan, NY"
+        subtitle="Business District"
         breadcrumb={{ label: "Back to Properties", href: "/properties" }}
         actions={
           <div className="flex items-center gap-3">
@@ -38,8 +37,17 @@ export default function DowntownPlazaPage() {
         }
       />
 
-      {/* Hero Gradient */}
-      <div className="h-48 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl" />
+      {/* Hero Image */}
+      <div className="h-64 relative rounded-2xl overflow-hidden shadow-[0_12px_32px_rgba(20,27,43,0.04)]">
+        <img
+          className="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyFIdsKID_haOZAONiZxzY3CcUedKeS3rYg7HuXwQi6ZyC550OMFHvsO-XggctDoGnpzca7wMsGw2PcLH25VRE2iGQCKlIlGy_NMtmciRojEJkcBFHtdot4Jq-y76IB3y5sjcRprFHiQyPFQWsIO5Ksw-KFVtKrI_dDej16mCFBsb86wYtN40bhrKtQ0mXBV3g-pxQjjq5glCuZ8GGiw6XhaW3b7SHRwZ08jaYiCYetcDlDU0FX5XnUSR97NleCjf8Dii7MdcXLFhr"
+          alt="Downtown Plaza"
+        />
+        <div className="absolute top-4 right-4 px-3 py-1 bg-amber-100/90 backdrop-blur text-amber-700 text-[11px] font-bold rounded-full uppercase tracking-wider">
+          Attention
+        </div>
+      </div>
 
       {/* Alert Banner */}
       <div className="bg-[#FEF3C7] text-[#92400E] p-4 rounded-xl flex items-center justify-between shadow-sm border border-[#FDE68A]/50">
@@ -51,18 +59,39 @@ export default function DowntownPlazaPage() {
         </div>
       </div>
 
-      {/* KPI Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard label="Units" value="4" icon="apartment" />
-        <KPICard label="Occupancy" value="75%" icon="group" iconBg="bg-[#FEF3C7]" iconColor="text-[#92400E]" />
-        <KPICard label="Revenue" value="$6,000" icon="payments" iconBg="bg-emerald-100" iconColor="text-emerald-600" />
-        <KPICard label="Cap Rate" value="5.9%" icon="trending_up" iconBg="bg-secondary-fixed-dim" iconColor="text-secondary" />
+      {/* Property Stats Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-surface-container-low p-4 rounded-xl">
+          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
+          <p className="text-2xl font-bold text-error mt-1">75%</p>
+          <p className="text-[10px] text-on-surface-variant mt-0.5">4 units total</p>
+        </div>
+        <div className="bg-surface-container-low p-4 rounded-xl">
+          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
+          <p className="text-2xl font-bold text-primary mt-1">$6,000</p>
+          <p className="text-[10px] text-on-surface-variant mt-0.5">Average/Mo</p>
+        </div>
+        <div className="bg-surface-container-low p-4 rounded-xl">
+          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Cap Rate</p>
+          <p className="text-2xl font-bold text-on-surface mt-1">5.9%</p>
+          <p className="text-[10px] text-on-surface-variant mt-0.5">Annualized</p>
+        </div>
+        <div className="bg-surface-container-low p-4 rounded-xl">
+          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Property Managers</p>
+          <div className="flex items-center gap-1 mt-2">
+            <div className="flex -space-x-2">
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">JD</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[10px] font-bold">LM</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-500 flex items-center justify-center text-[10px] font-bold text-white">TC</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Unit Breakdown */}
       <div>
         <h2 className="text-xl font-bold mb-6">Unit Breakdown</h2>
-        <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">
+        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low/50">
@@ -93,7 +122,7 @@ export default function DowntownPlazaPage() {
       {/* Recent Transactions */}
       <div>
         <h2 className="text-xl font-bold mb-6">Recent Transactions</h2>
-        <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">
+        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low/50">
