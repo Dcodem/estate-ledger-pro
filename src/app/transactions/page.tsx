@@ -6,178 +6,7 @@ import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { SkeletonPulse, TableSkeleton } from "@/components/LoadingSkeleton";
-
-const allTransactions = [
-  // Page 1
-  {
-    date: "Mar 15, 2024",
-    title: "Home Depot - Materials",
-    subtitle: "Project #402 - Kitchen Reno",
-    category: "Capital Improvement",
-    catClass: "bg-blue-50 text-blue-600",
-    amount: "-$2,450.00",
-    amountClass: "text-on-surface",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 14, 2024",
-    title: "Liberty Mutual - Premium",
-    subtitle: "Policy: LP-998231",
-    category: "Insurance",
-    catClass: "bg-slate-100 text-slate-600",
-    amount: "-$845.20",
-    amountClass: "text-on-surface",
-    property: "Oak Ridge Estate",
-    highlight: false,
-  },
-  {
-    date: "Mar 14, 2024",
-    title: "Zillow - Rent Payment",
-    subtitle: "Tenant: Unit 4B - Maxwell",
-    category: "Rental Income",
-    catClass: "bg-emerald-50 text-emerald-600",
-    amount: "+$3,200.00",
-    amountClass: "text-emerald-600",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 13, 2024",
-    title: "Stripe - Mktplace",
-    subtitle: "Merchant ID: STR-0091",
-    category: "Needs Review",
-    catClass: "bg-[#FEF3C7] text-[#92400E]",
-    amount: "-$1,102.55",
-    amountClass: "text-on-surface",
-    property: "Downtown Plaza",
-    highlight: true,
-    icon: "psychology",
-  },
-  {
-    date: "Mar 12, 2024",
-    title: "ConEd - Energy",
-    subtitle: "Acc: 771-001-22",
-    category: "Utilities",
-    catClass: "bg-teal-50 text-teal-600",
-    amount: "-$118.40",
-    amountClass: "text-on-surface",
-    property: "Downtown Plaza",
-    highlight: false,
-  },
-  // Page 2
-  {
-    date: "Mar 11, 2024",
-    title: "Amazon Business - Supplies",
-    subtitle: "Order #114-2209831",
-    category: "Office Supplies",
-    catClass: "bg-blue-50 text-blue-600",
-    amount: "-$234.99",
-    amountClass: "text-on-surface",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 10, 2024",
-    title: "Square Payment - Contractor",
-    subtitle: "Inv: SQ-4410",
-    category: "Contractor",
-    catClass: "bg-violet-50 text-violet-600",
-    amount: "-$567.00",
-    amountClass: "text-on-surface",
-    property: "Oak Ridge Estate",
-    highlight: false,
-  },
-  {
-    date: "Mar 9, 2024",
-    title: "Zillow - Rent Payment",
-    subtitle: "Tenant: Unit 1 - Acme Corp",
-    category: "Rental Income",
-    catClass: "bg-emerald-50 text-emerald-600",
-    amount: "+$2,200.00",
-    amountClass: "text-emerald-600",
-    property: "Downtown Plaza",
-    highlight: false,
-  },
-  {
-    date: "Mar 8, 2024",
-    title: "Roto-Rooter - Plumbing",
-    subtitle: "Service Call #8811",
-    category: "Maintenance",
-    catClass: "bg-orange-50 text-orange-600",
-    amount: "-$680.00",
-    amountClass: "text-on-surface",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 7, 2024",
-    title: "State Farm - Premium",
-    subtitle: "Policy: SF-441200",
-    category: "Insurance",
-    catClass: "bg-slate-100 text-slate-600",
-    amount: "-$412.50",
-    amountClass: "text-on-surface",
-    property: "Downtown Plaza",
-    highlight: false,
-  },
-  // Page 3
-  {
-    date: "Mar 6, 2024",
-    title: "Zillow - Rent Payment",
-    subtitle: "Tenant: Unit B - Torres",
-    category: "Rental Income",
-    catClass: "bg-emerald-50 text-emerald-600",
-    amount: "+$1,350.00",
-    amountClass: "text-emerald-600",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 5, 2024",
-    title: "Lowe's - Landscaping",
-    subtitle: "Receipt #LW-009211",
-    category: "Maintenance",
-    catClass: "bg-orange-50 text-orange-600",
-    amount: "-$289.75",
-    amountClass: "text-on-surface",
-    property: "Oak Ridge Estate",
-    highlight: false,
-  },
-  {
-    date: "Mar 4, 2024",
-    title: "National Grid - Gas",
-    subtitle: "Acc: NG-5500-18",
-    category: "Utilities",
-    catClass: "bg-teal-50 text-teal-600",
-    amount: "-$94.20",
-    amountClass: "text-on-surface",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 3, 2024",
-    title: "Zillow - Rent Payment",
-    subtitle: "Tenant: Unit E - Kim",
-    category: "Rental Income",
-    catClass: "bg-emerald-50 text-emerald-600",
-    amount: "+$1,450.00",
-    amountClass: "text-emerald-600",
-    property: "Main St. Loft",
-    highlight: false,
-  },
-  {
-    date: "Mar 1, 2024",
-    title: "HVAC Masters - Repair",
-    subtitle: "Work Order #HV-3322",
-    category: "Maintenance",
-    catClass: "bg-orange-50 text-orange-600",
-    amount: "-$1,200.00",
-    amountClass: "text-on-surface",
-    property: "Downtown Plaza",
-    highlight: false,
-  },
-];
+import { allTransactions, categoryOptions } from "@/lib/transactions";
 
 const ITEMS_PER_PAGE = 5;
 const propertyOptions = ["All Properties", "Main St. Loft", "Oak Ridge Estate", "Downtown Plaza"];
@@ -200,6 +29,8 @@ function TransactionsContent() {
   const [monthFilter, setMonthFilter] = useState("All Months");
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
   const [selectedTransaction, setSelectedTransaction] = useState<typeof allTransactions[0] | null>(null);
+  const [showRecategorize, setShowRecategorize] = useState(false);
+  const [tempCategory, setTempCategory] = useState<{ label: string; catClass: string } | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
@@ -409,7 +240,7 @@ function TransactionsContent() {
             {paginated.map((t, i) => (
               <tr
                 key={i}
-                onClick={() => setSelectedTransaction(t)}
+                onClick={() => { setSelectedTransaction(t); setShowRecategorize(false); setTempCategory(null); }}
                 className={`hover:bg-slate-50/50 transition-all cursor-pointer group ${
                   t.highlight ? "bg-amber-50/20" : ""
                 }`}
@@ -561,41 +392,90 @@ function TransactionsContent() {
               </div>
               <div className="flex justify-between items-center py-3 border-b border-slate-100">
                 <span className="text-sm text-on-surface-variant font-medium">Category</span>
-                <span className={`px-3 py-1 ${selectedTransaction.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
-                  {selectedTransaction.category}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className={`px-3 py-1 ${tempCategory?.catClass ?? selectedTransaction.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
+                    {tempCategory?.label ?? selectedTransaction.category}
+                  </span>
+                  <button
+                    onClick={() => setShowRecategorize(!showRecategorize)}
+                    className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">edit</span>
+                  </button>
+                </div>
               </div>
+
+              {/* Inline Recategorize */}
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showRecategorize ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"}`}>
+                <div className="pb-3 border-b border-slate-100">
+                  <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Reassign Category</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {categoryOptions.map((opt) => {
+                      const active = (tempCategory?.label ?? selectedTransaction.category) === opt.label;
+                      return (
+                        <button
+                          key={opt.label}
+                          onClick={() => { setTempCategory({ label: opt.label, catClass: opt.catClass }); setShowRecategorize(false); }}
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${active ? "ring-2 ring-primary ring-offset-1 " + opt.catClass : opt.catClass + " hover:ring-1 hover:ring-primary/30"}`}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
               <div className="flex justify-between items-center py-3 border-b border-slate-100">
                 <span className="text-sm text-on-surface-variant font-medium">Property</span>
                 <span className="text-sm font-semibold text-on-surface">{selectedTransaction.property}</span>
               </div>
             </div>
 
-            {selectedTransaction.highlight && (
+            {selectedTransaction.highlight && !tempCategory && (
               <div className="mt-6 bg-amber-50 border border-amber-200/50 rounded-xl p-4 flex items-start gap-3">
                 <span className="material-symbols-outlined text-amber-600 text-xl">psychology</span>
                 <div>
                   <p className="text-sm font-bold text-amber-800">Needs Review</p>
-                  <p className="text-xs text-amber-700 mt-0.5">AI couldn&apos;t confidently categorize this transaction. Review and assign a category manually.</p>
+                  <p className="text-xs text-amber-700 mt-0.5">AI couldn&apos;t confidently categorize this transaction. Use the edit button above to assign a category.</p>
                 </div>
               </div>
             )}
 
-            <div className="mt-8 flex justify-end gap-3">
-              <button
-                onClick={() => setSelectedTransaction(null)}
-                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all"
+            {tempCategory && (
+              <div className="mt-6 bg-emerald-50 border border-emerald-200/50 rounded-xl p-4 flex items-start gap-3">
+                <span className="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                <div>
+                  <p className="text-sm font-bold text-emerald-800">Recategorized</p>
+                  <p className="text-xs text-emerald-700 mt-0.5">Changed to &quot;{tempCategory.label}&quot;. Save on the detail page to persist.</p>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-8 flex justify-between items-center">
+              <Link
+                href={`/transactions/${selectedTransaction.id}`}
+                className="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
               >
-                Close
-              </button>
-              {selectedTransaction.highlight && (
-                <Link
-                  href="/transactions/ai-review"
-                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all"
+                <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                View Full Details
+              </Link>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSelectedTransaction(null)}
+                  className="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all"
                 >
-                  Send to AI Review
-                </Link>
-              )}
+                  Close
+                </button>
+                {selectedTransaction.highlight && !tempCategory && (
+                  <Link
+                    href="/transactions/ai-review"
+                    className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all"
+                  >
+                    AI Review
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
