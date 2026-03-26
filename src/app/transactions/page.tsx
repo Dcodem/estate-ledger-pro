@@ -5,7 +5,8 @@ import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { useState } from "react";
 
-const transactions = [
+const allTransactions = [
+  // Page 1
   {
     date: "Mar 15, 2024",
     title: "Home Depot - Materials",
@@ -14,6 +15,7 @@ const transactions = [
     catClass: "bg-blue-50 text-blue-600",
     amount: "-$2,450.00",
     amountClass: "text-on-surface",
+    property: "Main St. Loft",
     highlight: false,
   },
   {
@@ -24,6 +26,7 @@ const transactions = [
     catClass: "bg-slate-100 text-slate-600",
     amount: "-$845.20",
     amountClass: "text-on-surface",
+    property: "Oak Ridge Estate",
     highlight: false,
   },
   {
@@ -34,6 +37,7 @@ const transactions = [
     catClass: "bg-emerald-50 text-emerald-600",
     amount: "+$3,200.00",
     amountClass: "text-emerald-600",
+    property: "Main St. Loft",
     highlight: false,
   },
   {
@@ -44,6 +48,7 @@ const transactions = [
     catClass: "bg-[#FEF3C7] text-[#92400E]",
     amount: "-$1,102.55",
     amountClass: "text-on-surface",
+    property: "Downtown Plaza",
     highlight: true,
     icon: "psychology",
   },
@@ -55,17 +60,148 @@ const transactions = [
     catClass: "bg-teal-50 text-teal-600",
     amount: "-$118.40",
     amountClass: "text-on-surface",
+    property: "Downtown Plaza",
+    highlight: false,
+  },
+  // Page 2
+  {
+    date: "Mar 11, 2024",
+    title: "Amazon Business - Supplies",
+    subtitle: "Order #114-2209831",
+    category: "Office Supplies",
+    catClass: "bg-blue-50 text-blue-600",
+    amount: "-$234.99",
+    amountClass: "text-on-surface",
+    property: "Main St. Loft",
+    highlight: false,
+  },
+  {
+    date: "Mar 10, 2024",
+    title: "Square Payment - Contractor",
+    subtitle: "Inv: SQ-4410",
+    category: "Contractor",
+    catClass: "bg-violet-50 text-violet-600",
+    amount: "-$567.00",
+    amountClass: "text-on-surface",
+    property: "Oak Ridge Estate",
+    highlight: false,
+  },
+  {
+    date: "Mar 9, 2024",
+    title: "Zillow - Rent Payment",
+    subtitle: "Tenant: Unit 1 - Acme Corp",
+    category: "Rental Income",
+    catClass: "bg-emerald-50 text-emerald-600",
+    amount: "+$2,200.00",
+    amountClass: "text-emerald-600",
+    property: "Downtown Plaza",
+    highlight: false,
+  },
+  {
+    date: "Mar 8, 2024",
+    title: "Roto-Rooter - Plumbing",
+    subtitle: "Service Call #8811",
+    category: "Maintenance",
+    catClass: "bg-orange-50 text-orange-600",
+    amount: "-$680.00",
+    amountClass: "text-on-surface",
+    property: "Main St. Loft",
+    highlight: false,
+  },
+  {
+    date: "Mar 7, 2024",
+    title: "State Farm - Premium",
+    subtitle: "Policy: SF-441200",
+    category: "Insurance",
+    catClass: "bg-slate-100 text-slate-600",
+    amount: "-$412.50",
+    amountClass: "text-on-surface",
+    property: "Downtown Plaza",
+    highlight: false,
+  },
+  // Page 3
+  {
+    date: "Mar 6, 2024",
+    title: "Zillow - Rent Payment",
+    subtitle: "Tenant: Unit B - Torres",
+    category: "Rental Income",
+    catClass: "bg-emerald-50 text-emerald-600",
+    amount: "+$1,350.00",
+    amountClass: "text-emerald-600",
+    property: "Main St. Loft",
+    highlight: false,
+  },
+  {
+    date: "Mar 5, 2024",
+    title: "Lowe's - Landscaping",
+    subtitle: "Receipt #LW-009211",
+    category: "Maintenance",
+    catClass: "bg-orange-50 text-orange-600",
+    amount: "-$289.75",
+    amountClass: "text-on-surface",
+    property: "Oak Ridge Estate",
+    highlight: false,
+  },
+  {
+    date: "Mar 4, 2024",
+    title: "National Grid - Gas",
+    subtitle: "Acc: NG-5500-18",
+    category: "Utilities",
+    catClass: "bg-teal-50 text-teal-600",
+    amount: "-$94.20",
+    amountClass: "text-on-surface",
+    property: "Main St. Loft",
+    highlight: false,
+  },
+  {
+    date: "Mar 3, 2024",
+    title: "Zillow - Rent Payment",
+    subtitle: "Tenant: Unit E - Kim",
+    category: "Rental Income",
+    catClass: "bg-emerald-50 text-emerald-600",
+    amount: "+$1,450.00",
+    amountClass: "text-emerald-600",
+    property: "Main St. Loft",
+    highlight: false,
+  },
+  {
+    date: "Mar 1, 2024",
+    title: "HVAC Masters - Repair",
+    subtitle: "Work Order #HV-3322",
+    category: "Maintenance",
+    catClass: "bg-orange-50 text-orange-600",
+    amount: "-$1,200.00",
+    amountClass: "text-on-surface",
+    property: "Downtown Plaza",
     highlight: false,
   },
 ];
 
+const ITEMS_PER_PAGE = 5;
+const propertyOptions = ["All Properties", "Main St. Loft", "Oak Ridge Estate", "Downtown Plaza"];
+const monthOptions = ["All Months", "March 2024", "February 2024", "January 2024"];
+const timePeriods = ["Last 30 Days", "Last 90 Days", "Year to Date", "2023", "All Time"];
+
 export default function TransactionsPage() {
   const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
-  const filteredTransactions = transactions.filter((t) => {
+  const [page, setPage] = useState(1);
+  const [showFilters, setShowFilters] = useState(false);
+  const [propertyFilter, setPropertyFilter] = useState("All Properties");
+  const [monthFilter, setMonthFilter] = useState("All Months");
+  const [timePeriod, setTimePeriod] = useState("Last 30 Days");
+
+  const filtered = allTransactions.filter((t) => {
     if (filter === "Income") return t.amount.startsWith("+");
     if (filter === "Expenses") return t.amount.startsWith("-");
     return true;
+  }).filter((t) => {
+    if (propertyFilter !== "All Properties") return t.property === propertyFilter;
+    return true;
   });
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const needsReview = allTransactions.filter((t) => t.highlight).length;
 
   return (
     <AppLayout>
@@ -82,25 +218,32 @@ export default function TransactionsPage() {
       />
 
       {/* Alert Banner */}
-      <div className="bg-[#FEF3C7] text-[#92400E] p-4 rounded-xl flex items-center justify-between shadow-sm border border-[#FDE68A]/50">
-        <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-[20px]">warning</span>
-          <span className="text-sm font-medium tracking-tight">
-            1 transaction needs review — AI couldn&apos;t confidently categorize this item
-          </span>
+      {needsReview > 0 && (
+        <div className="bg-[#FEF3C7] text-[#92400E] p-4 rounded-xl flex items-center justify-between shadow-sm border border-[#FDE68A]/50">
+          <div className="flex items-center gap-3">
+            <span className="material-symbols-outlined text-[20px]">warning</span>
+            <span className="text-sm font-medium tracking-tight">
+              {needsReview} transaction{needsReview > 1 ? "s" : ""} need{needsReview === 1 ? "s" : ""} review — AI couldn&apos;t confidently categorize {needsReview === 1 ? "this item" : "these items"}
+            </span>
+          </div>
+          <Link
+            href="/transactions/ai-review"
+            className="bg-white/80 hover:bg-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+          >
+            Review Now
+          </Link>
         </div>
-        <Link
-          href="/transactions/smart-triage"
-          className="bg-white/80 hover:bg-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
-        >
-          Review Now
-        </Link>
-      </div>
+      )}
 
       {/* Filters & Actions */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface shadow-sm hover:shadow-md transition-all">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-2 px-4 py-2.5 border border-outline-variant/20 rounded-xl text-sm font-semibold shadow-sm hover:shadow-md transition-all ${
+              showFilters ? "bg-primary text-white" : "bg-surface-container-lowest text-on-surface"
+            }`}
+          >
             <span className="material-symbols-outlined text-[18px]">filter_list</span>
             Filters
           </button>
@@ -109,7 +252,7 @@ export default function TransactionsPage() {
             {(["All", "Income", "Expenses"] as const).map((f) => (
               <button
                 key={f}
-                onClick={() => setFilter(f)}
+                onClick={() => { setFilter(f); setPage(1); }}
                 className={`px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
                   filter === f
                     ? "bg-primary/5 text-primary border border-primary/10"
@@ -121,7 +264,49 @@ export default function TransactionsPage() {
             ))}
           </div>
         </div>
+        <div className="relative">
+          <select
+            value={timePeriod}
+            onChange={(e) => setTimePeriod(e.target.value)}
+            className="appearance-none bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
+          >
+            {timePeriods.map((tp) => (
+              <option key={tp}>{tp}</option>
+            ))}
+          </select>
+          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+        </div>
       </div>
+
+      {/* Filter Panel (collapsible) */}
+      {showFilters && (
+        <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/10 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 block">Property</label>
+            <select
+              value={propertyFilter}
+              onChange={(e) => { setPropertyFilter(e.target.value); setPage(1); }}
+              className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
+            >
+              {propertyOptions.map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 block">Month</label>
+            <select
+              value={monthFilter}
+              onChange={(e) => { setMonthFilter(e.target.value); setPage(1); }}
+              className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
+            >
+              {monthOptions.map((m) => (
+                <option key={m}>{m}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
 
       {/* Transaction Table */}
       <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">
@@ -137,13 +322,16 @@ export default function TransactionsPage() {
               <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">
                 Category
               </th>
+              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
+                Property
+              </th>
               <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">
                 Amount
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
-            {filteredTransactions.map((t, i) => (
+            {paginated.map((t, i) => (
               <tr
                 key={i}
                 className={`hover:bg-slate-50/50 transition-all cursor-pointer group ${
@@ -175,6 +363,9 @@ export default function TransactionsPage() {
                     {t.category}
                   </span>
                 </td>
+                <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">
+                  {t.property}
+                </td>
                 <td
                   className={`px-8 py-5 text-right font-bold text-sm ${t.amountClass}`}
                   style={{ fontFamily: "'Manrope', sans-serif" }}
@@ -189,70 +380,66 @@ export default function TransactionsPage() {
         {/* Pagination */}
         <div className="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between border-t border-slate-50">
           <span className="text-xs font-medium text-on-surface-variant">
-            Showing <span className="text-on-surface font-bold">1-25</span> of 482
-            transactions
+            Showing <span className="text-on-surface font-bold">{(page - 1) * ITEMS_PER_PAGE + 1}-{Math.min(page * ITEMS_PER_PAGE, filtered.length)}</span> of {filtered.length} transactions
           </span>
           <div className="flex items-center gap-2">
-            <button className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-all">
+            <button
+              onClick={() => setPage(Math.max(1, page - 1))}
+              disabled={page === 1}
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-all disabled:opacity-30"
+            >
               <span className="material-symbols-outlined text-[20px]">chevron_left</span>
             </button>
             <div className="flex items-center gap-1">
-              <button className="w-8 h-8 rounded-lg bg-primary text-white text-xs font-bold transition-all shadow-md shadow-primary/20">
-                1
-              </button>
-              <button className="w-8 h-8 rounded-lg text-xs font-bold text-on-surface hover:bg-slate-100 transition-all">
-                2
-              </button>
-              <button className="w-8 h-8 rounded-lg text-xs font-bold text-on-surface hover:bg-slate-100 transition-all">
-                3
-              </button>
-              <span className="text-slate-300 px-1">...</span>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
+                    page === p
+                      ? "bg-primary text-white shadow-md shadow-primary/20"
+                      : "text-on-surface hover:bg-slate-100"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
             </div>
-            <button className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-all">
+            <button
+              onClick={() => setPage(Math.min(totalPages, page + 1))}
+              disabled={page === totalPages}
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-all disabled:opacity-30"
+            >
               <span className="material-symbols-outlined text-[20px]">chevron_right</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Contextual Insight Bento */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 bg-gradient-to-br from-primary to-primary-container p-6 rounded-2xl shadow-xl shadow-primary/10 relative overflow-hidden group">
-          <div className="absolute -right-4 -bottom-4 opacity-10 scale-150 group-hover:rotate-12 transition-transform duration-700">
-            <span
-              className="material-symbols-outlined text-[140px] text-white"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              insights
-            </span>
-          </div>
-          <div className="relative z-10 flex flex-col justify-between h-full">
-            <div>
-              <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase">
-                Smart Categorization
-              </span>
-              <h3 className="text-xl font-extrabold text-white mt-2 leading-tight">
-                AI has automatically classified 92% of your transactions this month.
-              </h3>
-            </div>
-            <div className="mt-8">
-              <Link href="/reports" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all inline-block">
-                Optimization Report
-              </Link>
-            </div>
-          </div>
+      {/* Contextual Insight */}
+      <div className="bg-gradient-to-br from-primary to-primary-container p-6 rounded-2xl shadow-xl shadow-primary/10 relative overflow-hidden group">
+        <div className="absolute -right-4 -bottom-4 opacity-10 scale-150 group-hover:rotate-12 transition-transform duration-700">
+          <span
+            className="material-symbols-outlined text-[140px] text-white"
+            style={{ fontVariationSettings: "'FILL' 1" }}
+          >
+            insights
+          </span>
         </div>
-        <div className="col-span-1 bg-white p-6 rounded-2xl border border-outline-variant/10 shadow-sm flex flex-col justify-center items-center text-center">
-          <div className="w-12 h-12 bg-primary-fixed-dim rounded-xl flex items-center justify-center mb-4">
-            <span className="material-symbols-outlined text-primary">pie_chart</span>
+        <div className="relative z-10 flex flex-col justify-between h-full">
+          <div>
+            <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase">
+              Smart Categorization
+            </span>
+            <h3 className="text-xl font-extrabold text-white mt-2 leading-tight">
+              AI has automatically classified 92% of your transactions this month.
+            </h3>
           </div>
-          <h4 className="text-sm font-bold text-on-surface">Portfolio Split</h4>
-          <p className="text-xs text-on-surface-variant mt-1 px-4">
-            See how your expenses are distributed across assets.
-          </p>
-          <Link href="/reports" className="mt-4 text-primary text-xs font-bold hover:underline inline-block">
-            View Analytics
-          </Link>
+          <div className="mt-8">
+            <Link href="/transactions/ai-review" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all inline-block">
+              Optimization Report
+            </Link>
+          </div>
         </div>
       </div>
     </AppLayout>

@@ -136,14 +136,14 @@ export default function IntegrationsPage() {
           </div>
 
           {/* Add Bank Card */}
-          <button className="group w-full border-2 border-dashed border-slate-200 hover:border-primary/50 hover:bg-primary-fixed/20 transition-all duration-300 p-8 rounded-xl flex flex-col items-center justify-center gap-2">
+          <Link href="/settings/integrations/add-bank" className="group w-full border-2 border-dashed border-slate-200 hover:border-primary/50 hover:bg-primary-fixed/20 transition-all duration-300 p-8 rounded-xl flex flex-col items-center justify-center gap-2">
             <div className="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center">
               <span className="material-symbols-outlined text-lg">add</span>
             </div>
             <span className="text-sm font-semibold text-slate-600 group-hover:text-primary transition-colors">
               + Add Bank Account
             </span>
-          </button>
+          </Link>
         </div>
       </section>
     </AppLayout>

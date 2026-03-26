@@ -1,7 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+
+const categoryOptions = [
+  "Rental Income", "Maintenance", "Insurance", "Utilities",
+  "Capital Improvement", "Contractor", "Office Supplies", "Taxes",
+];
 
 const units = [
   { unit: "Unit A", tenant: "Sarah Chen", rent: "$1,400", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15" },
@@ -19,6 +26,10 @@ const txns = [
 ];
 
 export default function MainStLoftPage() {
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState(txns.map((t) => t.cat));
+
   return (
     <AppLayout>
       <PageHeader
@@ -131,11 +142,19 @@ export default function MainStLoftPage() {
                   <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">{t.date}</td>
                   <td className="px-8 py-5 text-sm font-bold text-on-surface">{t.desc}</td>
                   <td className="px-8 py-5">
-                    <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                      t.cat === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
-                    }`}>
-                      {t.cat}
-                    </span>
+                    <div className="group/cat flex items-center gap-1.5">
+                      <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                        categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                      }`}>
+                        {categories[i]}
+                      </span>
+                      <button
+                        onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                        className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                      >
+                        <span className="material-symbols-outlined text-[14px] text-on-surface-variant">edit</span>
+                      </button>
+                    </div>
                   </td>
                   <td className={`px-8 py-5 text-right font-bold text-sm ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {t.amount}
@@ -144,6 +163,12 @@ export default function MainStLoftPage() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-4 text-right">
+          <Link href="/transactions" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+            View All Transactions
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </Link>
         </div>
       </div>
 
@@ -154,6 +179,42 @@ export default function MainStLoftPage() {
           Add Transaction
         </button>
       </div>
+
+      {/* Category Reassignment Modal */}
+      {editingIndex !== null && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
+          <div className="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold mb-6">Reassign Category</h3>
+            <label className="block text-sm font-medium text-on-surface-variant mb-2">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-4 py-2.5 bg-surface-container-low border border-outline-variant/20 rounded-xl text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30"
+            >
+              {categoryOptions.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <div className="flex justify-end gap-3 mt-8">
+              <button
+                onClick={() => setEditingIndex(null)}
+                className="px-5 py-2.5 border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setCategories((prev) => prev.map((c, idx) => idx === editingIndex ? selectedCategory : c));
+                  setEditingIndex(null);
+                }}
+                className="px-5 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }

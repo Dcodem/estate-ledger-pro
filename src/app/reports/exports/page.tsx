@@ -32,6 +32,7 @@ const exportHistory = [
 
 export default function ExportsPage() {
   const [format, setFormat] = useState("excel");
+  const [dateRange, setDateRange] = useState("2023 Tax Year");
 
   return (
     <AppLayout>
@@ -92,7 +93,11 @@ export default function ExportsPage() {
                 Date Range
               </h2>
               <div className="relative">
-                <select className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20 appearance-none">
+                <select
+                  value={dateRange}
+                  onChange={(e) => setDateRange(e.target.value)}
+                  className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20 appearance-none"
+                >
                   <option>2023 Tax Year</option>
                   <option>Q1 2024</option>
                   <option>Last 12 Months</option>
@@ -100,6 +105,24 @@ export default function ExportsPage() {
                 </select>
                 <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
               </div>
+              {dateRange === "Custom Range..." && (
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Start Date</label>
+                    <input
+                      type="date"
+                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">End Date</label>
+                    <input
+                      type="date"
+                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20"
+                    />
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* Step 3: Property Selection */}

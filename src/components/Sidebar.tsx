@@ -33,7 +33,6 @@ const navSections: NavSection[] = [
   {
     heading: "Reports",
     items: [
-      { label: "Performance Summary", href: "/reports/performance-summary", icon: "assessment" },
       { label: "Monthly Statement", href: "/reports/monthly-statement", icon: "calendar_month" },
       { label: "Exports", href: "/reports/exports", icon: "download" },
     ],

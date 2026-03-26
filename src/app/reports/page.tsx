@@ -5,13 +5,6 @@ import Link from "next/link";
 
 const reportLinks = [
   {
-    title: "Performance Summary",
-    desc: "Portfolio-wide dashboard with key financial metrics and trends.",
-    icon: "assessment",
-    iconBg: "bg-violet-50 text-violet-600",
-    href: "/",
-  },
-  {
     title: "Monthly Statement",
     desc: "Consolidated monthly financial report with line-item detail.",
     icon: "receipt_long",
@@ -35,7 +28,7 @@ export default function ReportsPage() {
         subtitle="Comprehensive financial analytics and performance tracking"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {reportLinks.map((r) => (
           <Link
             key={r.title}

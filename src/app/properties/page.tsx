@@ -44,13 +44,13 @@ const properties = [
 ];
 
 const chartBars = [
-  { height: "40%", label: "Jan" },
-  { height: "55%", label: "Feb" },
-  { height: "45%", label: "Mar" },
-  { height: "70%", label: "Apr" },
-  { height: "65%", label: "May" },
-  { height: "85%", label: "Jun" },
-  { height: "100%", label: "Jul", current: true },
+  { height: "40%", label: "Jan", value: "$14.2k" },
+  { height: "55%", label: "Feb", value: "$19.6k" },
+  { height: "45%", label: "Mar", value: "$16.0k" },
+  { height: "70%", label: "Apr", value: "$24.9k" },
+  { height: "65%", label: "May", value: "$23.1k" },
+  { height: "85%", label: "Jun", value: "$30.2k" },
+  { height: "100%", label: "Jul", value: "$35.6k", current: true },
 ];
 
 export default function PropertiesPage() {
@@ -130,7 +130,10 @@ export default function PropertiesPage() {
         <div className="lg:w-2/3">
           <div className="bg-surface-container-low rounded-xl p-8 h-full">
             <div className="flex justify-between items-start mb-6">
-              <h2 className="text-xl font-bold font-headline text-on-surface">Portfolio Growth</h2>
+              <div>
+                <h2 className="text-xl font-bold font-headline text-on-surface">Portfolio Growth</h2>
+                <p className="text-xs text-on-surface-variant mt-0.5">Combined monthly revenue across all properties</p>
+              </div>
               <div className="flex gap-2">
                 <span className="px-3 py-1 bg-white rounded-full text-[10px] font-bold text-on-surface-variant shadow-sm">Monthly</span>
                 <span className="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold shadow-sm">Yearly</span>
@@ -140,14 +143,12 @@ export default function PropertiesPage() {
               {chartBars.map((bar) => (
                 <div
                   key={bar.label}
-                  className={`flex-1 rounded-t-lg transition-all ${bar.current ? "bg-primary relative group" : "bg-primary/10 hover:bg-primary/20"}`}
+                  className={`flex-1 rounded-t-lg transition-all relative group ${bar.current ? "bg-primary" : "bg-primary/10 hover:bg-primary/20"}`}
                   style={{ height: bar.height }}
                 >
-                  {bar.current && (
-                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      Current
-                    </div>
-                  )}
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold">
+                    {bar.value}
+                  </div>
                 </div>
               ))}
             </div>
@@ -168,6 +169,9 @@ export default function PropertiesPage() {
                 <span className="material-symbols-outlined text-[20px]">trending_up</span>
                 +12.4% vs last year
               </div>
+              <p className="mt-2 text-[10px] text-white/50 leading-relaxed">
+                Based on Zillow Zestimate data and recent comparable sales. Updated monthly.
+              </p>
             </div>
             <div className="mt-8 pt-8 border-t border-white/10">
               <Link href="/reports/exports" className="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-slate-50 transition-colors block text-center">

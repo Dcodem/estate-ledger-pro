@@ -72,7 +72,6 @@ export default function DashboardPage() {
       <PageHeader
         title="Performance Summary"
         badge="Jan 2024 - Jun 2024"
-        breadcrumb={{ label: "Back to Reports", href: "/reports" }}
         actions={
           <button className="px-6 py-2.5 bg-secondary text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-primary transition-colors shadow-sm">
             <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
@@ -108,7 +107,7 @@ export default function DashboardPage() {
         />
 
         {/* Portfolio ROI - custom card with SVG circle */}
-        <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between transition-transform hover:-translate-y-1">
+        <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
           <div>
             <p className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
               Portfolio ROI
@@ -182,7 +181,7 @@ export default function DashboardPage() {
                 tickLine={false}
                 tick={{ fontSize: 11, fill: "#4a4455" }}
                 tickFormatter={(v: number) =>
-                  v >= 1000 ? `${v / 1000}k` : String(v)
+                  v >= 1000 ? `$${v / 1000}k` : `$${v}`
                 }
               />
               <Tooltip
@@ -191,6 +190,7 @@ export default function DashboardPage() {
                   border: "none",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                 }}
+                formatter={(value) => [`$${Number(value).toLocaleString()}`, undefined]}
               />
               <Bar
                 dataKey="revenue"

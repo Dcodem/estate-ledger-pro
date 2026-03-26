@@ -1,7 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+
+const categoryOptions = [
+  "Rental Income", "Maintenance", "Insurance", "Utilities",
+  "Capital Improvement", "Contractor", "Office Supplies", "Taxes",
+];
 
 const financials = [
   { item: "Rental Income", amount: "$4,500", amountClass: "text-emerald-600", icon: "payments" },
@@ -18,6 +25,10 @@ const txns = [
 ];
 
 export default function OakRidgePage() {
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState(txns.map((t) => t.cat));
+
   return (
     <AppLayout>
       <PageHeader
@@ -125,14 +136,22 @@ export default function OakRidgePage() {
                   <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">{t.date}</td>
                   <td className="px-8 py-5 text-sm font-bold text-on-surface">{t.desc}</td>
                   <td className="px-8 py-5">
-                    <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                      t.cat === "Rental Income" ? "bg-emerald-50 text-emerald-600"
-                      : t.cat === "Maintenance" ? "bg-blue-50 text-blue-600"
-                      : t.cat === "Insurance" ? "bg-slate-100 text-slate-600"
-                      : "bg-amber-50 text-amber-700"
-                    }`}>
-                      {t.cat}
-                    </span>
+                    <div className="group/cat flex items-center gap-1.5">
+                      <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                        categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600"
+                        : categories[i] === "Maintenance" ? "bg-blue-50 text-blue-600"
+                        : categories[i] === "Insurance" ? "bg-slate-100 text-slate-600"
+                        : "bg-amber-50 text-amber-700"
+                      }`}>
+                        {categories[i]}
+                      </span>
+                      <button
+                        onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                        className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                      >
+                        <span className="material-symbols-outlined text-[14px] text-on-surface-variant">edit</span>
+                      </button>
+                    </div>
                   </td>
                   <td className={`px-8 py-5 text-right font-bold text-sm ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {t.amount}
@@ -141,6 +160,12 @@ export default function OakRidgePage() {
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-4 text-right">
+          <Link href="/transactions" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+            View All Transactions
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </Link>
         </div>
       </div>
 
@@ -151,6 +176,42 @@ export default function OakRidgePage() {
           Add Transaction
         </button>
       </div>
+
+      {/* Category Reassignment Modal */}
+      {editingIndex !== null && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
+          <div className="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold mb-6">Reassign Category</h3>
+            <label className="block text-sm font-medium text-on-surface-variant mb-2">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-4 py-2.5 bg-surface-container-low border border-outline-variant/20 rounded-xl text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30"
+            >
+              {categoryOptions.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <div className="flex justify-end gap-3 mt-8">
+              <button
+                onClick={() => setEditingIndex(null)}
+                className="px-5 py-2.5 border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setCategories((prev) => prev.map((c, idx) => idx === editingIndex ? selectedCategory : c));
+                  setEditingIndex(null);
+                }}
+                className="px-5 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }
