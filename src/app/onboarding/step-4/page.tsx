@@ -151,7 +151,7 @@ export default function OnboardingStep4() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-outline-variant/5">
-                      <tr className="hover:bg-surface-container-high/50 transition-colors">
+                      <tr>
                         <td className="px-8 py-6 text-on-surface font-medium">Oct 24, 2023</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-3">
@@ -172,7 +172,7 @@ export default function OnboardingStep4() {
                           The Greenwich Estate
                         </td>
                       </tr>
-                      <tr className="hover:bg-surface-container-high/50 transition-colors">
+                      <tr>
                         <td className="px-8 py-6 text-on-surface font-medium">Oct 22, 2023</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-3">
@@ -191,7 +191,7 @@ export default function OnboardingStep4() {
                         </td>
                         <td className="px-8 py-6 text-on-surface-variant">Aspen Ridge Villa</td>
                       </tr>
-                      <tr className="hover:bg-surface-container-high/50 transition-colors">
+                      <tr>
                         <td className="px-8 py-6 text-on-surface font-medium">Oct 20, 2023</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-3">
@@ -212,7 +212,7 @@ export default function OnboardingStep4() {
                           The Greenwich Estate
                         </td>
                       </tr>
-                      <tr className="hover:bg-surface-container-high/50 transition-colors">
+                      <tr>
                         <td className="px-8 py-6 text-on-surface font-medium">Oct 18, 2023</td>
                         <td className="px-8 py-6">
                           <div className="flex items-center space-x-3">

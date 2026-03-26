@@ -199,6 +199,7 @@ function TransactionsContent() {
   const [propertyFilter, setPropertyFilter] = useState("All Properties");
   const [monthFilter, setMonthFilter] = useState("All Months");
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
+  const [selectedTransaction, setSelectedTransaction] = useState<typeof allTransactions[0] | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
@@ -408,6 +409,7 @@ function TransactionsContent() {
             {paginated.map((t, i) => (
               <tr
                 key={i}
+                onClick={() => setSelectedTransaction(t)}
                 className={`hover:bg-slate-50/50 transition-all cursor-pointer group ${
                   t.highlight ? "bg-amber-50/20" : ""
                 }`}
@@ -516,6 +518,88 @@ function TransactionsContent() {
           </div>
         </div>
       </div>
+      {/* Transaction Detail Modal */}
+      {selectedTransaction && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={() => setSelectedTransaction(null)}
+        >
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div
+            className="relative bg-surface-container-lowest rounded-2xl shadow-2xl p-8 w-full max-w-lg mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedTransaction(null)}
+              className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-error hover:text-white transition-all"
+            >
+              <span className="material-symbols-outlined text-[18px]">close</span>
+            </button>
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${selectedTransaction.amount.startsWith("+") ? "bg-emerald-100" : "bg-slate-100"}`}>
+                <span className={`material-symbols-outlined text-xl ${selectedTransaction.amount.startsWith("+") ? "text-emerald-600" : "text-slate-600"}`}>
+                  {selectedTransaction.amount.startsWith("+") ? "arrow_downward" : "arrow_upward"}
+                </span>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-on-surface">{selectedTransaction.title}</h3>
+                <p className="text-sm text-on-surface-variant">{selectedTransaction.subtitle}</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+                <span className="text-sm text-on-surface-variant font-medium">Amount</span>
+                <span className={`text-lg font-bold ${selectedTransaction.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  {selectedTransaction.amount}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+                <span className="text-sm text-on-surface-variant font-medium">Date</span>
+                <span className="text-sm font-semibold text-on-surface">{selectedTransaction.date}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+                <span className="text-sm text-on-surface-variant font-medium">Category</span>
+                <span className={`px-3 py-1 ${selectedTransaction.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
+                  {selectedTransaction.category}
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+                <span className="text-sm text-on-surface-variant font-medium">Property</span>
+                <span className="text-sm font-semibold text-on-surface">{selectedTransaction.property}</span>
+              </div>
+            </div>
+
+            {selectedTransaction.highlight && (
+              <div className="mt-6 bg-amber-50 border border-amber-200/50 rounded-xl p-4 flex items-start gap-3">
+                <span className="material-symbols-outlined text-amber-600 text-xl">psychology</span>
+                <div>
+                  <p className="text-sm font-bold text-amber-800">Needs Review</p>
+                  <p className="text-xs text-amber-700 mt-0.5">AI couldn&apos;t confidently categorize this transaction. Review and assign a category manually.</p>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-8 flex justify-end gap-3">
+              <button
+                onClick={() => setSelectedTransaction(null)}
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-on-surface-variant hover:bg-surface-container-low transition-all"
+              >
+                Close
+              </button>
+              {selectedTransaction.highlight && (
+                <Link
+                  href="/transactions/ai-review"
+                  className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all"
+                >
+                  Send to AI Review
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }

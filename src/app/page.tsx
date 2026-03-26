@@ -69,9 +69,13 @@ const propertyRows = [
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<string>("");
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
+    const timer = setTimeout(() => {
+      setLoading(false);
+      setLastUpdated(new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }));
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -88,6 +92,7 @@ export default function DashboardPage() {
       {/* Page Header */}
       <PageHeader
         title="Performance Summary"
+        subtitle={lastUpdated ? `Last updated at ${lastUpdated}` : undefined}
         badge="Jan 2024 - Jun 2024"
         actions={
           <button className="px-6 py-2.5 bg-secondary text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-primary transition-colors shadow-sm">

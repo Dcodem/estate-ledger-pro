@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { SkeletonPulse, KPISkeletons, TableSkeleton } from "@/components/LoadingSkeleton";
 
 const kpisByPeriod: Record<string, { revenue: string; revenueTrend: string; expenses: string; profit: string; cashFlow: string }> = {
   "Statement Period: March 2024": { revenue: "$142,500", revenueTrend: "+4.2%", expenses: "($38,240.12)", profit: "($5,849.38)", cashFlow: "$98,410.50" },
@@ -68,6 +69,7 @@ const properties = [
 ];
 
 export default function MonthlyStatementPage() {
+  const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState("Statement Period: March 2024");
   const [propertyFilter, setPropertyFilter] = useState("Filter: All Properties");
   const [expandedRows, setExpandedRows] = useState<Set<string>>(
@@ -83,12 +85,38 @@ export default function MonthlyStatementPage() {
     });
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
   const periodData = kpisByPeriod[period] || kpisByPeriod["Statement Period: March 2024"];
 
   const filteredProperties = properties.filter((p) => {
     if (propertyFilter === "Filter: All Properties") return true;
     return p.name.startsWith(propertyFilter);
   });
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <SkeletonPulse className="w-48 h-8" />
+              <SkeletonPulse className="w-64 h-4" />
+            </div>
+            <div className="flex gap-3">
+              <SkeletonPulse className="w-48 h-10 rounded-xl" />
+              <SkeletonPulse className="w-40 h-10 rounded-xl" />
+            </div>
+          </div>
+          <KPISkeletons />
+          <TableSkeleton rows={3} />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -130,7 +158,7 @@ export default function MonthlyStatementPage() {
       {/* KPI Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {kpiMeta.map((kpi) => (
-          <div key={kpi.label} className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col justify-between group hover:border-primary/20 transition-colors">
+          <div key={kpi.label} className="bg-surface-container-lowest p-6 rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div className={`w-10 h-10 rounded-xl ${kpi.iconBg} flex items-center justify-center ${kpi.iconColor}`}>
                 <span className="material-symbols-outlined">{kpi.icon}</span>
@@ -227,7 +255,7 @@ export default function MonthlyStatementPage() {
                   </tr>
                   {/* Sub-items */}
                   {expandedRows.has(prop.name) && prop.subItems.map((sub) => (
-                    <tr key={sub.name} className="hover:bg-slate-50 transition-colors">
+                    <tr key={sub.name}>
                       <td className="pl-14 pr-6 py-4">
                         <p className="text-sm text-on-surface font-medium">{sub.name}</p>
                       </td>
