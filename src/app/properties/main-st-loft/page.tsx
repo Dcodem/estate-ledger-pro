@@ -4,6 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import PropertyFiles from "@/components/PropertyFiles";
+import type { PropertyFile } from "@/components/PropertyFiles";
+
+const propertyFiles: PropertyFile[] = [
+  { id: "msl-1", name: "Unit_A_Lease_Agreement.pdf", type: "pdf", size: "2.4 MB", uploaded: "2024-01-15", category: "Lease Agreement" },
+  { id: "msl-2", name: "Unit_B_Lease_Agreement.pdf", type: "pdf", size: "2.1 MB", uploaded: "2024-01-15", category: "Lease Agreement" },
+  { id: "msl-3", name: "Building_Insurance_Certificate.pdf", type: "pdf", size: "890 KB", uploaded: "2024-02-01", category: "Insurance" },
+  { id: "msl-4", name: "Annual_Inspection_Report_2024.pdf", type: "pdf", size: "5.6 MB", uploaded: "2024-03-10", category: "Inspection Report" },
+  { id: "msl-5", name: "Floor_Plans_All_Units.pdf", type: "document", size: "12.3 MB", uploaded: "2023-08-20", category: "Floor Plans" },
+  { id: "msl-6", name: "Property_Photos_Exterior.zip", type: "image", size: "34.8 MB", uploaded: "2024-02-28", category: "Photos" },
+];
 
 const categoryOptions = [
   "Rental Income", "Maintenance", "Insurance", "Utilities",
@@ -200,6 +211,9 @@ export default function MainStLoftPage() {
           {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
         </button>
       </div>
+
+      {/* Property Documents */}
+      <PropertyFiles initialFiles={propertyFiles} />
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (

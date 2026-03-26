@@ -4,6 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import PropertyFiles from "@/components/PropertyFiles";
+import type { PropertyFile } from "@/components/PropertyFiles";
+
+const propertyFiles: PropertyFile[] = [
+  { id: "or-1", name: "Purchase_Agreement_2022.pdf", type: "pdf", size: "3.8 MB", uploaded: "2022-06-15", category: "Purchase Agreement" },
+  { id: "or-2", name: "Homeowners_Insurance_Policy.pdf", type: "pdf", size: "1.4 MB", uploaded: "2024-01-05", category: "Insurance" },
+  { id: "or-3", name: "Property_Appraisal_2024.pdf", type: "pdf", size: "4.2 MB", uploaded: "2024-02-20", category: "Appraisal" },
+  { id: "or-4", name: "Tax_Assessment_2024.pdf", type: "pdf", size: "680 KB", uploaded: "2024-01-30", category: "Tax Records" },
+  { id: "or-5", name: "Pool_Maintenance_Contract.pdf", type: "document", size: "1.1 MB", uploaded: "2024-03-01", category: "Maintenance Contract" },
+];
 
 const categoryOptions = [
   "Rental Income", "Maintenance", "Insurance", "Utilities",
@@ -197,6 +207,9 @@ export default function OakRidgePage() {
           {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
         </button>
       </div>
+
+      {/* Property Documents */}
+      <PropertyFiles initialFiles={propertyFiles} />
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (

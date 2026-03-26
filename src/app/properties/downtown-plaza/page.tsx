@@ -4,6 +4,18 @@ import { useState } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import PropertyFiles from "@/components/PropertyFiles";
+import type { PropertyFile } from "@/components/PropertyFiles";
+
+const propertyFiles: PropertyFile[] = [
+  { id: "dp-1", name: "Commercial_Lease_Suite_A.pdf", type: "pdf", size: "3.2 MB", uploaded: "2023-11-01", category: "Lease Agreement" },
+  { id: "dp-2", name: "Commercial_Lease_Suite_B.pdf", type: "pdf", size: "2.9 MB", uploaded: "2023-11-01", category: "Lease Agreement" },
+  { id: "dp-3", name: "Liability_Insurance_Policy.pdf", type: "pdf", size: "1.8 MB", uploaded: "2024-01-10", category: "Insurance" },
+  { id: "dp-4", name: "Zoning_Permit_2024.pdf", type: "document", size: "560 KB", uploaded: "2024-02-15", category: "Zoning Permit" },
+  { id: "dp-5", name: "Maintenance_Log_Q1_2024.xlsx", type: "spreadsheet", size: "420 KB", uploaded: "2024-03-20", category: "Maintenance Log" },
+  { id: "dp-6", name: "Fire_Safety_Inspection.pdf", type: "pdf", size: "2.1 MB", uploaded: "2024-03-05", category: "Inspection Report" },
+  { id: "dp-7", name: "Parking_Lot_Resurfacing_Quote.pdf", type: "pdf", size: "780 KB", uploaded: "2024-03-18", category: "Capital Improvement" },
+];
 
 const categoryOptions = [
   "Rental Income", "Maintenance", "Insurance", "Utilities",
@@ -207,6 +219,9 @@ export default function DowntownPlazaPage() {
           {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
         </button>
       </div>
+
+      {/* Property Documents */}
+      <PropertyFiles initialFiles={propertyFiles} />
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (
