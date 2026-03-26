@@ -18,22 +18,75 @@ const typeIcons: Record<string, { icon: string; bg: string; text: string }> = {
   document: { icon: "description", bg: "bg-violet-50", text: "text-violet-500" },
 };
 
-function generateDescription(files: PropertyFile[]): string {
-  if (files.length === 0) return "No documents uploaded yet. Upload files to auto-generate a property summary.";
+interface AISummary {
+  overview: string;
+  missing: { label: string; severity: "high" | "medium" }[];
+  expiring: { label: string; date: string }[];
+  score: number;
+}
+
+const expectedDocCategories = [
+  { match: ["lease", "agreement"], label: "Lease Agreement", severity: "high" as const },
+  { match: ["insurance"], label: "Insurance Certificate", severity: "high" as const },
+  { match: ["inspection", "safety"], label: "Inspection Report", severity: "medium" as const },
+  { match: ["tax", "assessment"], label: "Tax Records", severity: "medium" as const },
+  { match: ["appraisal"], label: "Property Appraisal", severity: "medium" as const },
+];
+
+function generateSummary(files: PropertyFile[]): AISummary {
+  if (files.length === 0) {
+    return {
+      overview: "No documents uploaded yet. Upload files to auto-generate a property compliance summary.",
+      missing: expectedDocCategories.map((e) => ({ label: e.label, severity: e.severity })),
+      expiring: [],
+      score: 0,
+    };
+  }
 
   const categories = [...new Set(files.map((f) => f.category))];
   const catList =
-    categories.length === 1
-      ? categories[0].toLowerCase()
-      : categories.length === 2
-      ? `${categories[0].toLowerCase()} and ${categories[1].toLowerCase()}`
+    categories.length <= 2
+      ? categories.map((c) => c.toLowerCase()).join(" and ")
       : `${categories.slice(0, -1).map((c) => c.toLowerCase()).join(", ")}, and ${categories[categories.length - 1].toLowerCase()}`;
 
   const dates = files.map((f) => new Date(f.uploaded));
   const latest = new Date(Math.max(...dates.map((d) => d.getTime())));
   const monthYear = latest.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-  return `${files.length} document${files.length !== 1 ? "s" : ""} on file \u2014 includes ${catList}. Last updated ${monthYear}.`;
+  const fileCatsLower = files.map((f) => f.category.toLowerCase());
+  const fileNamesLower = files.map((f) => f.name.toLowerCase());
+  const allText = [...fileCatsLower, ...fileNamesLower];
+
+  const missing: AISummary["missing"] = [];
+  let found = 0;
+  for (const exp of expectedDocCategories) {
+    const hasIt = exp.match.some((m) => allText.some((t) => t.includes(m)));
+    if (hasIt) {
+      found++;
+    } else {
+      missing.push({ label: exp.label, severity: exp.severity });
+    }
+  }
+
+  const expiring: AISummary["expiring"] = [];
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  for (const f of files) {
+    const d = new Date(f.uploaded);
+    const catLower = f.category.toLowerCase();
+    if (d < oneYearAgo && (catLower.includes("insurance") || catLower.includes("inspection") || catLower.includes("appraisal"))) {
+      expiring.push({
+        label: f.name,
+        date: d.toLocaleDateString("en-US", { month: "short", year: "numeric" }),
+      });
+    }
+  }
+
+  const score = Math.round((found / expectedDocCategories.length) * 100);
+
+  const overview = `${files.length} document${files.length !== 1 ? "s" : ""} on file \u2014 includes ${catList}. Last updated ${monthYear}.`;
+
+  return { overview, missing, expiring, score };
 }
 
 export default function PropertyFiles({ initialFiles }: { initialFiles: PropertyFile[] }) {
@@ -65,7 +118,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
     }, 300);
   };
 
-  const description = generateDescription(files);
+  const summary = generateSummary(files);
 
   return (
     <div>
@@ -87,12 +140,73 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
         </button>
       </div>
 
-      {/* Auto-generated Description */}
-      <div className="bg-primary-fixed/20 border border-primary-fixed rounded-xl p-4 mb-6 flex gap-3">
-        <span className="material-symbols-outlined text-primary text-[20px] mt-0.5 shrink-0">auto_awesome</span>
-        <div>
-          <p className="text-[11px] font-bold text-primary uppercase tracking-widest mb-1">AI Summary</p>
-          <p className="text-sm text-on-surface leading-relaxed">{description}</p>
+      {/* AI Summary Card */}
+      <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 p-6 mb-6">
+        <div className="flex items-start gap-4">
+          <div className="shrink-0">
+            <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
+              summary.score >= 80 ? "bg-emerald-50" : summary.score >= 50 ? "bg-amber-50" : "bg-red-50"
+            }`}>
+              <span className={`text-xl font-extrabold ${
+                summary.score >= 80 ? "text-emerald-600" : summary.score >= 50 ? "text-amber-600" : "text-red-500"
+              }`}>{summary.score}%</span>
+            </div>
+            <p className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest text-center mt-1">Complete</p>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+              <p className="text-[11px] font-bold text-primary uppercase tracking-widest">AI Document Analysis</p>
+            </div>
+            <p className="text-sm text-on-surface leading-relaxed">{summary.overview}</p>
+
+            {summary.missing.length > 0 && (
+              <div className="mt-4">
+                <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Missing Documents</p>
+                <div className="flex flex-wrap gap-2">
+                  {summary.missing.map((m) => (
+                    <span
+                      key={m.label}
+                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                        m.severity === "high"
+                          ? "bg-red-50 text-red-600"
+                          : "bg-amber-50 text-amber-700"
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[14px]">
+                        {m.severity === "high" ? "error" : "warning"}
+                      </span>
+                      {m.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {summary.expiring.length > 0 && (
+              <div className="mt-4">
+                <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">May Need Renewal</p>
+                <div className="flex flex-wrap gap-2">
+                  {summary.expiring.map((e) => (
+                    <span
+                      key={e.label}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-orange-50 text-orange-600"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">schedule</span>
+                      {e.label.replace(/_/g, " ").replace(/\.\w+$/, "")} ({e.date})
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {summary.score === 100 && summary.expiring.length === 0 && (
+              <div className="mt-3 flex items-center gap-1.5 text-emerald-600">
+                <span className="material-symbols-outlined text-[16px]">verified</span>
+                <p className="text-[12px] font-bold">All essential documents are current and on file.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
