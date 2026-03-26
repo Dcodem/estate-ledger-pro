@@ -32,6 +32,7 @@ export default function MainStLoftPage() {
   const [editState, setEditState] = useState<"idle" | "loading" | "done">("idle");
   const [financialsState, setFinancialsState] = useState<"idle" | "loading" | "done">("idle");
   const [addTxnState, setAddTxnState] = useState<"idle" | "loading" | "done">("idle");
+  const [modalSaved, setModalSaved] = useState(false);
 
   return (
     <AppLayout>
@@ -225,11 +226,13 @@ export default function MainStLoftPage() {
               <button
                 onClick={() => {
                   setCategories((prev) => prev.map((c, idx) => idx === editingIndex ? selectedCategory : c));
-                  setEditingIndex(null);
+                  setModalSaved(true);
+                  setTimeout(() => { setModalSaved(false); setEditingIndex(null); }, 800);
                 }}
-                className="px-5 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all"
+                disabled={modalSaved}
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all ${modalSaved ? "bg-emerald-500 text-white" : "bg-primary text-on-primary hover:shadow-md"}`}
               >
-                Save
+                {modalSaved ? "Saved!" : "Save"}
               </button>
             </div>
           </div>
