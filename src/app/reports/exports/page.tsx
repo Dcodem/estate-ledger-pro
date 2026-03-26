@@ -33,6 +33,17 @@ const exportHistory = [
 export default function ExportsPage() {
   const [format, setFormat] = useState("excel");
   const [dateRange, setDateRange] = useState("2023 Tax Year");
+  const [generating, setGenerating] = useState(false);
+  const [generated, setGenerated] = useState(false);
+
+  const handleGenerate = () => {
+    setGenerating(true);
+    setGenerated(false);
+    setTimeout(() => {
+      setGenerating(false);
+      setGenerated(true);
+    }, 3000);
+  };
 
   return (
     <AppLayout>
@@ -179,9 +190,27 @@ export default function ExportsPage() {
                   <div className="h-full bg-primary rounded-full" style={{ width: "33.68%" }} />
                 </div>
               </div>
-              <button className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-violet-500/20 hover:opacity-90 active:scale-95 transition-all">
-                Generate 2023 Report
-              </button>
+              {generated ? (
+                <div className="w-full py-4 bg-emerald-500 text-white text-lg font-extrabold rounded-xl shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                  <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                  Report Ready — Download Now
+                </div>
+              ) : (
+                <button
+                  onClick={handleGenerate}
+                  disabled={generating}
+                  className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-violet-500/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                >
+                  {generating ? (
+                    <>
+                      <span className="material-symbols-outlined text-[24px] animate-spin">progress_activity</span>
+                      Generating Report...
+                    </>
+                  ) : (
+                    "Generate 2023 Report"
+                  )}
+                </button>
+              )}
             </footer>
           </div>
         </div>

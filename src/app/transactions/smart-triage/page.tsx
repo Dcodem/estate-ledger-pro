@@ -2,6 +2,7 @@
 
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const categories = [
@@ -362,6 +363,13 @@ export default function SmartTriagePage() {
                   >
                     {c.amount}
                   </div>
+                  <Link
+                    href="/transactions/ai-review"
+                    className="px-5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-bold text-sm hover:bg-primary/10 hover:text-primary active:scale-95 transition-all flex items-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">auto_awesome</span>
+                    Send to AI Review
+                  </Link>
                   <button
                     onClick={() => handleReconsider(c)}
                     className="px-5 py-2 rounded-full border-2 border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white active:scale-95 transition-all"
