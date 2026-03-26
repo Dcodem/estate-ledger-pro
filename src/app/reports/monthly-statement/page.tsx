@@ -43,7 +43,11 @@ const properties = [
     status: "Draft",
     statusColor: "bg-surface-container-high text-on-surface-variant",
     expanded: false,
-    subItems: [],
+    subItems: [
+      { name: "Luxury Suite Lease - Master", income: "$65,000.00", credits: "\u2014", debits: "\u2014", net: "$65,000.00" },
+      { name: "Pool & Grounds Maintenance", income: "\u2014", credits: "\u2014", debits: "($8,400.00)", debitsColor: "text-error", net: "($8,400.00)" },
+      { name: "Property Insurance - Annual", income: "\u2014", credits: "\u2014", debits: "($14,000.00)", debitsColor: "text-error", net: "($14,000.00)" },
+    ],
   },
   {
     name: "Downtown Plaza",
@@ -56,13 +60,28 @@ const properties = [
     status: "Verified",
     statusColor: "bg-emerald-100 text-emerald-700",
     expanded: false,
-    subItems: [],
+    subItems: [
+      { name: "Retail Lease - Ground Floor", income: "$12,000.00", credits: "$450.00", debits: "\u2014", net: "$12,450.00" },
+      { name: "Common Area Maintenance", income: "\u2014", credits: "\u2014", debits: "($4,390.12)", debitsColor: "text-error", net: "($4,390.12)" },
+    ],
   },
 ];
 
 export default function MonthlyStatementPage() {
   const [period, setPeriod] = useState("Statement Period: March 2024");
   const [propertyFilter, setPropertyFilter] = useState("Filter: All Properties");
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(
+    () => new Set(properties.filter((p) => p.expanded).map((p) => p.name))
+  );
+
+  const toggleRow = (name: string) => {
+    setExpandedRows((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
 
   const periodData = kpisByPeriod[period] || kpisByPeriod["Statement Period: March 2024"];
 
@@ -184,11 +203,11 @@ export default function MonthlyStatementPage() {
               {filteredProperties.map((prop) => (
                 <React.Fragment key={prop.name}>
                   {/* Property Row */}
-                  <tr className="bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors">
+                  <tr className="bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors cursor-pointer" onClick={() => toggleRow(prop.name)}>
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        <span className={`material-symbols-outlined ${prop.expanded ? "text-primary" : "text-slate-400"}`}>
-                          {prop.expanded ? "expand_more" : "chevron_right"}
+                        <span className={`material-symbols-outlined transition-transform duration-200 ${expandedRows.has(prop.name) ? "text-primary rotate-0" : "text-slate-400 -rotate-90"}`}>
+                          expand_more
                         </span>
                         <div>
                           <p className="text-sm font-extrabold text-on-surface">{prop.name}</p>
@@ -207,7 +226,7 @@ export default function MonthlyStatementPage() {
                     </td>
                   </tr>
                   {/* Sub-items */}
-                  {prop.expanded && prop.subItems.map((sub) => (
+                  {expandedRows.has(prop.name) && prop.subItems.map((sub) => (
                     <tr key={sub.name} className="hover:bg-slate-50 transition-colors">
                       <td className="pl-14 pr-6 py-4">
                         <p className="text-sm text-on-surface font-medium">{sub.name}</p>

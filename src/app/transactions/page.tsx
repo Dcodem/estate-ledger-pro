@@ -5,6 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { SkeletonPulse, TableSkeleton } from "@/components/LoadingSkeleton";
 
 const allTransactions = [
   // Page 1
@@ -191,6 +192,7 @@ const propertySlugMap: Record<string, string> = {
 
 function TransactionsContent() {
   const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
@@ -199,12 +201,28 @@ function TransactionsContent() {
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
 
   useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const slug = searchParams.get("property");
     if (slug && propertySlugMap[slug]) {
       setPropertyFilter(propertySlugMap[slug]);
       setShowFilters(true);
     }
   }, [searchParams]);
+
+  const hasActiveFilters = filter !== "All" || propertyFilter !== "All Properties" || monthFilter !== "All Months" || timePeriod !== "Last 30 Days";
+
+  const resetAllFilters = () => {
+    setFilter("All");
+    setPropertyFilter("All Properties");
+    setMonthFilter("All Months");
+    setTimePeriod("Last 30 Days");
+    setPage(1);
+    setShowFilters(false);
+  };
 
   const filtered = allTransactions.filter((t) => {
     if (filter === "Income") return t.amount.startsWith("+");
@@ -218,6 +236,30 @@ function TransactionsContent() {
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
   const needsReview = allTransactions.filter((t) => t.highlight).length;
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <SkeletonPulse className="w-48 h-8" />
+              <SkeletonPulse className="w-36 h-4" />
+            </div>
+            <SkeletonPulse className="w-24 h-10 rounded-lg" />
+          </div>
+          <SkeletonPulse className="w-full h-12 rounded-xl" />
+          <div className="flex items-center gap-3">
+            <SkeletonPulse className="w-24 h-10 rounded-xl" />
+            <SkeletonPulse className="w-16 h-8 rounded-full" />
+            <SkeletonPulse className="w-16 h-8 rounded-full" />
+            <SkeletonPulse className="w-20 h-8 rounded-full" />
+          </div>
+          <TableSkeleton rows={5} />
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -279,6 +321,18 @@ function TransactionsContent() {
               </button>
             ))}
           </div>
+          {hasActiveFilters && (
+            <>
+              <div className="h-6 w-px bg-outline-variant/30" />
+              <button
+                onClick={resetAllFilters}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-full transition-all"
+              >
+                <span className="material-symbols-outlined text-[14px]">close</span>
+                Reset All
+              </button>
+            </>
+          )}
         </div>
         <div className="relative">
           <select

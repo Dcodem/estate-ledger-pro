@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import KPICard from "@/components/KPICard";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import {
@@ -66,6 +68,21 @@ const propertyRows = [
 ];
 
 export default function DashboardPage() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <LoadingSkeleton />
+      </AppLayout>
+    );
+  }
+
   return (
     <AppLayout>
       {/* Page Header */}
