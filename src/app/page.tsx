@@ -130,6 +130,7 @@ export default function DashboardPage() {
           icon="payments"
           trend="+12.4%"
           trendUp
+          className="animate-fade-in-up stagger-1"
         />
         <KPICard
           label="Total Expenses"
@@ -139,6 +140,7 @@ export default function DashboardPage() {
           iconColor="text-secondary"
           trend="-2.1%"
           trendUp={false}
+          className="animate-fade-in-up stagger-2"
         />
         <KPICard
           label="Net Income"
@@ -146,10 +148,11 @@ export default function DashboardPage() {
           icon="account_balance_wallet"
           iconBg="bg-primary/10"
           iconColor="text-primary"
+          className="animate-fade-in-up stagger-3"
         />
 
         {/* Portfolio ROI - custom card with SVG circle */}
-        <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
+        <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between animate-fade-in-up stagger-4">
           <div>
             <p className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
               Portfolio ROI

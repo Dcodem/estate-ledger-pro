@@ -6,11 +6,12 @@ interface KPICardProps {
   iconColor?: string;
   trend?: string;
   trendUp?: boolean;
+  className?: string;
 }
 
-export default function KPICard({ label, value, icon, iconBg = "bg-primary-fixed-dim", iconColor = "text-primary", trend, trendUp }: KPICardProps) {
+export default function KPICard({ label, value, icon, iconBg = "bg-primary-fixed-dim", iconColor = "text-primary", trend, trendUp, className = "" }: KPICardProps) {
   return (
-    <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow">
+    <div className={`bg-surface-container-lowest p-6 rounded-xl card-shadow ${className}`}>
       <div className="flex justify-between items-start mb-4">
         <div className={`p-2 ${iconBg} rounded-lg ${iconColor}`}>
           <span className="material-symbols-outlined">{icon}</span>

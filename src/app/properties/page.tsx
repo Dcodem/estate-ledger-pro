@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import { SkeletonPulse } from "@/components/LoadingSkeleton";
 import Link from "next/link";
 
 const properties = [
@@ -56,6 +57,48 @@ const chartBars = [
 
 export default function PropertiesPage() {
   const [filterActive, setFilterActive] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="space-y-8">
+          <div className="flex items-center justify-between">
+            <div className="space-y-2">
+              <SkeletonPulse className="w-40 h-8" />
+              <SkeletonPulse className="w-56 h-4" />
+            </div>
+            <SkeletonPulse className="w-24 h-10 rounded-xl" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden">
+                <SkeletonPulse className="h-48 w-full rounded-none" />
+                <div className="p-6 space-y-4">
+                  <SkeletonPulse className="w-32 h-5" />
+                  <SkeletonPulse className="w-24 h-3" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <SkeletonPulse className="h-20 rounded-lg" />
+                    <SkeletonPulse className="h-20 rounded-lg" />
+                  </div>
+                  <SkeletonPulse className="w-full h-8" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-8">
+            <SkeletonPulse className="flex-[2] h-64 rounded-xl" />
+            <SkeletonPulse className="flex-1 h-64 rounded-xl" />
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
@@ -79,11 +122,11 @@ export default function PropertiesPage() {
 
       {/* Property Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {properties.map((p) => (
+        {properties.map((p, i) => (
           <Link
             key={p.name}
             href={`/properties/${p.slug}`}
-            className="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden group hover:translate-y-[-4px] transition-all duration-300 block"
+            className={`bg-surface-container-lowest rounded-xl card-shadow overflow-hidden group hover:translate-y-[-4px] transition-all duration-300 block animate-fade-in-up stagger-${i + 1}`}
           >
             <div className="h-48 relative overflow-hidden">
               <img

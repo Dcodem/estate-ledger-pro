@@ -7,7 +7,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <main className="ml-[220px] flex-1 flex flex-col">
         <Header />
-        <div className="mt-16 p-10 max-w-7xl mx-auto w-full space-y-10">
+        <div className="mt-16 p-10 max-w-7xl mx-auto w-full space-y-10 animate-fade-in-up">
           {children}
         </div>
         <footer className="mt-auto py-8 px-10 border-t border-surface-container text-on-surface-variant flex justify-between items-center text-xs">
