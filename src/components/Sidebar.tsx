@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { badgeCounts } from "@/lib/badge-counts";
 
 interface NavItem {
   label: string;
@@ -26,8 +27,8 @@ const navSections: NavSection[] = [
   {
     heading: "Analysis",
     items: [
-      { label: "Smart Triage", href: "/transactions/smart-triage", icon: "rule_folder", badge: 3 },
-      { label: "AI Review", href: "/transactions/ai-review", icon: "auto_awesome", badge: 4 },
+      { label: "Smart Triage", href: "/transactions/smart-triage", icon: "rule_folder", badge: badgeCounts.smartTriage },
+      { label: "AI Review", href: "/transactions/ai-review", icon: "auto_awesome", badge: badgeCounts.aiReview },
       { label: "Properties", href: "/properties", icon: "domain" },
     ],
   },

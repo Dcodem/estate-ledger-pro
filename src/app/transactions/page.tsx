@@ -3,7 +3,8 @@
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 const allTransactions = [
   // Page 1
@@ -182,13 +183,28 @@ const propertyOptions = ["All Properties", "Main St. Loft", "Oak Ridge Estate", 
 const monthOptions = ["All Months", "March 2024", "February 2024", "January 2024"];
 const timePeriods = ["Last 30 Days", "Last 90 Days", "Year to Date", "2023", "All Time"];
 
-export default function TransactionsPage() {
+const propertySlugMap: Record<string, string> = {
+  "main-st-loft": "Main St. Loft",
+  "oak-ridge": "Oak Ridge Estate",
+  "downtown-plaza": "Downtown Plaza",
+};
+
+function TransactionsContent() {
+  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
   const [page, setPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const [propertyFilter, setPropertyFilter] = useState("All Properties");
   const [monthFilter, setMonthFilter] = useState("All Months");
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
+
+  useEffect(() => {
+    const slug = searchParams.get("property");
+    if (slug && propertySlugMap[slug]) {
+      setPropertyFilter(propertySlugMap[slug]);
+      setShowFilters(true);
+    }
+  }, [searchParams]);
 
   const filtered = allTransactions.filter((t) => {
     if (filter === "Income") return t.amount.startsWith("+");
@@ -443,5 +459,13 @@ export default function TransactionsPage() {
         </div>
       </div>
     </AppLayout>
+  );
+}
+
+export default function TransactionsPage() {
+  return (
+    <Suspense>
+      <TransactionsContent />
+    </Suspense>
   );
 }

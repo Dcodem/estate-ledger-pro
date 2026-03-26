@@ -172,6 +172,20 @@ export default function MonthlyStatementPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/5">
+              {filteredProperties.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-6 py-16 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <span className="material-symbols-outlined text-[40px] text-slate-300">search_off</span>
+                      <p className="text-sm font-bold text-on-surface-variant">No properties match this filter</p>
+                      <p className="text-xs text-on-surface-variant/60">Try selecting a different property or period</p>
+                      <button onClick={() => setPropertyFilter("Filter: All Properties")} className="mt-2 text-xs font-bold text-primary hover:underline">
+                        Clear Filter
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )}
               {filteredProperties.map((prop) => (
                 <tr key={prop.name}>
                   <td colSpan={6} className="p-0">
