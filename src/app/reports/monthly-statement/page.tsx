@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 
@@ -75,6 +76,14 @@ const properties = [
 ];
 
 export default function MonthlyStatementPage() {
+  const [period, setPeriod] = useState("Statement Period: March 2024");
+  const [propertyFilter, setPropertyFilter] = useState("Filter: All Properties");
+
+  const filteredProperties = properties.filter((p) => {
+    if (propertyFilter === "Filter: All Properties") return true;
+    return p.name.startsWith(propertyFilter);
+  });
+
   return (
     <AppLayout>
       <PageHeader
@@ -84,7 +93,11 @@ export default function MonthlyStatementPage() {
         actions={
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative">
-              <select className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
+              <select
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+                className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
+              >
                 <option>Statement Period: March 2024</option>
                 <option>February 2024</option>
                 <option>January 2024</option>
@@ -92,10 +105,15 @@ export default function MonthlyStatementPage() {
               <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
             </div>
             <div className="relative">
-              <select className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
+              <select
+                value={propertyFilter}
+                onChange={(e) => setPropertyFilter(e.target.value)}
+                className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
+              >
                 <option>Filter: All Properties</option>
                 <option>Main St. Loft</option>
                 <option>Oak Ridge Estate</option>
+                <option>Downtown Plaza</option>
               </select>
               <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
             </div>
@@ -154,7 +172,7 @@ export default function MonthlyStatementPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/5">
-              {properties.map((prop) => (
+              {filteredProperties.map((prop) => (
                 <tr key={prop.name}>
                   <td colSpan={6} className="p-0">
                     <table className="w-full">

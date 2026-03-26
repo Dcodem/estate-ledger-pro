@@ -132,10 +132,15 @@ export default function OakRidgePage() {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {txns.map((t, i) => (
-                <tr key={i} className="hover:bg-slate-50/50 transition-all">
+                <tr key={i} className="hover:bg-slate-50/50 transition-all cursor-pointer group/row" onClick={() => window.location.href = `/transactions?property=oak-ridge`}>
                   <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">{t.date}</td>
-                  <td className="px-8 py-5 text-sm font-bold text-on-surface">{t.desc}</td>
-                  <td className="px-8 py-5">
+                  <td className="px-8 py-5 text-sm font-bold text-on-surface">
+                    <span className="flex items-center gap-2">
+                      {t.desc}
+                      <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                    </span>
+                  </td>
+                  <td className="px-8 py-5" onClick={(e) => e.stopPropagation()}>
                     <div className="group/cat flex items-center gap-1.5">
                       <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
                         categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600"

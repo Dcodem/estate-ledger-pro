@@ -7,6 +7,7 @@ interface NavItem {
   label: string;
   href: string;
   icon: string;
+  badge?: number;
 }
 
 interface NavSection {
@@ -25,8 +26,8 @@ const navSections: NavSection[] = [
   {
     heading: "Analysis",
     items: [
-      { label: "Smart Triage", href: "/transactions/smart-triage", icon: "rule_folder" },
-      { label: "AI Review", href: "/transactions/ai-review", icon: "auto_awesome" },
+      { label: "Smart Triage", href: "/transactions/smart-triage", icon: "rule_folder", badge: 3 },
+      { label: "AI Review", href: "/transactions/ai-review", icon: "auto_awesome", badge: 4 },
       { label: "Properties", href: "/properties", icon: "domain" },
     ],
   },
@@ -85,7 +86,12 @@ export default function Sidebar() {
                   }`}
                 >
                   <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <span className="text-sm font-medium flex-1">{item.label}</span>
+                  {item.badge && (
+                    <span className="min-w-[20px] h-5 flex items-center justify-center bg-primary text-white text-[10px] font-bold rounded-full px-1.5">
+                      {item.badge}
+                    </span>
+                  )}
                 </Link>
               );
             })}

@@ -15,6 +15,7 @@ const reviewQueue = [
     category: "Maintenance & Repairs",
     catClass: "bg-violet-50 text-violet-700 border border-violet-100",
     active: true,
+    fromTriage: false,
   },
   {
     vendor: "Standard Insurance Co.",
@@ -27,6 +28,7 @@ const reviewQueue = [
     category: "Insurance Expense",
     catClass: "bg-slate-100 text-slate-600 border border-slate-200",
     active: false,
+    fromTriage: false,
   },
   {
     vendor: "Precision Pool Service",
@@ -39,6 +41,7 @@ const reviewQueue = [
     category: "Utilities & Services",
     catClass: "bg-slate-100 text-slate-600 border border-slate-200",
     active: false,
+    fromTriage: false,
   },
   {
     vendor: "Amazon Marketplace",
@@ -51,6 +54,7 @@ const reviewQueue = [
     category: "Uncategorized",
     catClass: "bg-slate-100 text-slate-600 border border-slate-200",
     active: false,
+    fromTriage: true,
   },
 ];
 
@@ -92,9 +96,17 @@ export default function AIReviewPage() {
             >
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <h4 className="font-bold text-lg text-on-surface">
-                    {q.vendor}
-                  </h4>
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-lg text-on-surface">
+                      {q.vendor}
+                    </h4>
+                    {q.fromTriage && (
+                      <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                        <span className="material-symbols-outlined text-[12px]">rule_folder</span>
+                        From Triage
+                      </span>
+                    )}
+                  </div>
                   <p className="text-[13px] text-on-surface-variant italic mt-1">
                     {q.aiNote}
                   </p>
