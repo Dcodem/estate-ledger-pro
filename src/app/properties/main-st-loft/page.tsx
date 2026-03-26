@@ -29,6 +29,9 @@ export default function MainStLoftPage() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState(txns.map((t) => t.cat));
+  const [editState, setEditState] = useState<"idle" | "loading" | "done">("idle");
+  const [financialsState, setFinancialsState] = useState<"idle" | "loading" | "done">("idle");
+  const [addTxnState, setAddTxnState] = useState<"idle" | "loading" | "done">("idle");
 
   return (
     <AppLayout>
@@ -38,13 +41,21 @@ export default function MainStLoftPage() {
         breadcrumb={{ label: "Back to Properties", href: "/properties" }}
         actions={
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface shadow-sm hover:shadow-md transition-all">
-              <span className="material-symbols-outlined text-[18px]">edit</span>
-              Edit Details
+            <button
+              onClick={() => { if (editState !== "idle") return; setEditState("loading"); setTimeout(() => { setEditState("done"); setTimeout(() => setEditState("idle"), 2000); }, 1500); }}
+              disabled={editState !== "idle"}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${editState === "done" ? "bg-emerald-500 text-white" : editState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{editState === "done" ? "check" : editState === "loading" ? "hourglass_top" : "edit"}</span>
+              {editState === "done" ? "Saved!" : editState === "loading" ? "Saving..." : "Edit Details"}
             </button>
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm hover:shadow-md transition-all">
-              <span className="material-symbols-outlined text-[18px]">bar_chart</span>
-              View Financials
+            <button
+              onClick={() => { if (financialsState !== "idle") return; setFinancialsState("loading"); setTimeout(() => { setFinancialsState("done"); setTimeout(() => setFinancialsState("idle"), 2000); }, 1500); }}
+              disabled={financialsState !== "idle"}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all ${financialsState === "done" ? "bg-emerald-500 text-white" : financialsState === "loading" ? "bg-primary/70 text-white cursor-wait" : "bg-primary text-on-primary hover:shadow-md"}`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{financialsState === "done" ? "check" : financialsState === "loading" ? "hourglass_top" : "bar_chart"}</span>
+              {financialsState === "done" ? "Report Ready!" : financialsState === "loading" ? "Loading..." : "View Financials"}
             </button>
           </div>
         }
@@ -179,9 +190,13 @@ export default function MainStLoftPage() {
 
       {/* Add Transaction */}
       <div>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface shadow-sm hover:shadow-md transition-all">
-          <span className="material-symbols-outlined text-[18px]">add</span>
-          Add Transaction
+        <button
+          onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
+          disabled={addTxnState !== "idle"}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+        >
+          <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+          {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
         </button>
       </div>
 

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
@@ -37,6 +38,19 @@ function SettingsTabs() {
 }
 
 export default function SettingsAccountPage() {
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [passwordUpdated, setPasswordUpdated] = useState(false);
+
+  const handleProfileSave = () => {
+    setProfileSaved(true);
+    setTimeout(() => setProfileSaved(false), 2000);
+  };
+
+  const handlePasswordUpdate = () => {
+    setPasswordUpdated(true);
+    setTimeout(() => setPasswordUpdated(false), 2000);
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -75,8 +89,16 @@ export default function SettingsAccountPage() {
             </div>
           </div>
           <div className="mt-8 flex justify-end">
-            <button className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
-              Save Changes
+            <button
+              onClick={handleProfileSave}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all flex items-center gap-2 ${
+                profileSaved
+                  ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                  : "bg-gradient-to-br from-primary to-primary-container text-white shadow-primary/20 hover:scale-[1.02]"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">{profileSaved ? "check" : "save"}</span>
+              {profileSaved ? "Saved!" : "Save Changes"}
             </button>
           </div>
         </div>
@@ -129,8 +151,16 @@ export default function SettingsAccountPage() {
             </div>
           </div>
           <div className="mt-8 flex justify-end">
-            <button className="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
-              Update Password
+            <button
+              onClick={handlePasswordUpdate}
+              className={`px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all flex items-center gap-2 ${
+                passwordUpdated
+                  ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                  : "bg-gradient-to-br from-primary to-primary-container text-white shadow-primary/20 hover:scale-[1.02]"
+              }`}
+            >
+              <span className="material-symbols-outlined text-[16px]">{passwordUpdated ? "check" : "lock"}</span>
+              {passwordUpdated ? "Updated!" : "Update Password"}
             </button>
           </div>
         </div>

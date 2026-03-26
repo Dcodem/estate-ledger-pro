@@ -1,11 +1,17 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { use, useState, useEffect, useRef, useCallback } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import { SkeletonPulse } from "@/components/LoadingSkeleton";
 import Link from "next/link";
 import { getTransactionById, categoryOptions } from "@/lib/transactions";
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 export default function TransactionDetailPage({
   params,
@@ -15,12 +21,25 @@ export default function TransactionDetailPage({
   const { id } = use(params);
   const txn = getTransactionById(id);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(txn?.category ?? "");
   const [catClass, setCatClass] = useState(txn?.catClass ?? "");
   const [notes, setNotes] = useState("");
   const [showRecategorize, setShowRecategorize] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  // Receipt upload
+  const [receipts, setReceipts] = useState<{ name: string; size: string }[]>([]);
+  const [showReceiptZone, setShowReceiptZone] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Button end states
+  const [duplicated, setDuplicated] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+  const [splitToast, setSplitToast] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -39,6 +58,35 @@ export default function TransactionDetailPage({
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const handleFiles = useCallback((files: FileList | null) => {
+    if (!files) return;
+    const newReceipts = Array.from(files).map((f) => ({
+      name: f.name,
+      size: formatFileSize(f.size),
+    }));
+    setReceipts((prev) => [...prev, ...newReceipts]);
+    setSaved(false);
+  }, []);
+
+  const handleDuplicate = () => {
+    setDuplicated(true);
+    setTimeout(() => setDuplicated(false), 2000);
+  };
+
+  const handleSplit = () => {
+    setSplitToast(true);
+    setTimeout(() => setSplitToast(false), 2500);
+  };
+
+  const handleDelete = () => {
+    setDeleted(true);
+  };
+
+  const removeReceipt = (index: number) => {
+    setReceipts((prev) => prev.filter((_, i) => i !== index));
+    setSaved(false);
+  };
+
   if (!txn) {
     return (
       <AppLayout>
@@ -46,6 +94,23 @@ export default function TransactionDetailPage({
           <span className="material-symbols-outlined text-[48px] text-slate-300">receipt_long</span>
           <h2 className="text-xl font-bold text-on-surface">Transaction not found</h2>
           <p className="text-sm text-on-surface-variant">The transaction you&apos;re looking for doesn&apos;t exist.</p>
+          <Link href="/transactions" className="mt-4 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all">
+            Back to Transactions
+          </Link>
+        </div>
+      </AppLayout>
+    );
+  }
+
+  if (deleted) {
+    return (
+      <AppLayout>
+        <div className="flex flex-col items-center justify-center py-32 gap-4">
+          <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+            <span className="material-symbols-outlined text-[32px] text-red-600">delete</span>
+          </div>
+          <h2 className="text-xl font-bold text-on-surface">Transaction Deleted</h2>
+          <p className="text-sm text-on-surface-variant">&quot;{txn.title}&quot; has been removed.</p>
           <Link href="/transactions" className="mt-4 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all">
             Back to Transactions
           </Link>
@@ -86,7 +151,11 @@ export default function TransactionDetailPage({
           <div className="flex items-center gap-3">
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all"
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold shadow-md transition-all ${
+                saved
+                  ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                  : "bg-primary text-white shadow-primary/20 hover:opacity-90"
+              }`}
             >
               <span className="material-symbols-outlined text-[18px]">
                 {saved ? "check" : "save"}
@@ -96,6 +165,14 @@ export default function TransactionDetailPage({
           </div>
         }
       />
+
+      {/* Split toast */}
+      <div className={`fixed top-6 right-6 z-50 transition-all duration-300 ${splitToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
+        <div className="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/20 px-5 py-3 flex items-center gap-3">
+          <span className="material-symbols-outlined text-primary text-[20px]">info</span>
+          <p className="text-sm font-semibold text-on-surface">Split Transaction is coming soon</p>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Details */}
@@ -212,6 +289,87 @@ export default function TransactionDetailPage({
               className="w-full h-28 bg-surface-container-low rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary/20 outline-none resize-none"
             />
           </div>
+
+          {/* Receipt Upload Section */}
+          <div className="bg-surface-container-lowest rounded-2xl card-shadow border border-outline-variant/10 p-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">receipt</span>
+                Receipts &amp; Attachments
+                {receipts.length > 0 && (
+                  <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full">{receipts.length}</span>
+                )}
+              </h3>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-all"
+              >
+                <span className="material-symbols-outlined text-[16px]">add</span>
+                Add File
+              </button>
+            </div>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,.pdf"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFiles(e.target.files)}
+            />
+
+            {/* Uploaded files list */}
+            {receipts.length > 0 && (
+              <div className="space-y-2 mb-4">
+                {receipts.map((r, i) => (
+                  <div key={i} className="flex items-center justify-between bg-surface-container-low rounded-xl px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <span className="material-symbols-outlined text-primary text-[18px]">
+                          {r.name.endsWith(".pdf") ? "picture_as_pdf" : "image"}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-on-surface truncate max-w-[240px]">{r.name}</p>
+                        <p className="text-[10px] text-on-surface-variant">{r.size}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeReceipt(i)}
+                      className="w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-red-50 hover:text-red-600 transition-all"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">close</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Drag and drop zone */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFiles(e.dataTransfer.files); }}
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-xl py-8 flex flex-col items-center gap-3 cursor-pointer transition-all ${
+                isDragging
+                  ? "border-primary bg-primary/5"
+                  : "border-slate-200 hover:border-primary/30 hover:bg-slate-50/50"
+              }`}
+            >
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-slate-100"}`}>
+                <span className={`material-symbols-outlined text-2xl ${isDragging ? "text-primary" : "text-slate-400"}`}>
+                  cloud_upload
+                </span>
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-semibold text-on-surface">
+                  {isDragging ? "Drop files here" : "Drag & drop receipts here"}
+                </p>
+                <p className="text-xs text-on-surface-variant mt-1">or click to browse — PNG, JPG, PDF up to 10MB</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}
@@ -227,23 +385,70 @@ export default function TransactionDetailPage({
                 <span className="material-symbols-outlined text-[20px] text-primary">category</span>
                 Recategorize
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all">
-                <span className="material-symbols-outlined text-[20px] text-primary">content_copy</span>
-                Duplicate Entry
+              <button
+                onClick={handleDuplicate}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  duplicated
+                    ? "bg-emerald-50 text-emerald-700"
+                    : "text-on-surface hover:bg-surface-container-low"
+                }`}
+              >
+                <span className={`material-symbols-outlined text-[20px] ${duplicated ? "text-emerald-600" : "text-primary"}`}>
+                  {duplicated ? "check_circle" : "content_copy"}
+                </span>
+                {duplicated ? "Duplicated!" : "Duplicate Entry"}
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all">
+              <button
+                onClick={() => { setShowReceiptZone(true); fileInputRef.current?.click(); }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+              >
                 <span className="material-symbols-outlined text-[20px] text-primary">attach_file</span>
                 Attach Receipt
+                {receipts.length > 0 && (
+                  <span className="ml-auto px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full">{receipts.length}</span>
+                )}
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all">
+              <button
+                onClick={handleSplit}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+                  splitToast
+                    ? "bg-primary/5 text-primary"
+                    : "text-on-surface hover:bg-surface-container-low"
+                }`}
+              >
                 <span className="material-symbols-outlined text-[20px] text-primary">call_split</span>
-                Split Transaction
+                {splitToast ? "Coming Soon..." : "Split Transaction"}
               </button>
               <div className="border-t border-outline-variant/10 my-2" />
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all">
-                <span className="material-symbols-outlined text-[20px]">delete</span>
-                Delete Transaction
-              </button>
+
+              {/* Delete with confirmation */}
+              {!showDeleteConfirm ? (
+                <button
+                  onClick={() => setShowDeleteConfirm(true)}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all"
+                >
+                  <span className="material-symbols-outlined text-[20px]">delete</span>
+                  Delete Transaction
+                </button>
+              ) : (
+                <div className="bg-red-50 border border-red-200/50 rounded-xl p-4 space-y-3">
+                  <p className="text-xs font-bold text-red-800">Are you sure? This cannot be undone.</p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleDelete}
+                      className="flex-1 px-3 py-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-all"
+                    >
+                      Yes, Delete
+                    </button>
+                    <button
+                      onClick={() => setShowDeleteConfirm(false)}
+                      className="flex-1 px-3 py-2 bg-white text-red-600 border border-red-200 text-xs font-bold rounded-lg hover:bg-red-50 transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

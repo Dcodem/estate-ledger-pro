@@ -75,6 +75,8 @@ export default function MonthlyStatementPage() {
   const [expandedRows, setExpandedRows] = useState<Set<string>>(
     () => new Set(properties.filter((p) => p.expanded).map((p) => p.name))
   );
+  const [printState, setPrintState] = useState<"idle" | "loading" | "done">("idle");
+  const [downloadState, setDownloadState] = useState<"idle" | "loading" | "done">("idle");
 
   const toggleRow = (name: string) => {
     setExpandedRows((prev) => {
@@ -280,13 +282,21 @@ export default function MonthlyStatementPage() {
           Statement generated Mar 24, 2024 &bull; 14:02 PM
         </div>
         <div className="flex items-center gap-4 mt-6 md:mt-0">
-          <button className="flex items-center gap-2 border border-outline-variant px-6 py-2.5 rounded-xl text-sm font-bold text-on-surface hover:bg-slate-50 transition-colors">
-            <span className="material-symbols-outlined">print</span>
-            Print
+          <button
+            onClick={() => { if (printState !== "idle") return; setPrintState("loading"); setTimeout(() => { setPrintState("done"); setTimeout(() => setPrintState("idle"), 2000); }, 1500); }}
+            disabled={printState !== "idle"}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${printState === "done" ? "bg-emerald-500 text-white" : printState === "loading" ? "border border-outline-variant text-on-surface-variant cursor-wait" : "border border-outline-variant text-on-surface hover:bg-slate-50"}`}
+          >
+            <span className="material-symbols-outlined">{printState === "done" ? "check" : printState === "loading" ? "hourglass_top" : "print"}</span>
+            {printState === "done" ? "Sent!" : printState === "loading" ? "Printing..." : "Print"}
           </button>
-          <button className="flex items-center gap-2 bg-primary text-white px-8 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:opacity-90 active:scale-[0.98] transition-all">
-            <span className="material-symbols-outlined">download</span>
-            Download PDF
+          <button
+            onClick={() => { if (downloadState !== "idle") return; setDownloadState("loading"); setTimeout(() => { setDownloadState("done"); setTimeout(() => setDownloadState("idle"), 2000); }, 1500); }}
+            disabled={downloadState !== "idle"}
+            className={`flex items-center gap-2 px-8 py-2.5 rounded-xl text-sm font-bold shadow-lg transition-all ${downloadState === "done" ? "bg-emerald-500 text-white shadow-emerald-500/20" : downloadState === "loading" ? "bg-primary/70 text-white shadow-primary/20 cursor-wait" : "bg-primary text-white shadow-primary/20 hover:opacity-90 active:scale-[0.98]"}`}
+          >
+            <span className="material-symbols-outlined">{downloadState === "done" ? "check" : downloadState === "loading" ? "hourglass_top" : "download"}</span>
+            {downloadState === "done" ? "Downloaded!" : downloadState === "loading" ? "Downloading..." : "Download PDF"}
           </button>
         </div>
       </div>

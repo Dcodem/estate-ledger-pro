@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
@@ -37,6 +38,11 @@ function SettingsTabs() {
 }
 
 export default function IntegrationsPage() {
+  const [chaseDisconnected, setChaseDisconnected] = useState(false);
+  const [wellsCancelled, setWellsCancelled] = useState(false);
+  const [amexReconnecting, setAmexReconnecting] = useState<"idle" | "loading" | "done">("idle");
+  const [vanguardDisconnected, setVanguardDisconnected] = useState(false);
+
   return (
     <AppLayout>
       <PageHeader
@@ -66,8 +72,14 @@ export default function IntegrationsPage() {
                 <p className="text-xs text-on-surface-variant mt-1">Synced 2 min ago</p>
               </div>
             </div>
-            <button className="px-4 py-2 text-sm font-medium text-error hover:bg-error-container/20 rounded-lg transition-colors">
-              Disconnect
+            <button
+              onClick={() => { setChaseDisconnected(true); setTimeout(() => setChaseDisconnected(false), 2000); }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                chaseDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
+              }`}
+            >
+              {chaseDisconnected && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {chaseDisconnected ? "Disconnected" : "Disconnect"}
             </button>
           </div>
 
@@ -88,8 +100,14 @@ export default function IntegrationsPage() {
                 <p className="text-xs text-on-surface-variant mt-1 italic">In progress...</p>
               </div>
             </div>
-            <button className="px-4 py-2 text-sm font-medium text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
-              Cancel
+            <button
+              onClick={() => { setWellsCancelled(true); setTimeout(() => setWellsCancelled(false), 2000); }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                wellsCancelled ? "bg-amber-50 text-amber-700" : "text-slate-500 hover:bg-slate-100"
+              }`}
+            >
+              {wellsCancelled && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {wellsCancelled ? "Cancelled" : "Cancel"}
             </button>
           </div>
 
@@ -109,8 +127,21 @@ export default function IntegrationsPage() {
                 <p className="text-xs text-on-surface-variant mt-1">Last sync 3 days ago</p>
               </div>
             </div>
-            <button className="px-5 py-2 text-sm font-semibold text-primary hover:bg-primary/10 border border-primary/20 rounded-lg transition-all">
-              Reconnect
+            <button
+              onClick={() => {
+                if (amexReconnecting !== "idle") return;
+                setAmexReconnecting("loading");
+                setTimeout(() => { setAmexReconnecting("done"); setTimeout(() => setAmexReconnecting("idle"), 2000); }, 1500);
+              }}
+              className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
+                amexReconnecting === "done" ? "bg-emerald-500 text-white border border-emerald-500"
+                : amexReconnecting === "loading" ? "bg-primary/10 text-primary border border-primary/20 cursor-wait"
+                : "text-primary hover:bg-primary/10 border border-primary/20"
+              }`}
+            >
+              {amexReconnecting === "done" && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {amexReconnecting === "loading" && <span className="material-symbols-outlined text-[14px] animate-spin">sync</span>}
+              {amexReconnecting === "done" ? "Connected!" : amexReconnecting === "loading" ? "Connecting..." : "Reconnect"}
             </button>
           </div>
 
@@ -130,8 +161,14 @@ export default function IntegrationsPage() {
                 <p className="text-xs text-on-surface-variant mt-1">Synced 4 hours ago</p>
               </div>
             </div>
-            <button className="px-4 py-2 text-sm font-medium text-error hover:bg-error-container/20 rounded-lg transition-colors">
-              Disconnect
+            <button
+              onClick={() => { setVanguardDisconnected(true); setTimeout(() => setVanguardDisconnected(false), 2000); }}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
+                vanguardDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
+              }`}
+            >
+              {vanguardDisconnected && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {vanguardDisconnected ? "Disconnected" : "Disconnect"}
             </button>
           </div>
 

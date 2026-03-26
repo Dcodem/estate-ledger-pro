@@ -81,6 +81,13 @@ const groups = [
 ];
 
 export default function NotificationsPage() {
+  const [prefsSaved, setPrefsSaved] = useState(false);
+
+  const handleSavePrefs = () => {
+    setPrefsSaved(true);
+    setTimeout(() => setPrefsSaved(false), 2000);
+  };
+
   return (
     <AppLayout>
       <PageHeader
@@ -127,8 +134,16 @@ export default function NotificationsPage() {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <button className="px-8 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold shadow-lg hover:shadow-primary/20 transition-all hover:-translate-y-0.5 active:translate-y-0">
-            Save Preferences
+          <button
+            onClick={handleSavePrefs}
+            className={`px-8 py-3 rounded-lg font-bold shadow-lg transition-all flex items-center gap-2 ${
+              prefsSaved
+                ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                : "bg-gradient-to-br from-primary to-primary-container text-white hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0"
+            }`}
+          >
+            <span className="material-symbols-outlined text-[18px]">{prefsSaved ? "check" : "save"}</span>
+            {prefsSaved ? "Saved!" : "Save Preferences"}
           </button>
         </div>
 

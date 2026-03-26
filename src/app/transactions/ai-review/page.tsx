@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 
@@ -65,6 +66,21 @@ const similarTransactions = [
 ];
 
 export default function AIReviewPage() {
+  const [cardStates, setCardStates] = useState<Record<number, string>>({});
+  const [approveState, setApproveState] = useState<"idle" | "loading" | "done">("idle");
+  const [modifyState, setModifyState] = useState<"idle" | "loading" | "done">("idle");
+  const [rejectState, setRejectState] = useState<"idle" | "loading" | "done">("idle");
+
+  const handleCardAction = (index: number, action: string) => {
+    setCardStates((prev) => ({ ...prev, [index]: action }));
+    setTimeout(() => setCardStates((prev) => { const next = { ...prev }; delete next[index]; return next; }), 2000);
+  };
+
+  const handlePanelAction = (setState: (s: "idle" | "loading" | "done") => void) => {
+    setState("loading");
+    setTimeout(() => { setState("done"); setTimeout(() => setState("idle"), 2000); }, 1500);
+  };
+
   return (
     <AppLayout>
       {/* Page Header */}
@@ -134,17 +150,37 @@ export default function AIReviewPage() {
                 >
                   {q.category}
                 </span>
-                <div className="flex gap-2">
-                  <button className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold hover:bg-emerald-100 transition-colors">
-                    Approve
-                  </button>
-                  <button className="px-4 py-2 bg-rose-50 text-rose-700 rounded-lg text-xs font-bold hover:bg-rose-100 transition-colors">
-                    Reject
-                  </button>
-                  <button className="px-4 py-2 bg-white border border-outline-variant text-on-surface-variant rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors">
-                    Modify
-                  </button>
-                </div>
+                {cardStates[i] ? (
+                  <span className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 ${
+                    cardStates[i] === "approved" ? "bg-emerald-500 text-white" :
+                    cardStates[i] === "rejected" ? "bg-rose-500 text-white" :
+                    "bg-amber-500 text-white"
+                  }`}>
+                    <span className="material-symbols-outlined text-[14px]">check</span>
+                    {cardStates[i] === "approved" ? "Approved!" : cardStates[i] === "rejected" ? "Rejected!" : "Modified!"}
+                  </span>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleCardAction(i, "approved")}
+                      className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-bold hover:bg-emerald-100 transition-colors"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleCardAction(i, "rejected")}
+                      className="px-4 py-2 bg-rose-50 text-rose-700 rounded-lg text-xs font-bold hover:bg-rose-100 transition-colors"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => handleCardAction(i, "modified")}
+                      className="px-4 py-2 bg-white border border-outline-variant text-on-surface-variant rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors"
+                    >
+                      Modify
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -248,18 +284,42 @@ export default function AIReviewPage() {
 
               {/* Action Buttons */}
               <div className="pt-6 space-y-3">
-                <button className="w-full bg-primary hover:bg-primary-container text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-violet-100 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => { if (approveState !== "idle") return; handlePanelAction(setApproveState); }}
+                  disabled={approveState !== "idle"}
+                  className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
+                    approveState === "done" ? "bg-emerald-500 text-white shadow-emerald-500/20" :
+                    approveState === "loading" ? "bg-primary/70 text-white shadow-violet-100 cursor-wait" :
+                    "bg-primary hover:bg-primary-container text-white shadow-violet-100"
+                  }`}
+                >
                   <span className="material-symbols-outlined text-[20px]">
-                    check_circle
+                    {approveState === "done" ? "check" : approveState === "loading" ? "hourglass_top" : "check_circle"}
                   </span>
-                  Approve Transaction
+                  {approveState === "done" ? "Approved!" : approveState === "loading" ? "Approving..." : "Approve Transaction"}
                 </button>
                 <div className="grid grid-cols-2 gap-3">
-                  <button className="bg-white border border-outline-variant text-on-surface hover:bg-slate-50 py-3 rounded-xl font-bold text-[13px] transition-all">
-                    Modify
+                  <button
+                    onClick={() => { if (modifyState !== "idle") return; handlePanelAction(setModifyState); }}
+                    disabled={modifyState !== "idle"}
+                    className={`py-3 rounded-xl font-bold text-[13px] transition-all ${
+                      modifyState === "done" ? "bg-emerald-500 text-white" :
+                      modifyState === "loading" ? "bg-slate-100 text-on-surface-variant cursor-wait" :
+                      "bg-white border border-outline-variant text-on-surface hover:bg-slate-50"
+                    }`}
+                  >
+                    {modifyState === "done" ? "Modified!" : modifyState === "loading" ? "Saving..." : "Modify"}
                   </button>
-                  <button className="bg-white border border-error/20 text-error hover:bg-rose-50 py-3 rounded-xl font-bold text-[13px] transition-all">
-                    Reject
+                  <button
+                    onClick={() => { if (rejectState !== "idle") return; handlePanelAction(setRejectState); }}
+                    disabled={rejectState !== "idle"}
+                    className={`py-3 rounded-xl font-bold text-[13px] transition-all ${
+                      rejectState === "done" ? "bg-rose-500 text-white" :
+                      rejectState === "loading" ? "bg-rose-50 text-rose-400 cursor-wait" :
+                      "bg-white border border-error/20 text-error hover:bg-rose-50"
+                    }`}
+                  >
+                    {rejectState === "done" ? "Rejected!" : rejectState === "loading" ? "Rejecting..." : "Reject"}
                   </button>
                 </div>
               </div>

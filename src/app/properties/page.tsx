@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
@@ -54,15 +55,24 @@ const chartBars = [
 ];
 
 export default function PropertiesPage() {
+  const [filterActive, setFilterActive] = useState(false);
+
   return (
     <AppLayout>
       <PageHeader
         title="Properties"
         subtitle="3 properties in portfolio"
         actions={
-          <button className="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-on-surface-variant font-semibold rounded-xl text-sm hover:bg-surface-container-high transition-colors">
-            <span className="material-symbols-outlined text-[20px]">filter_list</span>
-            Filter
+          <button
+            onClick={() => setFilterActive(!filterActive)}
+            className={`flex items-center gap-2 px-4 py-2 font-semibold rounded-xl text-sm transition-colors ${
+              filterActive
+                ? "bg-primary text-white"
+                : "bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high"
+            }`}
+          >
+            <span className="material-symbols-outlined text-[20px]">{filterActive ? "filter_list_off" : "filter_list"}</span>
+            {filterActive ? "Filtering" : "Filter"}
           </button>
         }
       />

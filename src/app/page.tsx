@@ -70,6 +70,7 @@ const propertyRows = [
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
+  const [exportState, setExportState] = useState<"idle" | "loading" | "done">("idle");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,9 +96,28 @@ export default function DashboardPage() {
         subtitle={lastUpdated ? `Last updated at ${lastUpdated}` : undefined}
         badge="Jan 2024 - Jun 2024"
         actions={
-          <button className="px-6 py-2.5 bg-secondary text-white rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-primary transition-colors shadow-sm">
-            <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
-            Export PDF
+          <button
+            onClick={() => {
+              if (exportState !== "idle") return;
+              setExportState("loading");
+              setTimeout(() => {
+                setExportState("done");
+                setTimeout(() => setExportState("idle"), 2000);
+              }, 1500);
+            }}
+            disabled={exportState !== "idle"}
+            className={`px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition-all shadow-sm ${
+              exportState === "done"
+                ? "bg-emerald-500 text-white"
+                : exportState === "loading"
+                  ? "bg-secondary/70 text-white cursor-wait"
+                  : "bg-secondary text-white hover:bg-primary"
+            }`}
+          >
+            <span className="material-symbols-outlined text-sm">
+              {exportState === "done" ? "check" : exportState === "loading" ? "hourglass_top" : "picture_as_pdf"}
+            </span>
+            {exportState === "done" ? "Downloaded!" : exportState === "loading" ? "Exporting..." : "Export PDF"}
           </button>
         }
       />
