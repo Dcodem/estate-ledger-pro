@@ -294,8 +294,12 @@ function TransactionsContent() {
         </div>
       </div>
 
-      {/* Filter Panel (collapsible) */}
-      {showFilters && (
+      {/* Filter Panel (collapsible with animation) */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          showFilters ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
         <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/10 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 block">Property</label>
@@ -322,7 +326,7 @@ function TransactionsContent() {
             </select>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Transaction Table */}
       <div className="bg-surface-container-lowest rounded-2xl card-shadow overflow-hidden border border-outline-variant/10">

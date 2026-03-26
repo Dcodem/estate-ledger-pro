@@ -5,4 +5,5 @@
 export const badgeCounts = {
   smartTriage: 3,
   aiReview: 4,
+  needsReview: 1,
 } as const;

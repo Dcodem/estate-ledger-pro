@@ -9,6 +9,7 @@ interface NavItem {
   href: string;
   icon: string;
   badge?: number;
+  badgeColor?: string;
 }
 
 interface NavSection {
@@ -21,7 +22,7 @@ const navSections: NavSection[] = [
     heading: "Overview",
     items: [
       { label: "Dashboard", href: "/", icon: "dashboard" },
-      { label: "Transactions", href: "/transactions", icon: "payments" },
+      { label: "Transactions", href: "/transactions", icon: "payments", badge: badgeCounts.needsReview, badgeColor: "bg-amber-500" },
     ],
   },
   {
@@ -89,7 +90,7 @@ export default function Sidebar() {
                   <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
                   <span className="text-sm font-medium flex-1">{item.label}</span>
                   {item.badge && (
-                    <span className="min-w-[20px] h-5 flex items-center justify-center bg-primary text-white text-[10px] font-bold rounded-full px-1.5">
+                    <span className={`min-w-[20px] h-5 flex items-center justify-center ${item.badgeColor || "bg-primary"} text-white text-[10px] font-bold rounded-full px-1.5`}>
                       {item.badge}
                     </span>
                   )}
