@@ -166,74 +166,73 @@ export default function DowntownPlazaPage() {
         </div>
       </div>
 
-      {/* Recent Transactions */}
-      <div>
-        <h2 className="text-xl font-bold mb-6">Recent Transactions</h2>
-        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-surface-container-low/50">
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Date</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Description</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Category</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {txns.map((t, i) => (
-                <tr key={i} className="hover:bg-slate-50/50 transition-all cursor-pointer group/row" onClick={() => window.location.href = `/transactions?property=downtown-plaza`}>
-                  <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">{t.date}</td>
-                  <td className="px-8 py-5 text-sm font-bold text-on-surface">
-                    <span className="flex items-center gap-2">
-                      {t.desc}
-                      <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
-                    </span>
-                  </td>
-                  <td className="px-8 py-5" onClick={(e) => e.stopPropagation()}>
-                    <div className="group/cat flex items-center gap-1.5">
-                      <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                        categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
-                      }`}>
-                        {categories[i]}
-                      </span>
-                      <button
-                        onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
-                        className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
-                      >
-                        <span className="material-symbols-outlined text-[14px] text-on-surface-variant">edit</span>
-                      </button>
-                    </div>
-                  </td>
-                  <td className={`px-8 py-5 text-right font-bold text-sm ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
-                    {t.amount}
-                  </td>
+      {/* Recent Transactions & Property Documents — Side by Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        {/* Recent Transactions */}
+        <div>
+          <h2 className="text-xl font-bold mb-6">Recent Transactions</h2>
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-surface-container-low/50">
+                  <th className="px-4 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Date</th>
+                  <th className="px-4 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Description</th>
+                  <th className="px-4 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Category</th>
+                  <th className="px-4 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {txns.map((t, i) => (
+                  <tr key={i} className="hover:bg-slate-50/50 transition-all cursor-pointer group/row" onClick={() => window.location.href = `/transactions?property=downtown-plaza`}>
+                    <td className="px-4 py-4 text-sm text-on-surface-variant font-medium">{t.date}</td>
+                    <td className="px-4 py-4 text-sm font-bold text-on-surface">
+                      <span className="flex items-center gap-2">
+                        {t.desc}
+                        <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                      </span>
+                    </td>
+                    <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
+                      <div className="group/cat flex items-center gap-1.5">
+                        <span className={`px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                          categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                        }`}>
+                          {categories[i]}
+                        </span>
+                        <button
+                          onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                          className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                        >
+                          <span className="material-symbols-outlined text-[14px] text-on-surface-variant">edit</span>
+                        </button>
+                      </div>
+                    </td>
+                    <td className={`px-4 py-4 text-right font-bold text-sm ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
+                      {t.amount}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <button
+              onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
+              disabled={addTxnState !== "idle"}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+              {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
+            </button>
+            <Link href="/transactions" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+              View All Transactions
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </Link>
+          </div>
         </div>
-        <div className="mt-4 text-right">
-          <Link href="/transactions" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
-            View All Transactions
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </Link>
-        </div>
-      </div>
 
-      {/* Add Transaction */}
-      <div>
-        <button
-          onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
-          disabled={addTxnState !== "idle"}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-        >
-          <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
-          {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
-        </button>
+        {/* Property Documents */}
+        <PropertyFiles initialFiles={propertyFiles} />
       </div>
-
-      {/* Property Documents */}
-      <PropertyFiles initialFiles={propertyFiles} />
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (
