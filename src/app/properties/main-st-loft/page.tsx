@@ -158,66 +158,63 @@ export default function MainStLoftPage() {
         </div>
       </div>
 
-      {/* Recent Transactions & Property Documents — Side by Side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* Recent Transactions — Compact Cards */}
-        <div>
-          <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
-          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
-            {txns.map((t, i) => (
-              <div
-                key={i}
-                className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
-                onClick={() => window.location.href = `/transactions?property=main-st-loft`}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
-                    {t.desc}
-                    <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
-                  </p>
-                  <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
-                    {t.amount}
+      {/* Recent Transactions — Compact Cards */}
+      <div>
+        <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
+        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
+          {txns.map((t, i) => (
+            <div
+              key={i}
+              className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
+              onClick={() => window.location.href = `/transactions?property=main-st-loft`}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
+                  {t.desc}
+                  <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                </p>
+                <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  {t.amount}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
+                <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
+                <span className="text-slate-300">·</span>
+                <div className="group/cat flex items-center gap-1">
+                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wide ${
+                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                  }`}>
+                    {categories[i]}
                   </span>
-                </div>
-                <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
-                  <span className="text-slate-300">·</span>
-                  <div className="group/cat flex items-center gap-1">
-                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wide ${
-                      categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
-                    }`}>
-                      {categories[i]}
-                    </span>
-                    <button
-                      onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
-                      className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
-                    >
-                      <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                    className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                  >
+                    <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <button
-              onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
-              disabled={addTxnState !== "idle"}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-            >
-              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
-              {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
-            </button>
-            <Link href="/transactions" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
-              View All Transactions
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </Link>
-          </div>
+            </div>
+          ))}
         </div>
-
-        {/* Property Documents */}
-        <PropertyFiles initialFiles={propertyFiles} />
+        <div className="flex items-center justify-between mt-4">
+          <button
+            onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
+            disabled={addTxnState !== "idle"}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+          >
+            <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+            {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
+          </button>
+          <Link href="/transactions?property=main-st-loft" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+            View All Transactions
+            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </Link>
+        </div>
       </div>
+
+      {/* Property Documents */}
+      <PropertyFiles initialFiles={propertyFiles} />
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (
