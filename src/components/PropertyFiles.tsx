@@ -92,8 +92,6 @@ function generateSummary(files: PropertyFile[]): AISummary {
 export default function PropertyFiles({ initialFiles }: { initialFiles: PropertyFile[] }) {
   const [files, setFiles] = useState<PropertyFile[]>(initialFiles);
   const [uploading, setUploading] = useState(false);
-  const [removingId, setRemovingId] = useState<string | null>(null);
-
   const handleUpload = () => {
     setUploading(true);
     setTimeout(() => {
@@ -108,14 +106,6 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
       setFiles((prev) => [newFile, ...prev]);
       setUploading(false);
     }, 1500);
-  };
-
-  const handleRemove = (id: string) => {
-    setRemovingId(id);
-    setTimeout(() => {
-      setFiles((prev) => prev.filter((f) => f.id !== id));
-      setRemovingId(null);
-    }, 300);
   };
 
   const summary = generateSummary(files);
@@ -216,16 +206,10 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
           <div className="divide-y divide-slate-50">
             {files.map((file) => {
               const { icon, bg, text } = typeIcons[file.type] || typeIcons.document;
-              const isRemoving = removingId === file.id;
               return (
                 <div
                   key={file.id}
                   className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50/50 transition-all group"
-                  style={{
-                    opacity: isRemoving ? 0 : 1,
-                    transform: isRemoving ? "translateX(-20px)" : "translateX(0)",
-                    transition: "opacity 300ms, transform 300ms",
-                  }}
                 >
                   <div className={`w-10 h-10 rounded-lg ${bg} flex items-center justify-center shrink-0`}>
                     <span className={`material-symbols-outlined text-[20px] ${text}`}>{icon}</span>
@@ -236,17 +220,9 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                       {file.category} &middot; {file.size} &middot; Uploaded {file.uploaded}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all">
-                      <span className="material-symbols-outlined text-[18px]">download</span>
-                    </button>
-                    <button
-                      onClick={() => handleRemove(file.id)}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-error/10 hover:text-error transition-all"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">delete</span>
-                    </button>
-                  </div>
+                  <button className="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all opacity-0 group-hover:opacity-100">
+                    <span className="material-symbols-outlined text-[18px]">download</span>
+                  </button>
                 </div>
               );
             })}
