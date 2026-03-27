@@ -5,6 +5,7 @@ import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import PropertyFiles from "@/components/PropertyFiles";
+import PropertySummary from "@/components/PropertySummary";
 import type { PropertyFile } from "@/components/PropertyFiles";
 
 const propertyFiles: PropertyFile[] = [
@@ -112,6 +113,17 @@ export default function MainStLoftPage() {
           </div>
         </div>
       </div>
+
+      {/* AI Property Summary */}
+      <PropertySummary
+        propertyName="Main St. Loft"
+        location="Downtown District"
+        propertyType="residential"
+        occupancy={92}
+        totalUnits={6}
+        monthlyYield="$8,200"
+        files={propertyFiles}
+      />
 
       {/* Unit Performance Ledger */}
       <div>

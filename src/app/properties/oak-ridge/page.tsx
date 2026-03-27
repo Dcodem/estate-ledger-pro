@@ -5,6 +5,7 @@ import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import PropertyFiles from "@/components/PropertyFiles";
+import PropertySummary from "@/components/PropertySummary";
 import type { PropertyFile } from "@/components/PropertyFiles";
 
 const propertyFiles: PropertyFile[] = [
@@ -108,6 +109,17 @@ export default function OakRidgePage() {
           </div>
         </div>
       </div>
+
+      {/* AI Property Summary */}
+      <PropertySummary
+        propertyName="Oak Ridge Estate"
+        location="North Highlands"
+        propertyType="residential"
+        occupancy={100}
+        totalUnits={1}
+        monthlyYield="$4,500"
+        files={propertyFiles}
+      />
 
       {/* Financial Summary */}
       <div>

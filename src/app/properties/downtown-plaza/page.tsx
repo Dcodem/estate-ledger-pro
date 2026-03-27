@@ -5,6 +5,7 @@ import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import PropertyFiles from "@/components/PropertyFiles";
+import PropertySummary from "@/components/PropertySummary";
 import type { PropertyFile } from "@/components/PropertyFiles";
 
 const propertyFiles: PropertyFile[] = [
@@ -122,6 +123,17 @@ export default function DowntownPlazaPage() {
           </div>
         </div>
       </div>
+
+      {/* AI Property Summary */}
+      <PropertySummary
+        propertyName="Downtown Plaza"
+        location="Business District"
+        propertyType="commercial"
+        occupancy={75}
+        totalUnits={4}
+        monthlyYield="$6,000"
+        files={propertyFiles}
+      />
 
       {/* Unit Breakdown */}
       <div>
