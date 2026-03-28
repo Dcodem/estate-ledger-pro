@@ -10,6 +10,7 @@ export interface Transaction {
   property: string;
   highlight: boolean;
   icon?: string;
+  bankAccount: string;
 }
 
 export const categoryOptions = [
@@ -35,6 +36,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-002",
@@ -47,6 +49,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Oak Ridge Estate",
     highlight: false,
+    bankAccount: "Wells Fargo Premium ····7832",
   },
   {
     id: "txn-003",
@@ -59,6 +62,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-emerald-700",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-004",
@@ -72,6 +76,7 @@ export const allTransactions: Transaction[] = [
     property: "Downtown Plaza",
     highlight: true,
     icon: "psychology",
+    bankAccount: "Amex Business Platinum ····3190",
   },
   {
     id: "txn-005",
@@ -84,6 +89,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Downtown Plaza",
     highlight: false,
+    bankAccount: "Amex Business Platinum ····3190",
   },
   {
     id: "txn-006",
@@ -96,6 +102,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-007",
@@ -108,6 +115,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Oak Ridge Estate",
     highlight: false,
+    bankAccount: "Wells Fargo Premium ····7832",
   },
   {
     id: "txn-008",
@@ -120,6 +128,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-emerald-700",
     property: "Downtown Plaza",
     highlight: false,
+    bankAccount: "Amex Business Platinum ····3190",
   },
   {
     id: "txn-009",
@@ -132,6 +141,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-010",
@@ -144,6 +154,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Downtown Plaza",
     highlight: false,
+    bankAccount: "Amex Business Platinum ····3190",
   },
   {
     id: "txn-011",
@@ -156,6 +167,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-emerald-700",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-012",
@@ -168,6 +180,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Oak Ridge Estate",
     highlight: false,
+    bankAccount: "Wells Fargo Premium ····7832",
   },
   {
     id: "txn-013",
@@ -180,6 +193,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-014",
@@ -192,6 +206,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-emerald-700",
     property: "Main St. Loft",
     highlight: false,
+    bankAccount: "Chase Business Checking ····4521",
   },
   {
     id: "txn-015",
@@ -204,6 +219,7 @@ export const allTransactions: Transaction[] = [
     amountClass: "text-on-surface",
     property: "Downtown Plaza",
     highlight: false,
+    bankAccount: "Amex Business Platinum ····3190",
   },
 ];
 

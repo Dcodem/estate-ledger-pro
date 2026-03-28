@@ -28,6 +28,15 @@ const financials = [
   { item: "Taxes", amount: "-$450", amountClass: "text-on-surface", icon: "receipt_long" },
   { item: "Net", amount: "$3,550", amountClass: "text-emerald-700 font-extrabold", icon: "account_balance_wallet", isTotal: true },
 ];
+const tenant = {
+  name: "The Morrison Family",
+  rent: "$4,500",
+  lastPay: "Mar 1",
+  onTime: true,
+  leaseStart: "Jun 2022",
+  leaseEnd: "Jun 2025",
+  notes: "Long-term tenant, excellent payment history. Lease renewal discussion scheduled for Apr 2025.",
+};
 const txns = [
   { date: "Mar 15", desc: "Lawn Care", cat: "Maintenance", amount: "-$320", amountClass: "text-on-surface" },
   { date: "Mar 14", desc: "Insurance Premium", cat: "Insurance", amount: "-$180", amountClass: "text-on-surface" },
@@ -121,91 +130,139 @@ export default function OakRidgePage() {
         files={propertyFiles}
       />
 
-      {/* Financial Summary */}
-      <div>
-        <h2 className="text-xl font-bold mb-6">Financial Summary</h2>
-        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-surface-container-low/50">
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Item</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {financials.map((f, i) => (
-                <tr key={i} className={`hover:bg-slate-50/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
-                      <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
-                    </div>
-                  </td>
-                  <td className={`px-8 py-5 text-right text-sm font-bold ${f.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
-                    {f.amount}
-                  </td>
+      {/* Recent Transactions + Financial Summary — Two Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="lg:col-span-2">
+          <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
+            {txns.map((t, i) => (
+              <div
+                key={i}
+                className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
+                onClick={() => window.location.href = `/transactions?property=oak-ridge`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
+                    {t.desc}
+                    <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                  </p>
+                  <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`}>
+                    {t.amount}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
+                  <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
+                  <span className="text-slate-300">·</span>
+                  <div className="group/cat flex items-center gap-1">
+                    <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                      categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700"
+                      : categories[i] === "Maintenance" ? "bg-blue-50 text-blue-600"
+                      : categories[i] === "Insurance" ? "bg-slate-100 text-slate-600"
+                      : "bg-amber-50 text-amber-700"
+                    }`}>
+                      {categories[i]}
+                    </span>
+                    <button
+                      onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                      className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                    >
+                      <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <button
+              onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
+              disabled={addTxnState !== "idle"}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+              {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
+            </button>
+            <Link href="/transactions?property=oak-ridge" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+              View All Transactions
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="lg:col-span-3">
+          <h2 className="text-xl font-bold mb-6">Financial Summary</h2>
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-surface-container-low/50">
+                  <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Item</th>
+                  <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {financials.map((f, i) => (
+                  <tr key={i} className={`hover:bg-slate-50/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
+                        <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
+                      </div>
+                    </td>
+                    <td className={`px-6 py-4 text-right text-sm font-bold ${f.amountClass}`}>
+                      {f.amount}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      {/* Recent Transactions — Compact Cards */}
+      {/* Tenant Details */}
       <div>
-        <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
-        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
-          {txns.map((t, i) => (
-            <div
-              key={i}
-              className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
-              onClick={() => window.location.href = `/transactions?property=oak-ridge`}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
-                  {t.desc}
-                  <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
-                </p>
-                <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
-                  {t.amount}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
-                <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
-                <span className="text-slate-300">·</span>
-                <div className="group/cat flex items-center gap-1">
-                  <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700"
-                    : categories[i] === "Maintenance" ? "bg-blue-50 text-blue-600"
-                    : categories[i] === "Insurance" ? "bg-slate-100 text-slate-600"
-                    : "bg-amber-50 text-amber-700"
-                  }`}>
-                    {categories[i]}
-                  </span>
-                  <button
-                    onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
-                    className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
-                  >
-                    <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
-                  </button>
-                </div>
-              </div>
+        <h2 className="text-xl font-bold mb-6">Tenant Details</h2>
+        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 p-6">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-primary text-[24px]">person</span>
             </div>
-          ))}
-        </div>
-        <div className="flex items-center justify-between mt-4">
-          <button
-            onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
-            disabled={addTxnState !== "idle"}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-          >
-            <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
-            {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
-          </button>
-          <Link href="/transactions?property=oak-ridge" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
-            View All Transactions
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </Link>
+            <div>
+              <p className="text-lg font-bold text-on-surface">{tenant.name}</p>
+              <p className="text-sm text-on-surface-variant">Single-family rental tenant</p>
+            </div>
+            <div className="ml-auto">
+              {tenant.onTime ? (
+                <span className="px-3 py-1 bg-green-100 text-green-700 text-[11px] font-bold rounded-full uppercase tracking-wide">On Time</span>
+              ) : (
+                <span className="px-3 py-1 bg-amber-100 text-amber-700 text-[11px] font-bold rounded-full uppercase tracking-wide">Late</span>
+              )}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-widest mb-1">Monthly Rent</p>
+              <p className="text-sm font-bold text-on-surface">{tenant.rent}</p>
+            </div>
+            <div>
+              <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-widest mb-1">Last Payment</p>
+              <p className="text-sm font-bold text-on-surface">{tenant.lastPay}</p>
+            </div>
+            <div>
+              <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-widest mb-1">Lease Period</p>
+              <p className="text-sm font-bold text-on-surface">{tenant.leaseStart} — {tenant.leaseEnd}</p>
+            </div>
+            <div>
+              <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-widest mb-1">Payment Status</p>
+              <p className="text-sm font-bold text-emerald-700">Current</p>
+            </div>
+          </div>
+          {tenant.notes && (
+            <div className="mt-6 pt-5 border-t border-outline-variant/10">
+              <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-widest mb-2">Notes</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">{tenant.notes}</p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -214,7 +271,7 @@ export default function OakRidgePage() {
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
           <div className="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-xl font-bold mb-6">Reassign Category</h3>
             <label className="block text-sm font-medium text-on-surface-variant mb-2">Category</label>

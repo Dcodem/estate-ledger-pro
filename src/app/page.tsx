@@ -70,7 +70,7 @@ const propertyRows = [
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
-  const [exportState, setExportState] = useState<"idle" | "loading" | "done">("idle");
+  const [showExportToast, setShowExportToast] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -98,29 +98,24 @@ export default function DashboardPage() {
         actions={
           <button
             onClick={() => {
-              if (exportState !== "idle") return;
-              setExportState("loading");
-              setTimeout(() => {
-                setExportState("done");
-                setTimeout(() => setExportState("idle"), 2000);
-              }, 1500);
+              setShowExportToast(true);
+              setTimeout(() => setShowExportToast(false), 2500);
             }}
-            disabled={exportState !== "idle"}
-            className={`px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition-all shadow-sm ${
-              exportState === "done"
-                ? "bg-emerald-500 text-white"
-                : exportState === "loading"
-                  ? "bg-secondary/70 text-white cursor-wait"
-                  : "bg-secondary text-white hover:bg-primary"
-            }`}
+            className="px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition-all shadow-sm bg-secondary text-white hover:bg-primary"
           >
-            <span className="material-symbols-outlined text-sm">
-              {exportState === "done" ? "check" : exportState === "loading" ? "hourglass_top" : "picture_as_pdf"}
-            </span>
-            {exportState === "done" ? "Downloaded!" : exportState === "loading" ? "Exporting..." : "Export PDF"}
+            <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
+            Export PDF
           </button>
         }
       />
+
+      {/* Export coming soon toast */}
+      <div role="status" aria-live="polite" className={`fixed top-6 right-6 z-50 transition-all duration-300 ${showExportToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
+        <div className="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/20 px-5 py-3 flex items-center gap-3">
+          <span className="material-symbols-outlined text-primary text-[20px]">info</span>
+          <p className="text-sm font-semibold text-on-surface">PDF export is coming soon</p>
+        </div>
+      </div>
 
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

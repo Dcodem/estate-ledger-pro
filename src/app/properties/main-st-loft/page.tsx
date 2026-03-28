@@ -23,12 +23,20 @@ const categoryOptions = [
 ];
 
 const units = [
-  { unit: "Unit A", tenant: "Sarah Chen", rent: "$1,400", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15" },
-  { unit: "Unit B", tenant: "Michael Torres", rent: "$1,350", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 14" },
-  { unit: "Unit C", tenant: "Jennifer Walsh", rent: "$1,500", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15" },
-  { unit: "Unit D", tenant: "\u2014", rent: "\u2014", status: "Vacant", statusBg: "bg-red-100", statusText: "text-red-700", lastPay: "Feb 1" },
-  { unit: "Unit E", tenant: "Robert Kim", rent: "$1,450", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 13" },
-  { unit: "Unit F", tenant: "Lisa Park", rent: "$1,500", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15" },
+  { unit: "Unit A", tenant: "Sarah Chen", rent: "$1,400", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15", onTime: true, notes: "Lease renewal due Apr 2024" },
+  { unit: "Unit B", tenant: "Michael Torres", rent: "$1,350", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 14", onTime: true, notes: "" },
+  { unit: "Unit C", tenant: "Jennifer Walsh", rent: "$1,500", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15", onTime: true, notes: "New tenant, started Jan 2024" },
+  { unit: "Unit D", tenant: "\u2014", rent: "\u2014", status: "Vacant", statusBg: "bg-red-100", statusText: "text-red-700", lastPay: "Feb 1", onTime: false, notes: "Listed on Zillow, 2 inquiries" },
+  { unit: "Unit E", tenant: "Robert Kim", rent: "$1,450", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 13", onTime: true, notes: "" },
+  { unit: "Unit F", tenant: "Lisa Park", rent: "$1,500", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15", onTime: true, notes: "Renewed through Dec 2025" },
+];
+const financials = [
+  { item: "Rental Income", amount: "$8,200", amountClass: "text-emerald-700", icon: "payments" },
+  { item: "Maintenance", amount: "-$680", amountClass: "text-on-surface", icon: "build" },
+  { item: "Insurance", amount: "-$350", amountClass: "text-on-surface", icon: "shield" },
+  { item: "Utilities", amount: "-$420", amountClass: "text-on-surface", icon: "bolt" },
+  { item: "Taxes", amount: "-$750", amountClass: "text-on-surface", icon: "receipt_long" },
+  { item: "Net Operating Income", amount: "$6,000", amountClass: "text-emerald-700 font-extrabold", icon: "account_balance_wallet", isTotal: true },
 ];
 const txns = [
   { date: "Mar 15", desc: "Rent - Unit A,C,F", cat: "Rental Income", amount: "+$4,400", amountClass: "text-emerald-700" },
@@ -125,91 +133,128 @@ export default function MainStLoftPage() {
         files={propertyFiles}
       />
 
-      {/* Unit Performance Ledger */}
+      {/* Recent Transactions + Financial Summary — Two Column */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="lg:col-span-2">
+          <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
+            {txns.map((t, i) => (
+              <div
+                key={i}
+                className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
+                onClick={() => window.location.href = `/transactions?property=main-st-loft`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
+                    {t.desc}
+                    <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                  </p>
+                  <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`}>
+                    {t.amount}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
+                  <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
+                  <span className="text-slate-300">·</span>
+                  <div className="group/cat flex items-center gap-1">
+                    <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
+                      categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
+                    }`}>
+                      {categories[i]}
+                    </span>
+                    <button
+                      onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
+                      className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
+                    >
+                      <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between mt-4">
+            <button
+              onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
+              disabled={addTxnState !== "idle"}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+              {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
+            </button>
+            <Link href="/transactions?property=main-st-loft" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+              View All Transactions
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="lg:col-span-3">
+          <h2 className="text-xl font-bold mb-6">Financial Summary</h2>
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-surface-container-low/50">
+                  <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Item</th>
+                  <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {financials.map((f, i) => (
+                  <tr key={i} className={`hover:bg-slate-50/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
+                        <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
+                      </div>
+                    </td>
+                    <td className={`px-6 py-4 text-right text-sm font-bold ${f.amountClass}`}>
+                      {f.amount}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Tenant Details */}
       <div>
-        <h2 className="text-xl font-bold mb-6">Unit Performance Ledger</h2>
+        <h2 className="text-xl font-bold mb-6">Tenant Details</h2>
         <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low/50">
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Unit</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Tenant</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Rent</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Status</th>
-                <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Last Payment</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Unit</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Tenant</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Rent</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Last Paid</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Status</th>
+                <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Notes</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {units.map((u, i) => (
                 <tr key={i} className="hover:bg-slate-50/50 transition-all">
-                  <td className="px-8 py-5 text-sm font-bold text-on-surface">{u.unit}</td>
-                  <td className="px-8 py-5 text-sm text-on-surface-variant">{u.tenant}</td>
-                  <td className="px-8 py-5 text-sm font-semibold text-on-surface">{u.rent}</td>
-                  <td className="px-8 py-5 text-center">
-                    <span className={`px-3 py-1 ${u.statusBg} ${u.statusText} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
-                      {u.status}
-                    </span>
+                  <td className="px-6 py-4 text-sm font-bold text-on-surface">{u.unit}</td>
+                  <td className="px-6 py-4 text-sm text-on-surface-variant">{u.tenant}</td>
+                  <td className="px-6 py-4 text-sm font-semibold text-on-surface">{u.rent}</td>
+                  <td className="px-6 py-4 text-sm text-on-surface-variant text-center">{u.lastPay}</td>
+                  <td className="px-6 py-4 text-center">
+                    {u.status === "Vacant" ? (
+                      <span className="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full uppercase tracking-wide">Vacant</span>
+                    ) : u.onTime ? (
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded-full uppercase tracking-wide">On Time</span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full uppercase tracking-wide">Late</span>
+                    )}
                   </td>
-                  <td className="px-8 py-5 text-sm text-on-surface-variant font-medium text-right">{u.lastPay}</td>
+                  <td className="px-6 py-4 text-sm text-on-surface-variant">{u.notes || "\u2014"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Recent Transactions — Compact Cards */}
-      <div>
-        <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
-        <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
-          {txns.map((t, i) => (
-            <div
-              key={i}
-              className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
-              onClick={() => window.location.href = `/transactions?property=main-st-loft`}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
-                  {t.desc}
-                  <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
-                </p>
-                <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
-                  {t.amount}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
-                <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
-                <span className="text-slate-300">·</span>
-                <div className="group/cat flex items-center gap-1">
-                  <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
-                  }`}>
-                    {categories[i]}
-                  </span>
-                  <button
-                    onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
-                    className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
-                  >
-                    <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center justify-between mt-4">
-          <button
-            onClick={() => { if (addTxnState !== "idle") return; setAddTxnState("loading"); setTimeout(() => { setAddTxnState("done"); setTimeout(() => setAddTxnState("idle"), 2000); }, 1500); }}
-            disabled={addTxnState !== "idle"}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-          >
-            <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
-            {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
-          </button>
-          <Link href="/transactions?property=main-st-loft" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
-            View All Transactions
-            <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-          </Link>
         </div>
       </div>
 
@@ -218,7 +263,7 @@ export default function MainStLoftPage() {
 
       {/* Category Reassignment Modal */}
       {editingIndex !== null && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex items-center justify-center" onClick={() => setEditingIndex(null)}>
           <div className="bg-surface-container-lowest rounded-2xl p-8 w-full max-w-md shadow-xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-xl font-bold mb-6">Reassign Category</h3>
             <label className="block text-sm font-medium text-on-surface-variant mb-2">Category</label>

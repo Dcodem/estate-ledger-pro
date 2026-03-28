@@ -170,15 +170,20 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       </nav>
 
       {/* User Profile Footer */}
-      <div className="mt-auto flex items-center gap-3 px-2 pt-6 border-t border-slate-200">
+      <Link
+        href="/settings"
+        onClick={onClose}
+        className="mt-auto flex items-center gap-3 px-2 pt-6 border-t border-slate-200 hover:bg-slate-100/50 rounded-lg transition-colors"
+      >
         <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
-          WA
+          JS
         </div>
-        <div className="overflow-hidden">
-          <p className="text-xs font-bold truncate">User Profile</p>
+        <div className="overflow-hidden flex-1">
+          <p className="text-xs font-bold truncate">Jonathan Sterling</p>
           <p className="text-[11px] text-slate-500 truncate">Premium Member</p>
         </div>
-      </div>
+        <span className="material-symbols-outlined text-[16px] text-slate-400">chevron_right</span>
+      </Link>
     </aside>
   );
 }

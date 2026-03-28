@@ -224,6 +224,14 @@ export default function TransactionDetailPage({
 
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">account_balance</span>
+                  Bank Account
+                </span>
+                <span className="text-sm font-bold text-on-surface">{txn.bankAccount}</span>
+              </div>
+
+              <div className="flex justify-between items-center py-4">
+                <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">label</span>
                   Category
                 </span>

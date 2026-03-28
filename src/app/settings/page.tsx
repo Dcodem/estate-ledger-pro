@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
@@ -40,6 +40,8 @@ function SettingsTabs() {
 export default function SettingsAccountPage() {
   const [profileSaved, setProfileSaved] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const handleProfileSave = () => {
     setProfileSaved(true);
@@ -49,6 +51,14 @@ export default function SettingsAccountPage() {
   const handlePasswordUpdate = () => {
     setPasswordUpdated(true);
     setTimeout(() => setPasswordUpdated(false), 2000);
+  };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setProfilePic(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -66,6 +76,53 @@ export default function SettingsAccountPage() {
             <span className="material-symbols-outlined text-primary">person</span>
             <h3 className="font-headline text-lg font-bold text-on-surface">Profile Information</h3>
           </div>
+
+          {/* Profile Picture */}
+          <div className="flex items-center gap-6 mb-8 pb-8 border-b border-outline-variant/20">
+            <div className="relative group">
+              {profilePic ? (
+                <img src={profilePic} alt="Profile" className="w-20 h-20 rounded-full object-cover" />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold">
+                  JS
+                </div>
+              )}
+              <button
+                onClick={() => avatarInputRef.current?.click()}
+                className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <span className="material-symbols-outlined text-white text-[24px]">photo_camera</span>
+              </button>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-on-surface">Jonathan Sterling</p>
+              <p className="text-xs text-on-surface-variant mt-0.5">Premium Member</p>
+              <div className="flex items-center gap-3 mt-3">
+                <button
+                  onClick={() => avatarInputRef.current?.click()}
+                  className="text-xs font-semibold text-primary hover:underline"
+                >
+                  {profilePic ? "Change Photo" : "Upload Photo"}
+                </button>
+                {profilePic && (
+                  <button
+                    onClick={() => setProfilePic(null)}
+                    className="text-xs font-semibold text-red-600 hover:underline"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-on-surface-variant tracking-wide uppercase">
