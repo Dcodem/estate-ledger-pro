@@ -74,6 +74,7 @@ export default function IntegrationsPage() {
             </div>
             <button
               onClick={() => { setChaseDisconnected(true); setTimeout(() => setChaseDisconnected(false), 2000); }}
+              aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
                 chaseDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
               }`}
@@ -102,6 +103,7 @@ export default function IntegrationsPage() {
             </div>
             <button
               onClick={() => { setWellsCancelled(true); setTimeout(() => setWellsCancelled(false), 2000); }}
+              aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
                 wellsCancelled ? "bg-amber-50 text-amber-700" : "text-slate-500 hover:bg-slate-100"
               }`}
@@ -133,6 +135,7 @@ export default function IntegrationsPage() {
                 setAmexReconnecting("loading");
                 setTimeout(() => { setAmexReconnecting("done"); setTimeout(() => setAmexReconnecting("idle"), 2000); }, 1500);
               }}
+              aria-live="polite"
               className={`px-5 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-1.5 ${
                 amexReconnecting === "done" ? "bg-emerald-500 text-white border border-emerald-500"
                 : amexReconnecting === "loading" ? "bg-primary/10 text-primary border border-primary/20 cursor-wait"
@@ -163,6 +166,7 @@ export default function IntegrationsPage() {
             </div>
             <button
               onClick={() => { setVanguardDisconnected(true); setTimeout(() => setVanguardDisconnected(false), 2000); }}
+              aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
                 vanguardDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
               }`}

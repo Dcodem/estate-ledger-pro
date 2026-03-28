@@ -11,7 +11,7 @@ export default function OnboardingStep4() {
             Estate Ledger
           </span>
           <div className="flex items-center space-x-8">
-            <span className="text-slate-400 font-[Cinzel] font-bold text-lg tracking-tight">
+            <span className="text-slate-500 font-[Cinzel] font-bold text-lg tracking-tight">
               Setup Guide
             </span>
           </div>

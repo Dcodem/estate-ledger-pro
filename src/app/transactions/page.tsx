@@ -177,7 +177,7 @@ function TransactionsContent() {
               <option key={tp}>{tp}</option>
             ))}
           </select>
-          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[18px]">expand_more</span>
+          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[18px]">expand_more</span>
         </div>
       </div>
 
@@ -296,7 +296,7 @@ function TransactionsContent() {
             <button
               onClick={() => setPage(Math.max(1, page - 1))}
               disabled={page === 1}
-              className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 transition-all disabled:opacity-30"
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-all disabled:opacity-30"
             >
               <span className="material-symbols-outlined text-[20px]">chevron_left</span>
             </button>

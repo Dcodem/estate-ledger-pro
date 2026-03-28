@@ -80,10 +80,10 @@ export default function OnboardingStep3() {
                 {/* Row 3: Pending */}
                 <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-low opacity-60 transition-all duration-300">
                   <div className="flex items-center space-x-4">
-                    <span className="material-symbols-outlined text-slate-400">schedule</span>
+                    <span className="material-symbols-outlined text-slate-500">schedule</span>
                     <span className="font-medium text-on-surface">Flagging Anomalies</span>
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                     Pending
                   </span>
                 </div>
@@ -108,14 +108,14 @@ export default function OnboardingStep3() {
           {/* Step 1 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
               Step 1
             </span>
           </div>
           {/* Step 2 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
               Step 2
             </span>
           </div>

@@ -136,6 +136,7 @@ export default function NotificationsPage() {
         <div className="flex justify-end">
           <button
             onClick={handleSavePrefs}
+            aria-live="polite"
             className={`px-8 py-3 rounded-lg font-bold shadow-lg transition-all flex items-center gap-2 ${
               prefsSaved
                 ? "bg-emerald-500 text-white shadow-emerald-500/20"

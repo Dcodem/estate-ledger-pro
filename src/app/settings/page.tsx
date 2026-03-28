@@ -93,6 +93,7 @@ export default function SettingsAccountPage() {
           <div className="mt-8 flex justify-end">
             <button
               onClick={handleProfileSave}
+              aria-live="polite"
               className={`px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all flex items-center gap-2 ${
                 profileSaved
                   ? "bg-emerald-500 text-white shadow-emerald-500/20"
@@ -157,6 +158,7 @@ export default function SettingsAccountPage() {
           <div className="mt-8 flex justify-end">
             <button
               onClick={handlePasswordUpdate}
+              aria-live="polite"
               className={`px-6 py-2.5 rounded-lg text-sm font-semibold shadow-lg transition-all flex items-center gap-2 ${
                 passwordUpdated
                   ? "bg-emerald-500 text-white shadow-emerald-500/20"

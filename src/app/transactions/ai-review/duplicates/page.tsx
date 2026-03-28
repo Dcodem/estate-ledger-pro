@@ -105,7 +105,7 @@ export default function DuplicatesPage() {
                     <div key={j} className="p-4 rounded-lg bg-surface-container-low/40 space-y-3">
                       {t.id && (
                         <div className="flex justify-between items-start">
-                          <span className="text-[11px] font-bold text-slate-400">ID: {t.id}</span>
+                          <span className="text-[11px] font-bold text-slate-500">ID: {t.id}</span>
                           {t.icon && (
                             <span className="material-symbols-outlined text-slate-300">{t.icon}</span>
                           )}

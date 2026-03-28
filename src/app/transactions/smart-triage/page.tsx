@@ -620,6 +620,7 @@ export default function TransactionReviewPage() {
             </p>
             <button
               onClick={() => { setConciergeToast(true); setTimeout(() => setConciergeToast(false), 3000); }}
+              aria-live="polite"
               className="text-primary font-bold hover:underline flex items-center justify-center mx-auto"
             >
               <span className="material-symbols-outlined mr-2">

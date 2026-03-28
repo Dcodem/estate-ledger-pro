@@ -151,6 +151,7 @@ export default function TransactionDetailPage({
           <div className="flex items-center gap-3">
             <button
               onClick={handleSave}
+              aria-live="polite"
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold shadow-md transition-all ${
                 saved
                   ? "bg-emerald-500 text-white shadow-emerald-500/20"
@@ -167,7 +168,7 @@ export default function TransactionDetailPage({
       />
 
       {/* Split toast */}
-      <div className={`fixed top-6 right-6 z-50 transition-all duration-300 ${splitToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
+      <div role="status" aria-live="polite" className={`fixed top-6 right-6 z-50 transition-all duration-300 ${splitToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
         <div className="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/20 px-5 py-3 flex items-center gap-3">
           <span className="material-symbols-outlined text-primary text-[20px]">info</span>
           <p className="text-sm font-semibold text-on-surface">Split Transaction is coming soon</p>
@@ -358,7 +359,7 @@ export default function TransactionDetailPage({
               }`}
             >
               <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-slate-100"}`}>
-                <span className={`material-symbols-outlined text-2xl ${isDragging ? "text-primary" : "text-slate-400"}`}>
+                <span className={`material-symbols-outlined text-2xl ${isDragging ? "text-primary" : "text-slate-500"}`}>
                   cloud_upload
                 </span>
               </div>
@@ -387,6 +388,7 @@ export default function TransactionDetailPage({
               </button>
               <button
                 onClick={handleDuplicate}
+                aria-live="polite"
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                   duplicated
                     ? "bg-emerald-50 text-emerald-700"

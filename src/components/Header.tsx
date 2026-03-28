@@ -19,7 +19,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           <span className="material-symbols-outlined">menu</span>
         </button>
         <div className="relative">
-          <span className="absolute inset-y-0 left-3 flex items-center text-slate-400">
+          <span className="absolute inset-y-0 left-3 flex items-center text-slate-500">
             <span className="material-symbols-outlined text-lg">search</span>
           </span>
           <input
@@ -37,7 +37,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
         <Link href="/properties" className="sm:hidden bg-gradient-to-br from-primary to-primary-container text-white p-2 rounded-lg shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity" aria-label="Add Property">
           <span className="material-symbols-outlined text-sm">add</span>
         </Link>
-        <div className="flex items-center gap-1 sm:gap-2 text-slate-400">
+        <div className="flex items-center gap-1 sm:gap-2 text-slate-500">
           <Link href="/settings/notifications" className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
             <span className="material-symbols-outlined">notifications</span>
           </Link>

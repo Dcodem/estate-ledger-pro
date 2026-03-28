@@ -38,7 +38,7 @@ const properties = [
     type: "Luxury Residential",
     income: "$85,000.00",
     credits: "$0.00",
-    creditsColor: "text-slate-400",
+    creditsColor: "text-slate-500",
     debits: "($22,400.00)",
     net: "$62,600.00",
     status: "Draft",
@@ -139,7 +139,7 @@ export default function MonthlyStatementPage() {
                 <option>February 2024</option>
                 <option>January 2024</option>
               </select>
-              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">expand_more</span>
             </div>
             <div className="relative">
               <select
@@ -153,7 +153,7 @@ export default function MonthlyStatementPage() {
                 <option>Oak Ridge Estate</option>
                 <option>Downtown Plaza</option>
               </select>
-              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
+              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">expand_more</span>
             </div>
           </div>
         }
@@ -238,7 +238,7 @@ export default function MonthlyStatementPage() {
                   <tr className="bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors cursor-pointer" onClick={() => toggleRow(prop.name)}>
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        <span className={`material-symbols-outlined transition-transform duration-200 ${expandedRows.has(prop.name) ? "text-primary rotate-0" : "text-slate-400 -rotate-90"}`}>
+                        <span className={`material-symbols-outlined transition-transform duration-200 ${expandedRows.has(prop.name) ? "text-primary rotate-0" : "text-slate-500 -rotate-90"}`}>
                           expand_more
                         </span>
                         <div>
@@ -264,8 +264,8 @@ export default function MonthlyStatementPage() {
                         <p className="text-sm text-on-surface font-medium">{sub.name}</p>
                       </td>
                       <td className="px-6 py-4 text-right text-sm font-medium">{sub.income}</td>
-                      <td className="px-6 py-4 text-right text-sm text-slate-400">{sub.credits}</td>
-                      <td className={`px-6 py-4 text-right text-sm ${sub.debitsColor || "text-slate-400"} font-medium`}>{sub.debits}</td>
+                      <td className="px-6 py-4 text-right text-sm text-slate-500">{sub.credits}</td>
+                      <td className={`px-6 py-4 text-right text-sm ${sub.debitsColor || "text-slate-500"} font-medium`}>{sub.debits}</td>
                       <td className="px-6 py-4 text-right text-sm font-bold">{sub.net}</td>
                       <td className="px-6 py-4" />
                     </tr>

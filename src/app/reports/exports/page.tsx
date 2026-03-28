@@ -60,7 +60,7 @@ export default function ExportsPage() {
           <div className="bg-surface-container-lowest p-8 rounded-xl card-shadow space-y-10">
             {/* Step 1: Format */}
             <section>
-              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">1</span>
                 Select Export Format
               </h2>
@@ -71,7 +71,7 @@ export default function ExportsPage() {
                     format === "excel" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-teal-700" : "text-slate-400"}`}>table_chart</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-teal-700" : "text-slate-500"}`}>table_chart</span>
                   <span className="text-sm font-bold text-on-surface">Excel</span>
                   <span className="text-[11px] text-on-surface-variant">.xlsx file</span>
                   {format === "excel" && (
@@ -86,7 +86,7 @@ export default function ExportsPage() {
                     format === "csv" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-teal-700" : "text-slate-400"}`}>description</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-teal-700" : "text-slate-500"}`}>description</span>
                   <span className="text-sm font-bold text-on-surface">CSV</span>
                   <span className="text-[11px] text-on-surface-variant">Raw data</span>
                   {format === "csv" && (
@@ -100,7 +100,7 @@ export default function ExportsPage() {
 
             {/* Step 2: Date Range */}
             <section>
-              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">2</span>
                 Date Range
               </h2>
@@ -116,7 +116,7 @@ export default function ExportsPage() {
                   <option>Last 12 Months</option>
                   <option>Custom Range...</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">expand_more</span>
               </div>
               {dateRange === "Custom Range..." && (
                 <div className="grid grid-cols-2 gap-4 mt-4">
@@ -140,7 +140,7 @@ export default function ExportsPage() {
 
             {/* Step 3: Property Selection */}
             <section>
-              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">3</span>
                 Property Selection
               </h2>
@@ -160,7 +160,7 @@ export default function ExportsPage() {
 
             {/* Step 4: Table Preferences */}
             <section>
-              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2">
                 <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">4</span>
                 Table Preferences
               </h2>
@@ -182,7 +182,7 @@ export default function ExportsPage() {
             </section>
 
             {/* Footer of Form */}
-            <footer className="pt-10 border-t border-slate-50 space-y-6">
+            <footer className="pt-10 border-t border-slate-50 space-y-6" aria-live="polite">
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-bold text-on-surface-variant uppercase tracking-wider">
                   <span>Storage quota</span>
@@ -201,7 +201,7 @@ export default function ExportsPage() {
                 <button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-teal-500/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  className="w-full py-4 bg-primary text-white text-lg font-extrabold rounded-xl shadow-lg shadow-teal-500/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
                   {generating ? (
                     <>
@@ -221,7 +221,7 @@ export default function ExportsPage() {
         <div className="space-y-8">
           {/* Quick Export Presets */}
           <section>
-            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Quick Export Presets</h3>
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Quick Export Presets</h3>
             <div className="space-y-4">
               {presets.map((preset) => (
                 <div key={preset.title} className="group bg-surface-container-lowest p-5 rounded-xl card-shadow border border-transparent hover:border-teal-200 transition-all cursor-pointer">
@@ -240,7 +240,7 @@ export default function ExportsPage() {
 
           {/* Export History */}
           <section>
-            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Export History</h3>
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Export History</h3>
             <div className="bg-surface-container-lowest rounded-xl card-shadow overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
@@ -274,6 +274,7 @@ export default function ExportsPage() {
               <div className="p-4 bg-slate-50/50 text-center">
                 <button
                   onClick={() => { setArchiveToast(true); setTimeout(() => setArchiveToast(false), 2500); }}
+                  aria-live="polite"
                   className="text-[11px] font-bold text-teal-700 hover:text-teal-700 transition-colors"
                 >
                   {archiveToast ? "Full archive coming soon!" : "View All Archive"}
