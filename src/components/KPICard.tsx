@@ -17,7 +17,7 @@ export default function KPICard({ label, value, icon, iconBg = "bg-primary-fixed
           <span className="material-symbols-outlined">{icon}</span>
         </div>
         {trend && (
-          <span className={`text-[11px] font-bold flex items-center gap-0.5 ${trendUp ? "text-green-600" : "text-error"}`}>
+          <span className={`text-[11px] font-bold flex items-center gap-0.5 ${trendUp ? "text-green-700" : "text-error"}`}>
             <span className="material-symbols-outlined text-[14px]">
               {trendUp ? "trending_up" : "trending_down"}
             </span>

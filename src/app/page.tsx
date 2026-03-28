@@ -30,7 +30,7 @@ const propertyRows = [
     name: "Main St. Loft",
     slug: "main-st-loft",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCVymTACY9v0mFrSi8Uy7lrlUj1ZOIOpw9KkM9Sy7xJDoH1Z4AZd6wyIVoO8kPcqbwJGtLP9qCnS523Nq861qySqCjZi9sgA1MTRjDEEZ9H_Hha4xFKkYQ_gArHOJeVrzkj1bkanww9Ns_Bpj78raU_QSn0qxrPRFRZRiSnjA0QzekSFjfBfFRHQqy0wicy1UN4zNhrshWdKr5PCcodrs8TKK9Fgw4Ker20PGzQ3Ik86F-VOwtYeKO_Pw2kB1idsa7nT_HAchfDo7TL",
-    alt: "Interior",
+    alt: "Main St. Loft interior with modern finishes",
     revenue: "$3,500",
     expenses: "$1,200",
     netIncome: "$2,300",
@@ -43,7 +43,7 @@ const propertyRows = [
     name: "Oak Ridge",
     slug: "oak-ridge",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDiH4ucfBZq-aBKooIKDgMKm5sifp-sI3GpZ_L786rFhJqOUgtFmxMc3F4K8Tt-vBFAmIZMYZ11lka0FlDY3eECX2hhV3AJcMq6V1SPnod7Vs5YB47B1wX2ZXYpRu6P-_35LTdRaXcsp6YC8W1QvKBiI4Rd1gdUUKm6dquhRPCfBVatptV_IWxeNKUoTmgirdIHIW765jLUi3asi_QpIi-vtDpDLztOSPY3lT_2SruyMR8wCYYrAR_pRTO0bL3kPrzcI8UF0w-qTWz9",
-    alt: "Exterior",
+    alt: "Oak Ridge estate exterior with landscaped grounds",
     revenue: "$8,400",
     expenses: "$2,800",
     netIncome: "$5,600",
@@ -56,7 +56,7 @@ const propertyRows = [
     name: "Downtown Plaza",
     slug: "downtown-plaza",
     img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBMjOXxwYwr_TBnC21p3gxBMD4DDlhsYqU7WdMgtW1u01lACME2BxKkj2j7HgNY45UGKuxDJp8dR2bs96gGxP2aShbNXeFNsfJ7XpnH3SulesbzRrwWFuJozi3SAXGo7rfP-Ezc8OA1d0U6vGgj1wRmLXwrd57ws5mRg-IBVRcyH1n6TMTAyqOHWQW2L1_6x4773dqC5zCwphM0CeE-4ou7Kr0_KEmUh14pk77_PlOrsXG1hlu70nbm2Wi9jTjVNBTsDULV9xtumNmq",
-    alt: "Commercial",
+    alt: "Downtown Plaza commercial building facade",
     revenue: "$6,800",
     expenses: "$3,100",
     netIncome: "$3,700",
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 <span className="text-xs font-medium">Revenue</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-secondary-container" />
+                <span className="w-3 h-3 rounded-full bg-secondary-container" style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(0,0,0,0.15) 1px, rgba(0,0,0,0.15) 2px)" }} />
                 <span className="text-xs font-medium">Expenses</span>
               </div>
             </div>
@@ -214,6 +214,12 @@ export default function DashboardPage() {
               data={chartData}
               margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
             >
+              <defs>
+                <pattern id="expenses-pattern" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <rect width="6" height="6" fill="var(--color-secondary-container)" />
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="var(--color-outline-variant)" strokeWidth="1.5" />
+                </pattern>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis
                 dataKey="month"
@@ -245,7 +251,7 @@ export default function DashboardPage() {
               />
               <Bar
                 dataKey="expenses"
-                fill="var(--color-secondary-container)"
+                fill="url(#expenses-pattern)"
                 radius={[4, 4, 0, 0]}
                 name="Expenses"
               />
