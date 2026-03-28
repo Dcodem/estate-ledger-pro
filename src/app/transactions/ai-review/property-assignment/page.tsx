@@ -117,7 +117,7 @@ export default function PropertyAssignmentPage() {
                   </div>
                 </div>
                 <div className="relative">
-                  <select className="appearance-none bg-surface-container-lowest border-none text-sm font-semibold rounded-lg pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary/20 cursor-pointer shadow-sm">
+                  <select aria-label="Property assignment" className="appearance-none bg-surface-container-lowest border-none text-sm font-semibold rounded-lg pl-4 pr-10 py-2 focus:ring-2 focus:ring-primary/20 cursor-pointer shadow-sm">
                     {tx.options.map((opt) => (
                       <option key={opt}>{opt}</option>
                     ))}

@@ -13,7 +13,7 @@ const kpisByPeriod: Record<string, { revenue: string; revenueTrend: string; expe
 const kpiMeta = [
   { icon: "payments", iconBg: "bg-primary-fixed-dim", iconColor: "text-primary", label: "Total Revenue", key: "revenue" as const, hasTrend: true },
   { icon: "account_balance_wallet", iconBg: "bg-orange-100", iconColor: "text-orange-600", label: "Total Expenses", key: "expenses" as const },
-  { icon: "trending_up", iconBg: "bg-emerald-100", iconColor: "text-emerald-600", label: "Operating Profit", key: "profit" as const, note: "Pre-tax reconciliation" },
+  { icon: "trending_up", iconBg: "bg-emerald-100", iconColor: "text-emerald-700", label: "Operating Profit", key: "profit" as const, note: "Pre-tax reconciliation" },
 ];
 
 const properties = [
@@ -22,7 +22,7 @@ const properties = [
     type: "Mixed-Use Commercial",
     income: "$42,500.00",
     credits: "$1,200.00",
-    creditsColor: "text-emerald-600",
+    creditsColor: "text-emerald-700",
     debits: "($8,450.00)",
     net: "$35,250.00",
     status: "Verified",
@@ -55,7 +55,7 @@ const properties = [
     type: "Retail Strip",
     income: "$15,000.00",
     credits: "$450.00",
-    creditsColor: "text-emerald-600",
+    creditsColor: "text-emerald-700",
     debits: "($7,390.12)",
     net: "$8,059.88",
     status: "Verified",
@@ -132,6 +132,7 @@ export default function MonthlyStatementPage() {
               <select
                 value={period}
                 onChange={(e) => setPeriod(e.target.value)}
+                aria-label="Statement period"
                 className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
               >
                 <option>Statement Period: March 2024</option>
@@ -144,6 +145,7 @@ export default function MonthlyStatementPage() {
               <select
                 value={propertyFilter}
                 onChange={(e) => setPropertyFilter(e.target.value)}
+                aria-label="Property filter"
                 className="appearance-none bg-surface-container-lowest border border-outline-variant/30 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
               >
                 <option>Filter: All Properties</option>
@@ -166,7 +168,7 @@ export default function MonthlyStatementPage() {
                 <span className="material-symbols-outlined">{kpi.icon}</span>
               </div>
               {kpi.hasTrend && (
-                <span className={`text-[11px] font-bold px-2 py-1 rounded-full ${periodData.revenueTrend.startsWith("+") ? "text-emerald-600 bg-emerald-50" : "text-red-600 bg-red-50"}`}>{periodData.revenueTrend}</span>
+                <span className={`text-[11px] font-bold px-2 py-1 rounded-full ${periodData.revenueTrend.startsWith("+") ? "text-emerald-700 bg-emerald-50" : "text-red-600 bg-red-50"}`}>{periodData.revenueTrend}</span>
               )}
             </div>
             <div className="mt-6">

@@ -54,14 +54,14 @@ export default function OnboardingStep3() {
                 <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-low transition-all duration-300">
                   <div className="flex items-center space-x-4">
                     <span
-                      className="material-symbols-outlined text-emerald-600"
+                      className="material-symbols-outlined text-emerald-700"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       check_circle
                     </span>
                     <span className="font-medium text-on-surface">Categorizing Transactions</span>
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
                     Complete
                   </span>
                 </div>
@@ -122,7 +122,7 @@ export default function OnboardingStep3() {
           {/* Step 3 (Active) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-16 rounded-full bg-primary shadow-[0_0_8px_rgba(99,14,212,0.4)]" />
-            <div className="flex items-center space-x-2 text-teal-600">
+            <div className="flex items-center space-x-2 text-teal-700">
               <span
                 className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}

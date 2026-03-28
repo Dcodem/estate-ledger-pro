@@ -31,9 +31,9 @@ const units = [
   { unit: "Unit F", tenant: "Lisa Park", rent: "$1,500", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700", lastPay: "Mar 15" },
 ];
 const txns = [
-  { date: "Mar 15", desc: "Rent - Unit A,C,F", cat: "Rental Income", amount: "+$4,400", amountClass: "text-emerald-600" },
-  { date: "Mar 14", desc: "Rent - Unit B", cat: "Rental Income", amount: "+$1,350", amountClass: "text-emerald-600" },
-  { date: "Mar 13", desc: "Rent - Unit E", cat: "Rental Income", amount: "+$1,450", amountClass: "text-emerald-600" },
+  { date: "Mar 15", desc: "Rent - Unit A,C,F", cat: "Rental Income", amount: "+$4,400", amountClass: "text-emerald-700" },
+  { date: "Mar 14", desc: "Rent - Unit B", cat: "Rental Income", amount: "+$1,350", amountClass: "text-emerald-700" },
+  { date: "Mar 13", desc: "Rent - Unit E", cat: "Rental Income", amount: "+$1,450", amountClass: "text-emerald-700" },
   { date: "Mar 10", desc: "Plumbing Repair", cat: "Maintenance", amount: "-$680", amountClass: "text-on-surface" },
 ];
 
@@ -182,7 +182,7 @@ export default function MainStLoftPage() {
                 <span className="text-slate-300">·</span>
                 <div className="group/cat flex items-center gap-1">
                   <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
                   }`}>
                     {categories[i]}
                   </span>

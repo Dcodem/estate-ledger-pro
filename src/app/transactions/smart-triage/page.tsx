@@ -571,7 +571,7 @@ export default function TransactionReviewPage() {
                     className="bg-surface-container-low/60 rounded-xl p-5 flex items-center justify-between border border-dashed border-outline-variant"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                      <div className="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
                         <span className="material-symbols-outlined text-[18px]">
                           check_circle
                         </span>
@@ -581,7 +581,7 @@ export default function TransactionReviewPage() {
                           {c.vendor}
                         </h4>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs font-bold text-emerald-600 uppercase tracking-tight">
+                          <span className="text-xs font-bold text-emerald-700 uppercase tracking-tight">
                             Accepted
                           </span>
                           <span className="text-on-surface-variant/40 text-xs">

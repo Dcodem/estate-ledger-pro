@@ -30,10 +30,10 @@ const units = [
   { unit: "Unit 4", tenant: "Legal Associates", rent: "$2,000", status: "Current", statusBg: "bg-green-100", statusText: "text-green-700" },
 ];
 const txns = [
-  { date: "Mar 15", desc: "Rent - Unit 1", cat: "Rental Income", amount: "+$2,200", amountClass: "text-emerald-600" },
-  { date: "Mar 14", desc: "Rent - Unit 2", cat: "Rental Income", amount: "+$1,800", amountClass: "text-emerald-600" },
+  { date: "Mar 15", desc: "Rent - Unit 1", cat: "Rental Income", amount: "+$2,200", amountClass: "text-emerald-700" },
+  { date: "Mar 14", desc: "Rent - Unit 2", cat: "Rental Income", amount: "+$1,800", amountClass: "text-emerald-700" },
   { date: "Mar 12", desc: "HVAC Repair", cat: "Maintenance", amount: "-$1,200", amountClass: "text-on-surface" },
-  { date: "Mar 10", desc: "Rent - Unit 4", cat: "Rental Income", amount: "+$2,000", amountClass: "text-emerald-600" },
+  { date: "Mar 10", desc: "Rent - Unit 4", cat: "Rental Income", amount: "+$2,000", amountClass: "text-emerald-700" },
 ];
 
 export default function DowntownPlazaPage() {
@@ -190,7 +190,7 @@ export default function DowntownPlazaPage() {
                 <span className="text-slate-300">·</span>
                 <div className="group/cat flex items-center gap-1">
                   <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
+                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
                   }`}>
                     {categories[i]}
                   </span>

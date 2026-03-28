@@ -104,7 +104,7 @@ export default function OnboardingStep1() {
 
       {/* Bottom Nav - Step Indicator */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center px-4 pb-12">
-        <div className="flex items-center justify-center space-x-2 text-teal-600">
+        <div className="flex items-center justify-center space-x-2 text-teal-700">
           <span
             className="material-symbols-outlined text-[11px]"
             style={{ fontVariationSettings: "'FILL' 1" }}

@@ -209,7 +209,7 @@ export default function LargeTransactionsPage() {
               <div>
                 <div className="flex justify-between items-end mb-4">
                   <div className="text-[13px] font-bold text-on-surface">Monthly Comparison</div>
-                  <div className="text-[11px] text-emerald-600 font-bold">+12% vs LY</div>
+                  <div className="text-[11px] text-emerald-700 font-bold">+12% vs LY</div>
                 </div>
                 <div className="h-32 flex items-end gap-6 px-4">
                   <div className="flex-1 flex flex-col items-center gap-2">

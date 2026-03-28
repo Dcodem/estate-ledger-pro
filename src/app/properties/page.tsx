@@ -216,13 +216,13 @@ export default function PropertiesPage() {
           <div className="bg-primary p-8 rounded-xl text-white flex flex-col justify-between h-full shadow-xl shadow-primary/10">
             <div>
               <span className="material-symbols-outlined bg-white/20 p-3 rounded-2xl mb-6 inline-block">account_balance_wallet</span>
-              <p className="text-primary-fixed/60 text-xs font-bold uppercase tracking-widest mb-1">Total Equity</p>
+              <p className="text-primary-fixed text-xs font-bold uppercase tracking-widest mb-1">Total Equity</p>
               <p className="text-4xl font-extrabold font-headline">$2,450,000</p>
-              <div className="mt-4 flex items-center gap-2 text-green-300 text-sm font-semibold">
+              <div className="mt-4 flex items-center gap-2 text-green-200 text-sm font-semibold">
                 <span className="material-symbols-outlined text-[20px]">trending_up</span>
                 +12.4% vs last year
               </div>
-              <p className="mt-2 text-[11px] text-white/50 leading-relaxed">
+              <p className="mt-2 text-[11px] text-white/90 leading-relaxed">
                 Based on Zillow Zestimate data and recent comparable sales. Updated monthly.
               </p>
             </div>

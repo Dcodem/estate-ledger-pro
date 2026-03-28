@@ -53,7 +53,7 @@ export default function OnboardingStep2() {
                     </div>
                   </div>
                   <div className="flex items-center space-x-6">
-                    <div className="flex items-center text-emerald-600 font-semibold text-sm">
+                    <div className="flex items-center text-emerald-700 font-semibold text-sm">
                       <span
                         className="material-symbols-outlined mr-1"
                         style={{ fontVariationSettings: "'FILL' 1" }}
@@ -106,7 +106,7 @@ export default function OnboardingStep2() {
               </span>
             </div>
             {/* Step 2 (Active) */}
-            <div className="flex items-center justify-center space-x-2 text-teal-600">
+            <div className="flex items-center justify-center space-x-2 text-teal-700">
               <span className="font-[Cinzel] text-xs font-semibold uppercase tracking-widest">
                 Step 2 of 4
               </span>

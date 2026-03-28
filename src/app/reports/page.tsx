@@ -8,7 +8,7 @@ const reportLinks = [
     title: "Monthly Statement",
     desc: "Consolidated monthly financial report with line-item detail.",
     icon: "receipt_long",
-    iconBg: "bg-emerald-50 text-emerald-600",
+    iconBg: "bg-emerald-50 text-emerald-700",
     href: "/reports/monthly-statement",
   },
   {

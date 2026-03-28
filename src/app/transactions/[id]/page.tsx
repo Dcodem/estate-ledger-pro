@@ -184,7 +184,7 @@ export default function TransactionDetailPage({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${isIncome ? "bg-emerald-100" : "bg-slate-200"}`}>
-                    <span className={`material-symbols-outlined text-2xl ${isIncome ? "text-emerald-600" : "text-slate-600"}`}>
+                    <span className={`material-symbols-outlined text-2xl ${isIncome ? "text-emerald-700" : "text-slate-600"}`}>
                       {isIncome ? "arrow_downward" : "arrow_upward"}
                     </span>
                   </div>
@@ -192,7 +192,7 @@ export default function TransactionDetailPage({
                     <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
                       {isIncome ? "Money In" : "Money Out"}
                     </p>
-                    <p className={`text-3xl font-extrabold mt-0.5 ${isIncome ? "text-emerald-600" : "text-on-surface"}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
+                    <p className={`text-3xl font-extrabold mt-0.5 ${isIncome ? "text-emerald-700" : "text-on-surface"}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
                       {txn.amount}
                     </p>
                   </div>
@@ -393,7 +393,7 @@ export default function TransactionDetailPage({
                     : "text-on-surface hover:bg-surface-container-low"
                 }`}
               >
-                <span className={`material-symbols-outlined text-[20px] ${duplicated ? "text-emerald-600" : "text-primary"}`}>
+                <span className={`material-symbols-outlined text-[20px] ${duplicated ? "text-emerald-700" : "text-primary"}`}>
                   {duplicated ? "check_circle" : "content_copy"}
                 </span>
                 {duplicated ? "Duplicated!" : "Duplicate Entry"}

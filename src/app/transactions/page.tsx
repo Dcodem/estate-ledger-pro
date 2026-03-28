@@ -170,6 +170,7 @@ function TransactionsContent() {
           <select
             value={timePeriod}
             onChange={(e) => setTimePeriod(e.target.value)}
+            aria-label="Time period"
             className="appearance-none bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
           >
             {timePeriods.map((tp) => (
@@ -192,6 +193,7 @@ function TransactionsContent() {
             <select
               value={propertyFilter}
               onChange={(e) => { setPropertyFilter(e.target.value); setPage(1); }}
+              aria-label="Property filter"
               className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
             >
               {propertyOptions.map((p) => (
@@ -204,6 +206,7 @@ function TransactionsContent() {
             <select
               value={monthFilter}
               onChange={(e) => { setMonthFilter(e.target.value); setPage(1); }}
+              aria-label="Month filter"
               className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
             >
               {monthOptions.map((m) => (
@@ -369,7 +372,7 @@ function TransactionsContent() {
 
             <div className="flex items-center gap-4 mb-6">
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${selectedTransaction.amount.startsWith("+") ? "bg-emerald-100" : "bg-slate-100"}`}>
-                <span className={`material-symbols-outlined text-xl ${selectedTransaction.amount.startsWith("+") ? "text-emerald-600" : "text-slate-600"}`}>
+                <span className={`material-symbols-outlined text-xl ${selectedTransaction.amount.startsWith("+") ? "text-emerald-700" : "text-slate-600"}`}>
                   {selectedTransaction.amount.startsWith("+") ? "arrow_downward" : "arrow_upward"}
                 </span>
               </div>
@@ -444,7 +447,7 @@ function TransactionsContent() {
 
             {tempCategory && (
               <div className="mt-6 bg-emerald-50 border border-emerald-200/50 rounded-xl p-4 flex items-start gap-3">
-                <span className="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                <span className="material-symbols-outlined text-emerald-700 text-xl">check_circle</span>
                 <div>
                   <p className="text-sm font-bold text-emerald-800">Recategorized</p>
                   <p className="text-xs text-emerald-700 mt-0.5">Changed to &quot;{tempCategory.label}&quot;. Save on the detail page to persist.</p>

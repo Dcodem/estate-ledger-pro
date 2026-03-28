@@ -6,7 +6,7 @@ import { useState } from "react";
 const presets = [
   {
     icon: "account_balance_wallet",
-    iconBg: "bg-teal-50 text-teal-600",
+    iconBg: "bg-teal-50 text-teal-700",
     title: "Accountant-Ready",
     desc: "Full general ledger with standardized tax classification codes.",
   },
@@ -18,15 +18,15 @@ const presets = [
   },
   {
     icon: "location_city",
-    iconBg: "bg-emerald-50 text-emerald-600",
+    iconBg: "bg-emerald-50 text-emerald-700",
     title: "Individual Property",
     desc: "Deep-dive financial history for a single selected asset.",
   },
 ];
 
 const exportHistory = [
-  { name: "FY 2022 Full Ledger", date: "Oct 12, 2023", size: "4.2 MB", format: "Excel", status: "Ready", statusColor: "text-emerald-600", dotColor: "bg-emerald-500" },
-  { name: "Q3 Performance Summary", date: "Sep 01, 2023", size: "1.8 MB", format: "CSV", status: "Ready", statusColor: "text-emerald-600", dotColor: "bg-emerald-500" },
+  { name: "FY 2022 Full Ledger", date: "Oct 12, 2023", size: "4.2 MB", format: "Excel", status: "Ready", statusColor: "text-emerald-700", dotColor: "bg-emerald-500" },
+  { name: "Q3 Performance Summary", date: "Sep 01, 2023", size: "1.8 MB", format: "CSV", status: "Ready", statusColor: "text-emerald-700", dotColor: "bg-emerald-500" },
   { name: "Main St. Audit Log", date: "Aug 24, 2023", size: "12.1 MB", format: "Excel", status: "Archiving", statusColor: "text-amber-600", dotColor: "bg-amber-500" },
 ];
 
@@ -71,7 +71,7 @@ export default function ExportsPage() {
                     format === "excel" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-teal-600" : "text-slate-400"}`}>table_chart</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-teal-700" : "text-slate-400"}`}>table_chart</span>
                   <span className="text-sm font-bold text-on-surface">Excel</span>
                   <span className="text-[11px] text-on-surface-variant">.xlsx file</span>
                   {format === "excel" && (
@@ -86,7 +86,7 @@ export default function ExportsPage() {
                     format === "csv" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-teal-600" : "text-slate-400"}`}>description</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-teal-700" : "text-slate-400"}`}>description</span>
                   <span className="text-sm font-bold text-on-surface">CSV</span>
                   <span className="text-[11px] text-on-surface-variant">Raw data</span>
                   {format === "csv" && (
@@ -108,6 +108,7 @@ export default function ExportsPage() {
                 <select
                   value={dateRange}
                   onChange={(e) => setDateRange(e.target.value)}
+                  aria-label="Date range"
                   className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-teal-500/20 appearance-none"
                 >
                   <option>2023 Tax Year</option>
@@ -228,7 +229,7 @@ export default function ExportsPage() {
                     <div className={`p-2 ${preset.iconBg} rounded-lg`}>
                       <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>{preset.icon}</span>
                     </div>
-                    <span className="material-symbols-outlined text-slate-300 group-hover:text-teal-600 transition-colors">arrow_forward_ios</span>
+                    <span className="material-symbols-outlined text-slate-300 group-hover:text-teal-700 transition-colors">arrow_forward_ios</span>
                   </div>
                   <h4 className="font-bold text-on-surface">{preset.title}</h4>
                   <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">{preset.desc}</p>
@@ -273,7 +274,7 @@ export default function ExportsPage() {
               <div className="p-4 bg-slate-50/50 text-center">
                 <button
                   onClick={() => { setArchiveToast(true); setTimeout(() => setArchiveToast(false), 2500); }}
-                  className="text-[11px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
+                  className="text-[11px] font-bold text-teal-700 hover:text-teal-700 transition-colors"
                 >
                   {archiveToast ? "Full archive coming soon!" : "View All Archive"}
                 </button>

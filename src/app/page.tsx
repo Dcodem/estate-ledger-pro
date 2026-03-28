@@ -213,6 +213,8 @@ export default function DashboardPage() {
             <BarChart
               data={chartData}
               margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
+              role="img"
+              aria-label="Revenue vs Expenses bar chart, January through June 2024"
             >
               <defs>
                 <pattern id="expenses-pattern" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">

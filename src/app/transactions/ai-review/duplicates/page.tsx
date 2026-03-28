@@ -151,7 +151,7 @@ export default function DuplicatesPage() {
                       </div>
                       <button
                         onClick={() => setResolvedPairs((prev) => { const next = { ...prev }; delete next[i]; return next; })}
-                        className="text-xs font-bold text-emerald-600 hover:underline"
+                        className="text-xs font-bold text-emerald-700 hover:underline"
                       >
                         Undo
                       </button>

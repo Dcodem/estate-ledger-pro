@@ -138,7 +138,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
               summary.score >= 80 ? "bg-emerald-50" : summary.score >= 50 ? "bg-amber-50" : "bg-red-50"
             }`}>
               <span className={`text-xl font-extrabold ${
-                summary.score >= 80 ? "text-emerald-600" : summary.score >= 50 ? "text-amber-600" : "text-red-500"
+                summary.score >= 80 ? "text-emerald-700" : summary.score >= 50 ? "text-amber-600" : "text-red-500"
               }`}>{summary.score}%</span>
             </div>
             <p className="text-[9px] font-bold text-on-surface-variant uppercase tracking-widest text-center mt-1">Complete</p>
@@ -191,7 +191,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
             )}
 
             {summary.score === 100 && summary.expiring.length === 0 && (
-              <div className="mt-3 flex items-center gap-1.5 text-emerald-600">
+              <div className="mt-3 flex items-center gap-1.5 text-emerald-700">
                 <span className="material-symbols-outlined text-[16px]">verified</span>
                 <p className="text-[12px] font-bold">All essential documents are current and on file.</p>
               </div>

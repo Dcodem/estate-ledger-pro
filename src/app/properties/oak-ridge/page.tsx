@@ -22,16 +22,16 @@ const categoryOptions = [
 ];
 
 const financials = [
-  { item: "Rental Income", amount: "$4,500", amountClass: "text-emerald-600", icon: "payments" },
+  { item: "Rental Income", amount: "$4,500", amountClass: "text-emerald-700", icon: "payments" },
   { item: "Maintenance", amount: "-$320", amountClass: "text-on-surface", icon: "build" },
   { item: "Insurance", amount: "-$180", amountClass: "text-on-surface", icon: "shield" },
   { item: "Taxes", amount: "-$450", amountClass: "text-on-surface", icon: "receipt_long" },
-  { item: "Net", amount: "$3,550", amountClass: "text-emerald-600 font-extrabold", icon: "account_balance_wallet", isTotal: true },
+  { item: "Net", amount: "$3,550", amountClass: "text-emerald-700 font-extrabold", icon: "account_balance_wallet", isTotal: true },
 ];
 const txns = [
   { date: "Mar 15", desc: "Lawn Care", cat: "Maintenance", amount: "-$320", amountClass: "text-on-surface" },
   { date: "Mar 14", desc: "Insurance Premium", cat: "Insurance", amount: "-$180", amountClass: "text-on-surface" },
-  { date: "Mar 1", desc: "Rent Collection", cat: "Rental Income", amount: "+$4,500", amountClass: "text-emerald-600" },
+  { date: "Mar 1", desc: "Rent Collection", cat: "Rental Income", amount: "+$4,500", amountClass: "text-emerald-700" },
   { date: "Feb 28", desc: "Property Tax", cat: "Taxes", amount: "-$450", amountClass: "text-on-surface" },
 ];
 
@@ -175,7 +175,7 @@ export default function OakRidgePage() {
                 <span className="text-slate-300">·</span>
                 <div className="group/cat flex items-center gap-1">
                   <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600"
+                    categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700"
                     : categories[i] === "Maintenance" ? "bg-blue-50 text-blue-600"
                     : categories[i] === "Insurance" ? "bg-slate-100 text-slate-600"
                     : "bg-amber-50 text-amber-700"

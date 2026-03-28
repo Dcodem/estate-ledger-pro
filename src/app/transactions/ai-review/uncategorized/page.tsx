@@ -97,7 +97,7 @@ export default function UncategorizedPage() {
                     Assign Category
                   </label>
                   <div className="relative">
-                    <select className="w-full bg-surface-container-high border-none rounded-lg py-2.5 px-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
+                    <select aria-label="Assign category" className="w-full bg-surface-container-high border-none rounded-lg py-2.5 px-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
                       {tx.categories.map((cat) => (
                         <option key={cat}>{cat}</option>
                       ))}
@@ -112,7 +112,7 @@ export default function UncategorizedPage() {
                     Assign Property
                   </label>
                   <div className="relative">
-                    <select className="w-full bg-surface-container-high border-none rounded-lg py-2.5 px-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
+                    <select aria-label="Assign property" className="w-full bg-surface-container-high border-none rounded-lg py-2.5 px-4 text-sm appearance-none focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all">
                       {tx.properties.map((prop) => (
                         <option key={prop}>{prop}</option>
                       ))}

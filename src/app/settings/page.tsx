@@ -73,6 +73,7 @@ export default function SettingsAccountPage() {
               </label>
               <input
                 type="text"
+                aria-label="Full Name"
                 defaultValue="Jonathan Sterling"
                 className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
               />
@@ -83,6 +84,7 @@ export default function SettingsAccountPage() {
               </label>
               <input
                 type="email"
+                aria-label="Email Address"
                 defaultValue="j.sterling@estatetrust.com"
                 className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
               />
@@ -135,6 +137,7 @@ export default function SettingsAccountPage() {
               </label>
               <input
                 type="password"
+                aria-label="Current Password"
                 defaultValue="••••••••••••"
                 className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
               />
@@ -145,6 +148,7 @@ export default function SettingsAccountPage() {
               </label>
               <input
                 type="password"
+                aria-label="New Password"
                 placeholder="Enter new password"
                 className="w-full bg-surface-container-high border-none rounded-lg px-4 py-2.5 text-sm focus:bg-white focus:ring-1 focus:ring-primary/40 transition-all outline-none"
               />
@@ -188,7 +192,7 @@ export default function SettingsAccountPage() {
       </div>
 
       {/* Footer Meta */}
-      <footer className="pt-8 flex justify-between items-center text-[11px] text-on-surface-variant/60 font-medium uppercase tracking-widest max-w-4xl">
+      <footer className="pt-8 flex justify-between items-center text-[11px] text-on-surface-variant font-medium uppercase tracking-widest max-w-4xl">
         <div>Estate Ledger Pro v4.2.0</div>
         <div className="flex gap-4">
           <a className="hover:text-primary transition-colors" href="/settings">Privacy Policy</a>
