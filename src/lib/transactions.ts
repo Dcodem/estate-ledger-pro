@@ -18,7 +18,7 @@ export const categoryOptions = [
   { label: "Rental Income", catClass: "bg-emerald-50 text-emerald-600" },
   { label: "Utilities", catClass: "bg-teal-50 text-teal-600" },
   { label: "Office Supplies", catClass: "bg-blue-50 text-blue-600" },
-  { label: "Contractor", catClass: "bg-violet-50 text-violet-600" },
+  { label: "Contractor", catClass: "bg-teal-50 text-teal-600" },
   { label: "Maintenance", catClass: "bg-orange-50 text-orange-600" },
   { label: "Needs Review", catClass: "bg-[#FEF3C7] text-[#92400E]" },
 ] as const;
@@ -103,7 +103,7 @@ export const allTransactions: Transaction[] = [
     title: "Square Payment - Contractor",
     subtitle: "Inv: SQ-4410",
     category: "Contractor",
-    catClass: "bg-violet-50 text-violet-600",
+    catClass: "bg-teal-50 text-teal-600",
     amount: "-$567.00",
     amountClass: "text-on-surface",
     property: "Oak Ridge Estate",

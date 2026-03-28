@@ -217,7 +217,7 @@ export default function LargeTransactionsPage() {
                       className="w-full bg-surface-container-high rounded-t-lg transition-all hover:bg-slate-200"
                       style={{ height: "60%" }}
                     />
-                    <span className="text-[10px] font-bold text-on-surface-variant uppercase">
+                    <span className="text-[11px] font-bold text-on-surface-variant uppercase">
                       Last Month
                     </span>
                   </div>
@@ -226,7 +226,7 @@ export default function LargeTransactionsPage() {
                       className="w-full bg-primary rounded-t-lg shadow-lg shadow-primary/20 transition-all hover:opacity-90"
                       style={{ height: "85%" }}
                     />
-                    <span className="text-[10px] font-bold text-primary uppercase">This Month</span>
+                    <span className="text-[11px] font-bold text-primary uppercase">This Month</span>
                   </div>
                 </div>
               </div>

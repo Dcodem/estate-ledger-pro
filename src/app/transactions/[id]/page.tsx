@@ -297,7 +297,7 @@ export default function TransactionDetailPage({
                 <span className="material-symbols-outlined text-[18px] text-on-surface-variant">receipt</span>
                 Receipts &amp; Attachments
                 {receipts.length > 0 && (
-                  <span className="px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full">{receipts.length}</span>
+                  <span className="px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-bold rounded-full">{receipts.length}</span>
                 )}
               </h3>
               <button
@@ -331,7 +331,7 @@ export default function TransactionDetailPage({
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-on-surface truncate max-w-[240px]">{r.name}</p>
-                        <p className="text-[10px] text-on-surface-variant">{r.size}</p>
+                        <p className="text-[11px] text-on-surface-variant">{r.size}</p>
                       </div>
                     </div>
                     <button
@@ -405,7 +405,7 @@ export default function TransactionDetailPage({
                 <span className="material-symbols-outlined text-[20px] text-primary">attach_file</span>
                 Attach Receipt
                 {receipts.length > 0 && (
-                  <span className="ml-auto px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-bold rounded-full">{receipts.length}</span>
+                  <span className="ml-auto px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-bold rounded-full">{receipts.length}</span>
                 )}
               </button>
               <button
@@ -480,7 +480,7 @@ export default function TransactionDetailPage({
                 <div className="w-2 h-2 rounded-full bg-primary mt-1.5 shrink-0" />
                 <div>
                   <p className="text-xs font-semibold text-on-surface">Transaction imported</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">{txn.date} via bank sync</p>
+                  <p className="text-[11px] text-on-surface-variant mt-0.5">{txn.date} via bank sync</p>
                 </div>
               </div>
               {txn.highlight && (
@@ -488,7 +488,7 @@ export default function TransactionDetailPage({
                   <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-on-surface">Flagged for review</p>
-                    <p className="text-[10px] text-on-surface-variant mt-0.5">{txn.date} — AI confidence below threshold</p>
+                    <p className="text-[11px] text-on-surface-variant mt-0.5">{txn.date} — AI confidence below threshold</p>
                   </div>
                 </div>
               )}
@@ -496,7 +496,7 @@ export default function TransactionDetailPage({
                 <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
                 <div>
                   <p className="text-xs font-semibold text-on-surface">Auto-categorized</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">{txn.date} — {txn.highlight ? "Low confidence" : "High confidence"}</p>
+                  <p className="text-[11px] text-on-surface-variant mt-0.5">{txn.date} — {txn.highlight ? "Low confidence" : "High confidence"}</p>
                 </div>
               </div>
             </div>

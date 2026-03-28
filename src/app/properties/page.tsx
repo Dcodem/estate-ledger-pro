@@ -150,20 +150,20 @@ export default function PropertiesPage() {
               </div>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-surface-container-low p-3 rounded-lg">
-                  <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
+                  <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
                   <p className={`text-xl font-bold ${p.occupancyColor || "text-on-surface"}`}>{p.occupancy}</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">{p.occupancyNote}</p>
+                  <p className="text-[11px] text-on-surface-variant mt-0.5">{p.occupancyNote}</p>
                 </div>
                 <div className="bg-surface-container-low p-3 rounded-lg">
-                  <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
+                  <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
                   <p className="text-xl font-bold text-primary">{p.yield}</p>
-                  <p className="text-[10px] text-on-surface-variant mt-0.5">Average/Mo</p>
+                  <p className="text-[11px] text-on-surface-variant mt-0.5">Average/Mo</p>
                 </div>
               </div>
               <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
                 <div className="flex -space-x-2">
                   {p.avatars.map((a) => (
-                    <div key={a} className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">
+                    <div key={a} className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[11px] font-bold">
                       {a}
                     </div>
                   ))}
@@ -188,8 +188,8 @@ export default function PropertiesPage() {
                 <p className="text-xs text-on-surface-variant mt-0.5">Combined monthly revenue across all properties</p>
               </div>
               <div className="flex gap-2">
-                <span className="px-3 py-1 bg-white rounded-full text-[10px] font-bold text-on-surface-variant shadow-sm">Monthly</span>
-                <span className="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold shadow-sm">Yearly</span>
+                <span className="px-3 py-1 bg-white rounded-full text-[11px] font-bold text-on-surface-variant shadow-sm">Monthly</span>
+                <span className="px-3 py-1 bg-primary text-white rounded-full text-[11px] font-bold shadow-sm">Yearly</span>
               </div>
             </div>
             <div className="aspect-[21/9] w-full flex items-end gap-3 px-4">
@@ -199,13 +199,13 @@ export default function PropertiesPage() {
                   className={`flex-1 rounded-t-lg transition-all relative group ${bar.current ? "bg-primary" : "bg-primary/10 hover:bg-primary/20"}`}
                   style={{ height: bar.height }}
                 >
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold">
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-white text-[11px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold">
                     {bar.value}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="flex justify-between mt-4 px-4 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+            <div className="flex justify-between mt-4 px-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
               {chartBars.map((bar) => (
                 <span key={bar.label}>{bar.label}</span>
               ))}
@@ -222,7 +222,7 @@ export default function PropertiesPage() {
                 <span className="material-symbols-outlined text-[20px]">trending_up</span>
                 +12.4% vs last year
               </div>
-              <p className="mt-2 text-[10px] text-white/50 leading-relaxed">
+              <p className="mt-2 text-[11px] text-white/50 leading-relaxed">
                 Based on Zillow Zestimate data and recent comparable sales. Updated monthly.
               </p>
             </div>

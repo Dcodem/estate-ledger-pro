@@ -89,7 +89,7 @@ export default function PropertyAssignmentPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-xl font-extrabold text-on-surface">{tx.amount}</p>
-                  <span className="text-[10px] font-bold text-primary uppercase">{tx.type}</span>
+                  <span className="text-[11px] font-bold text-primary uppercase">{tx.type}</span>
                 </div>
               </div>
 
@@ -109,7 +109,7 @@ export default function PropertyAssignmentPage() {
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-on-surface">{tx.suggestion}</span>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${tx.confidenceStyle}`}
+                        className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${tx.confidenceStyle}`}
                       >
                         {tx.confidence}% CONFIDENCE
                       </span>

@@ -26,7 +26,7 @@ export default function KPICard({ label, value, icon, iconBg = "bg-primary-fixed
         )}
       </div>
       <p className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">{label}</p>
-      <h3 className="text-2xl font-bold mt-1">{value}</h3>
+      <h3 className="text-2xl font-bold mt-1 tabular-nums">{value}</h3>
     </div>
   );
 }

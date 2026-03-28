@@ -166,13 +166,13 @@ export default function MonthlyStatementPage() {
                 <span className="material-symbols-outlined">{kpi.icon}</span>
               </div>
               {kpi.hasTrend && (
-                <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${periodData.revenueTrend.startsWith("+") ? "text-emerald-600 bg-emerald-50" : "text-red-600 bg-red-50"}`}>{periodData.revenueTrend}</span>
+                <span className={`text-[11px] font-bold px-2 py-1 rounded-full ${periodData.revenueTrend.startsWith("+") ? "text-emerald-600 bg-emerald-50" : "text-red-600 bg-red-50"}`}>{periodData.revenueTrend}</span>
               )}
             </div>
             <div className="mt-6">
               <p className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">{kpi.label}</p>
               <h2 className="text-2xl font-extrabold text-on-surface mt-1">{periodData[kpi.key]}</h2>
-              {kpi.note && <p className="text-[10px] text-on-surface-variant mt-1">{kpi.note}</p>}
+              {kpi.note && <p className="text-[11px] text-on-surface-variant mt-1">{kpi.note}</p>}
             </div>
           </div>
         ))}
@@ -241,7 +241,7 @@ export default function MonthlyStatementPage() {
                         </span>
                         <div>
                           <p className="text-sm font-extrabold text-on-surface">{prop.name}</p>
-                          <p className="text-[10px] text-on-surface-variant font-medium">{prop.type}</p>
+                          <p className="text-[11px] text-on-surface-variant font-medium">{prop.type}</p>
                         </div>
                       </div>
                     </td>
@@ -250,7 +250,7 @@ export default function MonthlyStatementPage() {
                     <td className="px-6 py-5 text-right font-bold text-sm text-error">{prop.debits}</td>
                     <td className="px-6 py-5 text-right font-extrabold text-sm">{prop.net}</td>
                     <td className="px-6 py-5">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${prop.statusColor}`}>
+                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${prop.statusColor}`}>
                         {prop.status}
                       </span>
                     </td>

@@ -6,7 +6,7 @@ import { useState } from "react";
 const presets = [
   {
     icon: "account_balance_wallet",
-    iconBg: "bg-violet-50 text-violet-600",
+    iconBg: "bg-teal-50 text-teal-600",
     title: "Accountant-Ready",
     desc: "Full general ledger with standardized tax classification codes.",
   },
@@ -61,19 +61,19 @@ export default function ExportsPage() {
             {/* Step 1: Format */}
             <section>
               <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[10px] text-white">1</span>
+                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">1</span>
                 Select Export Format
               </h2>
               <div className="grid grid-cols-2 gap-4">
                 <label
                   onClick={() => setFormat("excel")}
                   className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                    format === "excel" ? "border-primary bg-violet-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
+                    format === "excel" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-violet-600" : "text-slate-400"}`}>table_chart</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "excel" ? "text-teal-600" : "text-slate-400"}`}>table_chart</span>
                   <span className="text-sm font-bold text-on-surface">Excel</span>
-                  <span className="text-[10px] text-on-surface-variant">.xlsx file</span>
+                  <span className="text-[11px] text-on-surface-variant">.xlsx file</span>
                   {format === "excel" && (
                     <div className="absolute top-2 right-2">
                       <span className="material-symbols-outlined text-primary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
@@ -83,12 +83,12 @@ export default function ExportsPage() {
                 <label
                   onClick={() => setFormat("csv")}
                   className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                    format === "csv" ? "border-primary bg-violet-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
+                    format === "csv" ? "border-primary bg-teal-50/20" : "border-transparent bg-surface-container-low hover:bg-surface-container-high"
                   }`}
                 >
-                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-violet-600" : "text-slate-400"}`}>description</span>
+                  <span className={`material-symbols-outlined text-[32px] mb-2 ${format === "csv" ? "text-teal-600" : "text-slate-400"}`}>description</span>
                   <span className="text-sm font-bold text-on-surface">CSV</span>
-                  <span className="text-[10px] text-on-surface-variant">Raw data</span>
+                  <span className="text-[11px] text-on-surface-variant">Raw data</span>
                   {format === "csv" && (
                     <div className="absolute top-2 right-2">
                       <span className="material-symbols-outlined text-primary text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
@@ -101,14 +101,14 @@ export default function ExportsPage() {
             {/* Step 2: Date Range */}
             <section>
               <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[10px] text-white">2</span>
+                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">2</span>
                 Date Range
               </h2>
               <div className="relative">
                 <select
                   value={dateRange}
                   onChange={(e) => setDateRange(e.target.value)}
-                  className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20 appearance-none"
+                  className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-teal-500/20 appearance-none"
                 >
                   <option>2023 Tax Year</option>
                   <option>Q1 2024</option>
@@ -120,17 +120,17 @@ export default function ExportsPage() {
               {dateRange === "Custom Range..." && (
                 <div className="grid grid-cols-2 gap-4 mt-4">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Start Date</label>
+                    <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Start Date</label>
                     <input
                       type="date"
-                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20"
+                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-teal-500/20"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">End Date</label>
+                    <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">End Date</label>
                     <input
                       type="date"
-                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-violet-500/20"
+                      className="w-full bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-teal-500/20"
                     />
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export default function ExportsPage() {
             {/* Step 3: Property Selection */}
             <section>
               <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[10px] text-white">3</span>
+                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">3</span>
                 Property Selection
               </h2>
               <div className="grid grid-cols-2 gap-y-4">
@@ -160,7 +160,7 @@ export default function ExportsPage() {
             {/* Step 4: Table Preferences */}
             <section>
               <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[10px] text-white">4</span>
+                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-primary text-[11px] text-white">4</span>
                 Table Preferences
               </h2>
               <div className="space-y-4">
@@ -200,7 +200,7 @@ export default function ExportsPage() {
                 <button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-violet-500/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                  className="w-full py-4 bg-primary-container text-white text-lg font-extrabold rounded-xl shadow-lg shadow-teal-500/20 hover:opacity-90 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
                   {generating ? (
                     <>
@@ -223,12 +223,12 @@ export default function ExportsPage() {
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Quick Export Presets</h3>
             <div className="space-y-4">
               {presets.map((preset) => (
-                <div key={preset.title} className="group bg-surface-container-lowest p-5 rounded-xl card-shadow border border-transparent hover:border-violet-200 transition-all cursor-pointer">
+                <div key={preset.title} className="group bg-surface-container-lowest p-5 rounded-xl card-shadow border border-transparent hover:border-teal-200 transition-all cursor-pointer">
                   <div className="flex justify-between items-start mb-2">
                     <div className={`p-2 ${preset.iconBg} rounded-lg`}>
                       <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>{preset.icon}</span>
                     </div>
-                    <span className="material-symbols-outlined text-slate-300 group-hover:text-violet-600 transition-colors">arrow_forward_ios</span>
+                    <span className="material-symbols-outlined text-slate-300 group-hover:text-teal-600 transition-colors">arrow_forward_ios</span>
                   </div>
                   <h4 className="font-bold text-on-surface">{preset.title}</h4>
                   <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">{preset.desc}</p>
@@ -245,9 +245,9 @@ export default function ExportsPage() {
                 <table className="w-full text-left">
                   <thead className="bg-surface-container-low border-b border-slate-100">
                     <tr>
-                      <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Report Name</th>
-                      <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Format</th>
-                      <th className="px-4 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-widest">Report Name</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-widest">Format</th>
+                      <th className="px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-widest">Status</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
@@ -255,13 +255,13 @@ export default function ExportsPage() {
                       <tr key={item.name} className="hover:bg-slate-50 transition-colors">
                         <td className="px-4 py-4">
                           <div className="text-xs font-bold text-on-surface">{item.name}</div>
-                          <div className="text-[10px] text-on-surface-variant mt-0.5">{item.date} &bull; {item.size}</div>
+                          <div className="text-[11px] text-on-surface-variant mt-0.5">{item.date} &bull; {item.size}</div>
                         </td>
                         <td className="px-4 py-4">
-                          <span className="px-2 py-1 bg-surface-container-highest rounded text-[10px] font-bold text-slate-600 uppercase">{item.format}</span>
+                          <span className="px-2 py-1 bg-surface-container-highest rounded text-[11px] font-bold text-slate-600 uppercase">{item.format}</span>
                         </td>
                         <td className="px-4 py-4">
-                          <span className={`flex items-center gap-1 text-[10px] font-bold ${item.statusColor}`}>
+                          <span className={`flex items-center gap-1 text-[11px] font-bold ${item.statusColor}`}>
                             <span className={`w-1.5 h-1.5 rounded-full ${item.dotColor}`} /> {item.status}
                           </span>
                         </td>
@@ -273,7 +273,7 @@ export default function ExportsPage() {
               <div className="p-4 bg-slate-50/50 text-center">
                 <button
                   onClick={() => { setArchiveToast(true); setTimeout(() => setArchiveToast(false), 2500); }}
-                  className="text-[11px] font-bold text-violet-600 hover:text-violet-700 transition-colors"
+                  className="text-[11px] font-bold text-teal-600 hover:text-teal-700 transition-colors"
                 >
                   {archiveToast ? "Full archive coming soon!" : "View All Archive"}
                 </button>

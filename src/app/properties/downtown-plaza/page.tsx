@@ -98,27 +98,27 @@ export default function DowntownPlazaPage() {
       {/* Property Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-surface-container-low p-4 rounded-xl">
-          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
+          <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
           <p className="text-2xl font-bold text-error mt-1">75%</p>
-          <p className="text-[10px] text-on-surface-variant mt-0.5">4 units total</p>
+          <p className="text-[11px] text-on-surface-variant mt-0.5">4 units total</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
-          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
+          <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
           <p className="text-2xl font-bold text-primary mt-1">$6,000</p>
-          <p className="text-[10px] text-on-surface-variant mt-0.5">Average/Mo</p>
+          <p className="text-[11px] text-on-surface-variant mt-0.5">Average/Mo</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
-          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Cap Rate</p>
+          <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Cap Rate</p>
           <p className="text-2xl font-bold text-on-surface mt-1">5.9%</p>
-          <p className="text-[10px] text-on-surface-variant mt-0.5">Annualized</p>
+          <p className="text-[11px] text-on-surface-variant mt-0.5">Annualized</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
-          <p className="text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">Property Managers</p>
+          <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Property Managers</p>
           <div className="flex items-center gap-1 mt-2">
             <div className="flex -space-x-2">
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold">JD</div>
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[10px] font-bold">LM</div>
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-500 flex items-center justify-center text-[10px] font-bold text-white">TC</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[11px] font-bold">JD</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[11px] font-bold">LM</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-500 flex items-center justify-center text-[11px] font-bold text-white">TC</div>
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function DowntownPlazaPage() {
                 <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
                 <span className="text-slate-300">·</span>
                 <div className="group/cat flex items-center gap-1">
-                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wide ${
+                  <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
                     categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600"
                   }`}>
                     {categories[i]}

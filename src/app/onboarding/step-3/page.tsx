@@ -7,7 +7,7 @@ export default function OnboardingStep3() {
       {/* TopAppBar */}
       <header className="fixed top-0 w-full flex justify-center items-center py-8 z-50 bg-transparent">
         <div className="container max-w-[1440px] px-8 flex justify-center">
-          <span className="font-[Manrope] font-extrabold text-2xl tracking-tight text-violet-700">
+          <span className="font-[Cinzel] font-extrabold text-2xl tracking-tight text-teal-700">
             Estate Ledger
           </span>
         </div>
@@ -40,7 +40,7 @@ export default function OnboardingStep3() {
 
               {/* Header Section */}
               <div className="space-y-3 mb-12">
-                <h1 className="font-[Manrope] font-bold text-3xl md:text-4xl text-on-surface tracking-tight">
+                <h1 className="font-[Cinzel] font-bold text-3xl md:text-4xl text-on-surface tracking-tight">
                   AI is Processing Your Data
                 </h1>
                 <p className="text-on-surface-variant text-lg">
@@ -108,28 +108,28 @@ export default function OnboardingStep3() {
           {/* Step 1 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               Step 1
             </span>
           </div>
           {/* Step 2 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               Step 2
             </span>
           </div>
           {/* Step 3 (Active) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-16 rounded-full bg-primary shadow-[0_0_8px_rgba(99,14,212,0.4)]" />
-            <div className="flex items-center space-x-2 text-violet-600">
+            <div className="flex items-center space-x-2 text-teal-600">
               <span
-                className="material-symbols-outlined text-[10px]"
+                className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
               </span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em]">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em]">
                 Step 3 of 4
               </span>
             </div>
@@ -137,7 +137,7 @@ export default function OnboardingStep3() {
           {/* Step 4 (Inactive) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-slate-200" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
               Final
             </span>
           </div>

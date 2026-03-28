@@ -124,7 +124,7 @@ export default function SettingsAccountPage() {
                 <p className="text-xs text-on-surface-variant">Last verified Nov 12, 2023</p>
               </div>
             </div>
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-full tracking-wider uppercase">
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[11px] font-bold rounded-full tracking-wider uppercase">
               Enabled
             </span>
           </div>

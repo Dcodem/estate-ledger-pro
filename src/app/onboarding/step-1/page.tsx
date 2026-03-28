@@ -7,7 +7,7 @@ export default function OnboardingStep1() {
       {/* TopAppBar */}
       <header className="fixed top-0 w-full flex justify-center items-center py-8 z-50">
         <div className="flex flex-col items-center">
-          <h1 className="font-[Manrope] font-extrabold text-2xl tracking-tight text-violet-700">
+          <h1 className="font-[Cinzel] font-extrabold text-2xl tracking-tight text-teal-700">
             Estate Ledger
           </h1>
         </div>
@@ -28,7 +28,7 @@ export default function OnboardingStep1() {
 
             {/* Headline Group */}
             <div className="mb-10 space-y-3">
-              <h2 className="font-[Manrope] font-bold text-[28px] leading-tight text-on-surface">
+              <h2 className="font-[Cinzel] font-bold text-[28px] leading-tight text-on-surface">
                 Upload Your Documents
               </h2>
               <p className="text-on-surface-variant text-base">
@@ -52,7 +52,7 @@ export default function OnboardingStep1() {
                     cloud_upload
                   </span>
                 </div>
-                <p className="font-[Manrope] font-semibold text-lg text-on-surface mb-1">
+                <p className="font-[Cinzel] font-semibold text-lg text-on-surface mb-1">
                   Drag &amp; Drop files here
                 </p>
                 <p className="text-primary font-medium hover:underline">
@@ -85,7 +85,7 @@ export default function OnboardingStep1() {
             <div className="mt-12 w-full space-y-6">
               <button
                 disabled
-                className="w-full py-4 px-8 rounded-lg bg-surface-container-highest text-on-surface-variant font-[Manrope] font-bold text-base cursor-not-allowed tracking-wide"
+                className="w-full py-4 px-8 rounded-lg bg-surface-container-highest text-on-surface-variant font-[Cinzel] font-bold text-base cursor-not-allowed tracking-wide"
               >
                 Continue
               </button>
@@ -104,14 +104,14 @@ export default function OnboardingStep1() {
 
       {/* Bottom Nav - Step Indicator */}
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center px-4 pb-12">
-        <div className="flex items-center justify-center space-x-2 text-violet-600">
+        <div className="flex items-center justify-center space-x-2 text-teal-600">
           <span
-            className="material-symbols-outlined text-[10px]"
+            className="material-symbols-outlined text-[11px]"
             style={{ fontVariationSettings: "'FILL' 1" }}
           >
             fiber_manual_record
           </span>
-          <span className="font-[Manrope] text-xs font-semibold uppercase tracking-widest">
+          <span className="font-[Cinzel] text-xs font-semibold uppercase tracking-widest">
             Step 1 of 4
           </span>
         </div>

@@ -133,7 +133,7 @@ export default function PropertySummary(props: PropertySummaryProps) {
               <span className="material-symbols-outlined text-[16px] text-primary">{h.icon}</span>
               <div>
                 <p className="text-[11px] font-bold text-on-surface leading-tight">{h.label}</p>
-                <p className="text-[10px] text-on-surface-variant">{h.detail}</p>
+                <p className="text-[11px] text-on-surface-variant">{h.detail}</p>
               </div>
             </div>
           ))}

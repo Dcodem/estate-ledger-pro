@@ -9,8 +9,8 @@ export default function OnboardingStep2() {
     <div className="bg-background font-[Inter] text-on-surface min-h-screen flex flex-col">
       {/* TopAppBar */}
       <header className="fixed top-0 w-full flex justify-center items-center py-8 z-50">
-        <div className="font-[Manrope] font-bold text-lg tracking-tight text-violet-700">
-          <span className="text-2xl font-extrabold text-violet-700">Estate Ledger</span>
+        <div className="font-[Cinzel] font-bold text-lg tracking-tight text-teal-700">
+          <span className="text-2xl font-extrabold text-teal-700">Estate Ledger</span>
         </div>
       </header>
 
@@ -24,7 +24,7 @@ export default function OnboardingStep2() {
 
             <div className="relative z-10 flex flex-col items-center text-center">
               {/* Title Section */}
-              <h1 className="font-[Manrope] font-extrabold text-[2rem] leading-tight mb-4 text-on-surface">
+              <h1 className="font-[Cinzel] font-extrabold text-[2rem] leading-tight mb-4 text-on-surface">
                 File Uploaded
               </h1>
               <p className="text-on-surface-variant max-w-md mb-10">
@@ -46,7 +46,7 @@ export default function OnboardingStep2() {
                       <span className="material-symbols-outlined">description</span>
                     </div>
                     <div className="text-left">
-                      <div className="font-[Manrope] font-bold text-on-surface">
+                      <div className="font-[Cinzel] font-bold text-on-surface">
                         2023_property_transactions.csv
                       </div>
                       <div className="text-xs text-on-surface-variant">2.4 MB</div>
@@ -76,7 +76,7 @@ export default function OnboardingStep2() {
               <div className="w-full space-y-6">
                 <Link
                   href="/onboarding/step-3"
-                  className="block w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-[Manrope] font-bold py-4 rounded-lg shadow-lg hover:opacity-90 active:scale-95 transition-all duration-150 text-center"
+                  className="block w-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-[Cinzel] font-bold py-4 rounded-lg shadow-lg hover:opacity-90 active:scale-95 transition-all duration-150 text-center"
                 >
                   Continue
                 </Link>
@@ -99,19 +99,19 @@ export default function OnboardingStep2() {
             {/* Step 1 (Complete) */}
             <div className="flex items-center justify-center space-x-2 text-slate-300">
               <span
-                className="material-symbols-outlined text-[10px]"
+                className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
               </span>
             </div>
             {/* Step 2 (Active) */}
-            <div className="flex items-center justify-center space-x-2 text-violet-600">
-              <span className="font-[Manrope] text-xs font-semibold uppercase tracking-widest">
+            <div className="flex items-center justify-center space-x-2 text-teal-600">
+              <span className="font-[Cinzel] text-xs font-semibold uppercase tracking-widest">
                 Step 2 of 4
               </span>
               <span
-                className="material-symbols-outlined text-[10px]"
+                className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
@@ -120,7 +120,7 @@ export default function OnboardingStep2() {
             {/* Step 3 */}
             <div className="flex items-center justify-center space-x-2 text-slate-300">
               <span
-                className="material-symbols-outlined text-[10px]"
+                className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
@@ -129,7 +129,7 @@ export default function OnboardingStep2() {
             {/* Step 4 */}
             <div className="flex items-center justify-center space-x-2 text-slate-300">
               <span
-                className="material-symbols-outlined text-[10px]"
+                className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record

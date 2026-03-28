@@ -105,14 +105,14 @@ export default function DuplicatesPage() {
                     <div key={j} className="p-4 rounded-lg bg-surface-container-low/40 space-y-3">
                       {t.id && (
                         <div className="flex justify-between items-start">
-                          <span className="text-[10px] font-bold text-slate-400">ID: {t.id}</span>
+                          <span className="text-[11px] font-bold text-slate-400">ID: {t.id}</span>
                           {t.icon && (
                             <span className="material-symbols-outlined text-slate-300">{t.icon}</span>
                           )}
                         </div>
                       )}
                       <div>
-                        <p className="text-[10px] font-semibold text-on-surface-variant">VENDOR</p>
+                        <p className="text-[11px] font-semibold text-on-surface-variant">VENDOR</p>
                         <p
                           className={`text-sm font-bold ${vendorHighlight ? "bg-yellow-100 inline-block px-1" : ""}`}
                         >
@@ -121,7 +121,7 @@ export default function DuplicatesPage() {
                       </div>
                       <div className="flex justify-between">
                         <div>
-                          <p className="text-[10px] font-semibold text-on-surface-variant">DATE</p>
+                          <p className="text-[11px] font-semibold text-on-surface-variant">DATE</p>
                           <p
                             className={`text-sm font-bold ${dateHighlight ? "bg-yellow-100 inline-block px-1" : ""}`}
                           >
@@ -129,7 +129,7 @@ export default function DuplicatesPage() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-[10px] font-semibold text-on-surface-variant">AMOUNT</p>
+                          <p className="text-[11px] font-semibold text-on-surface-variant">AMOUNT</p>
                           <p
                             className={`text-sm font-extrabold ${amountHighlight ? "bg-yellow-100 inline-block px-1" : ""}`}
                           >
@@ -259,7 +259,7 @@ export default function DuplicatesPage() {
                 </span>
               </div>
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest opacity-80">System Health</p>
+                <p className="text-[11px] font-bold uppercase tracking-widest opacity-80">System Health</p>
                 <p className="text-xs font-medium">AI Triage engine is learning from your manual merges.</p>
               </div>
             </div>

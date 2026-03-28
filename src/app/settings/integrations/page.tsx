@@ -65,7 +65,7 @@ export default function IntegrationsPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <span className="text-base font-semibold text-on-surface">Chase Bank</span>
-                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                  <span className="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
                     Connected
                   </span>
                 </div>
@@ -92,7 +92,7 @@ export default function IntegrationsPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <span className="text-base font-semibold text-on-surface">Wells Fargo</span>
-                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 rounded-full border border-blue-100">
+                  <span className="flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 rounded-full border border-blue-100">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                     Syncing
                   </span>
@@ -120,7 +120,7 @@ export default function IntegrationsPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <span className="text-base font-semibold text-on-surface">American Express</span>
-                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-red-50 text-red-700 rounded-full border border-red-100">
+                  <span className="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-red-50 text-red-700 rounded-full border border-red-100">
                     Error
                   </span>
                 </div>
@@ -154,7 +154,7 @@ export default function IntegrationsPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <span className="text-base font-semibold text-on-surface">Vanguard</span>
-                  <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
+                  <span className="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 rounded-full border border-emerald-100">
                     Connected
                   </span>
                 </div>

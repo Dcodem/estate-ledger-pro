@@ -15,7 +15,7 @@ const typeIcons: Record<string, { icon: string; bg: string; text: string }> = {
   pdf: { icon: "picture_as_pdf", bg: "bg-red-50", text: "text-red-500" },
   image: { icon: "image", bg: "bg-blue-50", text: "text-blue-500" },
   spreadsheet: { icon: "table_chart", bg: "bg-emerald-50", text: "text-emerald-500" },
-  document: { icon: "description", bg: "bg-violet-50", text: "text-violet-500" },
+  document: { icon: "description", bg: "bg-teal-50", text: "text-teal-500" },
 };
 
 interface AISummary {
@@ -152,7 +152,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
 
             {summary.missing.length > 0 && (
               <div className="mt-4">
-                <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Missing Documents</p>
+                <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Missing Documents</p>
                 <div className="flex flex-wrap gap-2">
                   {summary.missing.map((m) => (
                     <span
@@ -175,7 +175,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
 
             {summary.expiring.length > 0 && (
               <div className="mt-4">
-                <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">May Need Renewal</p>
+                <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">May Need Renewal</p>
                 <div className="flex flex-wrap gap-2">
                   {summary.expiring.map((e) => (
                     <span

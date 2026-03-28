@@ -49,8 +49,8 @@ const propertyRows = [
     netIncome: "$5,600",
     roi: 8.2,
     status: "Growth",
-    statusBg: "bg-violet-100",
-    statusText: "text-violet-700",
+    statusBg: "bg-teal-100",
+    statusText: "text-teal-700",
   },
   {
     name: "Downtown Plaza",
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                 strokeWidth="4"
               />
             </svg>
-            <span className="absolute text-[10px] font-bold">8.4%</span>
+            <span className="absolute text-[11px] font-bold">8.4%</span>
           </div>
         </div>
       </div>
@@ -239,13 +239,13 @@ export default function DashboardPage() {
               />
               <Bar
                 dataKey="revenue"
-                fill="#630ed4"
+                fill="var(--color-primary)"
                 radius={[4, 4, 0, 0]}
                 name="Revenue"
               />
               <Bar
                 dataKey="expenses"
-                fill="#c4a7ff"
+                fill="var(--color-secondary-container)"
                 radius={[4, 4, 0, 0]}
                 name="Expenses"
               />
@@ -262,7 +262,7 @@ export default function DashboardPage() {
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHLvdysUjZvnc0vdp4nxsDYpNwIpt6PJNBCiz-72BLTZA8Nvkw6q4W9ZprwGYAqFIP7u01wNvDBe7OooZ_pmtnWe8Ipn2LVkQ1vpLBhq4YRiozBonXXvVNNDnlSGbMvO9lpXt9_6qvdmNrPKtzAt2c1jf3RasM3RrHcI_9hrthDglEIL-aknaVE3GPN5-DlNy2QQ6zRj0PhWiUFpY9kuVsnRniShJRQIa0qYGSbL1AtOr7H7HA_u2gBy0kAaJcFlGgJtkLbRJcr-6l"
             />
             <div className="absolute top-4 left-4">
-              <span className="px-3 py-1 glass-effect text-[10px] font-bold rounded-full text-primary uppercase tracking-widest border border-white/20">
+              <span className="px-3 py-1 glass-effect text-[11px] font-bold rounded-full text-primary uppercase tracking-widest border border-white/20">
                 Top Performer
               </span>
             </div>
@@ -318,7 +318,7 @@ export default function DashboardPage() {
             </thead>
             <tbody className="text-sm">
               {propertyRows.map((row) => (
-                <tr key={row.name} className="hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => window.location.href = `/properties/${row.slug}`}>
+                <tr key={row.name} className="hover:bg-slate-50 transition-colors cursor-pointer">
                   <td className="py-6 px-6 font-bold">
                     <Link href={`/properties/${row.slug}`} className="flex items-center gap-3 hover:text-primary transition-colors">
                       <div className="w-10 h-10 rounded bg-slate-100 overflow-hidden shrink-0">
@@ -347,7 +347,7 @@ export default function DashboardPage() {
                   </td>
                   <td className="py-6 px-6 text-right">
                     <span
-                      className={`px-3 py-1 ${row.statusBg} ${row.statusText} text-[10px] font-bold rounded-full`}
+                      className={`px-3 py-1 ${row.statusBg} ${row.statusText} text-[11px] font-bold rounded-full`}
                     >
                       {row.status}
                     </span>

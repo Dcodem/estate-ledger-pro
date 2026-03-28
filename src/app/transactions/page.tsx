@@ -335,7 +335,7 @@ function TransactionsContent() {
         </div>
         <div className="relative z-10 flex flex-col justify-between h-full">
           <div>
-            <span className="text-[10px] font-bold text-white/60 tracking-widest uppercase">
+            <span className="text-[11px] font-bold text-white/60 tracking-widest uppercase">
               Smart Categorization
             </span>
             <h3 className="text-xl font-extrabold text-white mt-2 leading-tight">
@@ -408,7 +408,7 @@ function TransactionsContent() {
               {/* Inline Recategorize */}
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showRecategorize ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"}`}>
                 <div className="pb-3 border-b border-slate-100">
-                  <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Reassign Category</p>
+                  <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Reassign Category</p>
                   <div className="flex flex-wrap gap-1.5">
                     {categoryOptions.map((opt) => {
                       const active = (tempCategory?.label ?? selectedTransaction.category) === opt.label;
@@ -416,7 +416,7 @@ function TransactionsContent() {
                         <button
                           key={opt.label}
                           onClick={() => { setTempCategory({ label: opt.label, catClass: opt.catClass }); setShowRecategorize(false); }}
-                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${active ? "ring-2 ring-primary ring-offset-1 " + opt.catClass : opt.catClass + " hover:ring-1 hover:ring-primary/30"}`}
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-bold transition-all ${active ? "ring-2 ring-primary ring-offset-1 " + opt.catClass : opt.catClass + " hover:ring-1 hover:ring-primary/30"}`}
                         >
                           {opt.label}
                         </button>

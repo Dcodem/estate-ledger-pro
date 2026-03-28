@@ -336,7 +336,7 @@ export default function TransactionReviewPage() {
         <section className="flex-1 min-w-0 space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-on-surface">Review Queue</h3>
-            <span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+            <span className="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">
               {pendingCount} Pending
             </span>
           </div>
@@ -412,7 +412,7 @@ export default function TransactionReviewPage() {
                     >
                       {c.amount}
                     </div>
-                    <div className="text-[10px] text-on-surface-variant mt-0.5 font-semibold uppercase tracking-widest">
+                    <div className="text-[11px] text-on-surface-variant mt-0.5 font-semibold uppercase tracking-widest">
                       Amount
                     </div>
                   </div>
@@ -512,7 +512,7 @@ export default function TransactionReviewPage() {
                           </span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="bg-surface-container px-2.5 py-0.5 rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                          <span className="bg-surface-container px-2.5 py-0.5 rounded-full text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">
                             {c.suggestion}
                           </span>
                           <div
@@ -522,7 +522,7 @@ export default function TransactionReviewPage() {
                               className={`w-1.5 h-1.5 rounded-full ${c.confDotClass} mr-1`}
                             />
                             <span
-                              className={`${c.confTextClass} text-[10px] font-bold`}
+                              className={`${c.confTextClass} text-[11px] font-bold`}
                             >
                               {c.confidence}%
                             </span>
@@ -657,7 +657,7 @@ export default function TransactionReviewPage() {
                   {/* Detail Grid */}
                   <div className="grid grid-cols-2 gap-y-5">
                     <div>
-                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
+                      <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
                         Date
                       </p>
                       <p className="text-sm font-semibold text-on-surface">
@@ -665,7 +665,7 @@ export default function TransactionReviewPage() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
+                      <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
                         Amount
                       </p>
                       <p
@@ -676,7 +676,7 @@ export default function TransactionReviewPage() {
                       </p>
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
+                      <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
                         Source
                       </p>
                       <p className="text-sm font-semibold text-on-surface">
@@ -684,7 +684,7 @@ export default function TransactionReviewPage() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
+                      <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">
                         Location
                       </p>
                       <p className="text-sm font-semibold text-on-surface">
@@ -696,7 +696,7 @@ export default function TransactionReviewPage() {
                   {/* Property + Category Assignment */}
                   <div className="pt-5 border-t border-slate-50">
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">
+                      <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">
                         AI Assignment
                       </p>
                       <button
@@ -709,21 +709,21 @@ export default function TransactionReviewPage() {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-surface-container-low p-3 rounded-xl">
-                        <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Property</p>
+                        <p className="text-[11px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Property</p>
                         <p className="text-[13px] font-bold text-on-surface flex items-center gap-1">
                           <span className="material-symbols-outlined text-[14px] text-primary">location_on</span>
                           {activeItem.property}
                         </p>
                       </div>
                       <div className="bg-surface-container-low p-3 rounded-xl">
-                        <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Category</p>
+                        <p className="text-[11px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Category</p>
                         <p className="text-[13px] font-bold text-on-surface flex items-center gap-1">
                           <span className="material-symbols-outlined text-[14px] text-primary">label</span>
                           {activeItem.suggestion}
                         </p>
                       </div>
                     </div>
-                    <p className="text-[10px] text-on-surface-variant mt-2 flex items-center gap-1">
+                    <p className="text-[11px] text-on-surface-variant mt-2 flex items-center gap-1">
                       <span className="material-symbols-outlined text-[12px]">auto_awesome</span>
                       Inferred from vendor location, payment source, and historical patterns
                     </p>
@@ -731,10 +731,10 @@ export default function TransactionReviewPage() {
 
                   {/* AI Recommendation */}
                   <div className="pt-5 border-t border-slate-50">
-                    <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">
+                    <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">
                       AI Recommendation
                     </p>
-                    <div className="bg-surface-container-low p-4 rounded-xl border-l-2 border-violet-400">
+                    <div className="bg-surface-container-low p-4 rounded-xl border-l-2 border-teal-400">
                       <p className="text-[13px] leading-relaxed text-on-surface">
                         {activeItem.recommendation}
                       </p>
@@ -743,7 +743,7 @@ export default function TransactionReviewPage() {
 
                   {/* Similar Past Transactions */}
                   <div>
-                    <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">
+                    <p className="text-[11px] uppercase tracking-widest text-on-surface-variant font-bold mb-3">
                       Similar Past Transactions
                     </p>
                     <div className="space-y-2">
@@ -756,7 +756,7 @@ export default function TransactionReviewPage() {
                             <p className="text-[12px] font-bold text-on-surface">
                               {s.vendor}
                             </p>
-                            <p className="text-[10px] text-on-surface-variant">
+                            <p className="text-[11px] text-on-surface-variant">
                               {s.date}
                             </p>
                           </div>
@@ -775,7 +775,7 @@ export default function TransactionReviewPage() {
                   <div className="pt-5 space-y-3">
                     <button
                       onClick={() => handleAccept(activeItem)}
-                      className="w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-white shadow-violet-100"
+                      className="w-full py-3 rounded-xl font-bold transition-all shadow-lg flex items-center justify-center gap-2 bg-primary hover:bg-primary-container text-white shadow-teal-100"
                     >
                       <span className="material-symbols-outlined text-[20px]">
                         check_circle
