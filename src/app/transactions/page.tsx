@@ -4,13 +4,13 @@ import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import Link from "next/link";
 import { useState, useEffect, Suspense } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { SkeletonPulse, TableSkeleton } from "@/components/LoadingSkeleton";
 import { allTransactions, categoryOptions } from "@/lib/transactions";
 
 const ITEMS_PER_PAGE = 5;
 const propertyOptions = ["All Properties", "Main St. Loft", "Oak Ridge Estate", "Downtown Plaza"];
-const monthOptions = ["All Months", "March 2024", "February 2024", "January 2024"];
 const timePeriods = ["Last 30 Days", "Last 90 Days", "Year to Date", "2023", "All Time"];
 
 const propertySlugMap: Record<string, string> = {
@@ -24,13 +24,14 @@ function TransactionsContent() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
   const [page, setPage] = useState(1);
-  const [showFilters, setShowFilters] = useState(false);
   const [propertyFilter, setPropertyFilter] = useState("All Properties");
-  const [monthFilter, setMonthFilter] = useState("All Months");
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
   const [selectedTransaction, setSelectedTransaction] = useState<typeof allTransactions[0] | null>(null);
   const [showRecategorize, setShowRecategorize] = useState(false);
   const [tempCategory, setTempCategory] = useState<{ label: string; catClass: string } | null>(null);
+  const [alertDismissed, setAlertDismissed] = useState(false);
+  const [txSortKey, setTxSortKey] = useState<"date" | "title" | "category" | "amount" | null>(null);
+  const [txSortDir, setTxSortDir] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1200);
@@ -41,19 +42,16 @@ function TransactionsContent() {
     const slug = searchParams.get("property");
     if (slug && propertySlugMap[slug]) {
       setPropertyFilter(propertySlugMap[slug]);
-      setShowFilters(true);
     }
   }, [searchParams]);
 
-  const hasActiveFilters = filter !== "All" || propertyFilter !== "All Properties" || monthFilter !== "All Months" || timePeriod !== "Last 30 Days";
+  const hasActiveFilters = filter !== "All" || propertyFilter !== "All Properties" || timePeriod !== "Last 30 Days";
 
   const resetAllFilters = () => {
     setFilter("All");
     setPropertyFilter("All Properties");
-    setMonthFilter("All Months");
     setTimePeriod("Last 30 Days");
     setPage(1);
-    setShowFilters(false);
   };
 
   const filtered = allTransactions.filter((t) => {
@@ -65,8 +63,30 @@ function TransactionsContent() {
     return true;
   });
 
+  const handleTxSort = (key: "date" | "title" | "category" | "amount") => {
+    if (txSortKey === key) {
+      setTxSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setTxSortKey(key);
+      setTxSortDir("desc");
+    }
+  };
+
+  const sortedFiltered = txSortKey
+    ? [...filtered].sort((a, b) => {
+        let cmp = 0;
+        switch (txSortKey) {
+          case "date": cmp = new Date(a.date).getTime() - new Date(b.date).getTime(); break;
+          case "title": cmp = a.title.localeCompare(b.title); break;
+          case "category": cmp = a.category.localeCompare(b.category); break;
+          case "amount": cmp = parseFloat(a.amount.replace(/[$,+]/g, "")) - parseFloat(b.amount.replace(/[$,+]/g, "")); break;
+        }
+        return txSortDir === "asc" ? cmp : -cmp;
+      })
+    : filtered;
+
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const paginated = sortedFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
   const needsReview = allTransactions.filter((t) => t.highlight).length;
 
   if (loading) {
@@ -100,44 +120,53 @@ function TransactionsContent() {
         title="Transactions"
         subtitle="Last synced 12 minutes ago"
         actions={
-          <Link href="/reports/exports" className="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 rounded-lg text-sm font-medium text-on-surface hover:bg-slate-50 transition-all shadow-sm">
-            <span className="material-symbols-outlined text-[18px]">download</span>
+          <Link href="/reports/exports" className="flex items-center gap-2 px-4 py-2 bg-white border border-outline-variant/30 rounded-lg text-sm font-medium text-on-surface hover:bg-surface-container-low transition-all shadow-sm">
+            <span aria-hidden="true" className="material-symbols-outlined text-[18px]">download</span>
             Export
           </Link>
         }
       />
 
       {/* Alert Banner */}
-      {needsReview > 0 && (
-        <div className="bg-[#FEF3C7] text-[#92400E] p-4 rounded-xl flex items-center justify-between shadow-sm border border-[#FDE68A]/50">
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-[20px]">warning</span>
-            <span className="text-sm font-medium tracking-tight">
-              {needsReview} transaction{needsReview > 1 ? "s" : ""} need{needsReview === 1 ? "s" : ""} review — AI couldn&apos;t confidently categorize {needsReview === 1 ? "this item" : "these items"}
-            </span>
-          </div>
-          <Link
-            href="/transactions/ai-review"
-            className="bg-white/80 hover:bg-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+      <AnimatePresence>
+        {needsReview > 0 && !alertDismissed && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+            className="overflow-hidden"
           >
-            Review Now
-          </Link>
-        </div>
-      )}
+            <div className="bg-amber-50 text-amber-800 p-4 rounded-xl flex items-center justify-between shadow-sm border border-amber-200/50">
+              <div className="flex items-center gap-3">
+                <span aria-hidden="true" className="material-symbols-outlined text-[20px]">warning</span>
+                <span className="text-sm font-medium tracking-tight">
+                  {needsReview} transaction{needsReview > 1 ? "s" : ""} need{needsReview === 1 ? "s" : ""} review — AI couldn&apos;t confidently categorize {needsReview === 1 ? "this item" : "these items"}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/transactions/ai-review"
+                  className="bg-white/80 hover:bg-white px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                >
+                  Review Now
+                </Link>
+                <button
+                  onClick={() => setAlertDismissed(true)}
+                  className="p-1 rounded-lg hover:bg-amber-100 transition-colors"
+                  aria-label="Dismiss alert"
+                >
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Filters & Actions */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-4 py-2.5 border border-outline-variant/20 rounded-xl text-sm font-semibold shadow-sm hover:shadow-md transition-all ${
-              showFilters ? "bg-primary text-white" : "bg-surface-container-lowest text-on-surface"
-            }`}
-          >
-            <span className="material-symbols-outlined text-[18px]">filter_list</span>
-            Filters
-          </button>
-          <div className="h-6 w-px bg-outline-variant/30" />
+      {/* Filters — single consolidated row */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 flex-wrap">
           <div className="flex gap-2">
             {(["All", "Income", "Expenses"] as const).map((f) => (
               <button
@@ -146,7 +175,7 @@ function TransactionsContent() {
                 className={`px-3 py-1.5 text-xs font-bold rounded-full transition-all ${
                   filter === f
                     ? "bg-primary/5 text-primary border border-primary/10"
-                    : "text-on-surface-variant font-semibold hover:bg-slate-100 cursor-pointer"
+                    : "text-on-surface-variant font-semibold hover:bg-surface-container-high cursor-pointer"
                 }`}
               >
                 {f}
@@ -160,59 +189,40 @@ function TransactionsContent() {
                 onClick={resetAllFilters}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-full transition-all"
               >
-                <span className="material-symbols-outlined text-[14px]">close</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[14px]">close</span>
                 Reset All
               </button>
             </>
           )}
         </div>
-        <div className="relative">
-          <select
-            value={timePeriod}
-            onChange={(e) => setTimePeriod(e.target.value)}
-            aria-label="Time period"
-            className="appearance-none bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
-          >
-            {timePeriods.map((tp) => (
-              <option key={tp}>{tp}</option>
-            ))}
-          </select>
-          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-[18px]">expand_more</span>
-        </div>
-      </div>
-
-      {/* Filter Panel (collapsible with animation) */}
-      <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          showFilters ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="bg-surface-container-lowest rounded-xl p-6 card-shadow border border-outline-variant/10 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 block">Property</label>
+        <div className="flex items-center gap-3 flex-wrap">
+          {/* Date range picker */}
+          <div className="relative">
+            <select
+              value={timePeriod}
+              onChange={(e) => setTimePeriod(e.target.value)}
+              aria-label="Date range"
+              className="appearance-none bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2 pr-9 text-xs font-semibold focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
+            >
+              {timePeriods.map((tp) => (
+                <option key={tp}>{tp}</option>
+              ))}
+            </select>
+            <span aria-hidden="true" className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-outline text-[16px]">expand_more</span>
+          </div>
+          {/* Property filter */}
+          <div className="relative">
             <select
               value={propertyFilter}
               onChange={(e) => { setPropertyFilter(e.target.value); setPage(1); }}
               aria-label="Property filter"
-              className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
+              className="appearance-none bg-surface-container-lowest border border-outline-variant/20 rounded-xl px-4 py-2 pr-9 text-xs font-semibold focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
             >
               {propertyOptions.map((p) => (
                 <option key={p}>{p}</option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2 block">Month</label>
-            <select
-              value={monthFilter}
-              onChange={(e) => { setMonthFilter(e.target.value); setPage(1); }}
-              aria-label="Month filter"
-              className="w-full appearance-none bg-surface-container-low border-none rounded-xl py-3 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 outline-none"
-            >
-              {monthOptions.map((m) => (
-                <option key={m}>{m}</option>
-              ))}
-            </select>
+            <span aria-hidden="true" className="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-outline text-[16px]">expand_more</span>
           </div>
         </div>
       </div>
@@ -222,29 +232,36 @@ function TransactionsContent() {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-surface-container-low/50">
-              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
-                Date
-              </th>
-              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
-                Description
-              </th>
-              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-center">
-                Category
-              </th>
-              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
-                Property
-              </th>
-              <th className="px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">
-                Amount
-              </th>
+              {([
+                { key: "date" as const, label: "Date", align: "" },
+                { key: "title" as const, label: "Description", align: "" },
+                { key: "category" as const, label: "Category", align: "text-center" },
+                { key: null, label: "Property", align: "" },
+                { key: "amount" as const, label: "Amount", align: "text-right" },
+              ]).map((col) => (
+                <th
+                  key={col.label}
+                  className={`px-8 py-5 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest ${col.align} ${col.key ? "cursor-pointer hover:text-primary transition-colors select-none" : ""}`}
+                  onClick={() => col.key && handleTxSort(col.key)}
+                >
+                  <span className={`inline-flex items-center gap-1 ${col.align === "text-right" ? "justify-end w-full" : col.align === "text-center" ? "justify-center w-full" : ""}`}>
+                    {col.label}
+                    {txSortKey === col.key && (
+                      <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary">
+                        {txSortDir === "asc" ? "arrow_upward" : "arrow_downward"}
+                      </span>
+                    )}
+                  </span>
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-surface">
             {paginated.map((t, i) => (
               <tr
                 key={i}
                 onClick={() => { setSelectedTransaction(t); setShowRecategorize(false); setTempCategory(null); }}
-                className={`hover:bg-slate-50/50 transition-all cursor-pointer group ${
+                className={`hover:bg-surface-container-low/50 transition-all cursor-pointer group ${
                   t.highlight ? "bg-amber-50/20" : ""
                 }`}
               >
@@ -263,12 +280,14 @@ function TransactionsContent() {
                 </td>
                 <td className="px-8 py-5 text-center">
                   <span
-                    className={`px-3 py-1 ${t.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide inline-flex items-center gap-1`}
+                    className={`px-3 py-1 ${t.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide inline-flex items-center gap-1.5`}
                   >
-                    {t.icon && (
-                      <span className="material-symbols-outlined text-[14px]">
+                    {t.icon ? (
+                      <span aria-hidden="true" className="material-symbols-outlined text-[14px]">
                         {t.icon}
                       </span>
+                    ) : (
+                      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />
                     )}
                     {t.category}
                   </span>
@@ -288,7 +307,7 @@ function TransactionsContent() {
         </table>
 
         {/* Pagination */}
-        <div className="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between border-t border-slate-50">
+        <div className="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between border-t border-surface">
           <span className="text-xs font-medium text-on-surface-variant">
             Showing <span className="text-on-surface font-bold">{(page - 1) * ITEMS_PER_PAGE + 1}-{Math.min(page * ITEMS_PER_PAGE, filtered.length)}</span> of {filtered.length} transactions
           </span>
@@ -296,9 +315,9 @@ function TransactionsContent() {
             <button
               onClick={() => setPage(Math.max(1, page - 1))}
               disabled={page === 1}
-              className="p-2 rounded-lg hover:bg-slate-100 text-slate-500 transition-all disabled:opacity-30"
+              className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant transition-all disabled:opacity-30"
             >
-              <span className="material-symbols-outlined text-[20px]">chevron_left</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[20px]">chevron_left</span>
             </button>
             <div className="flex items-center gap-1">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
@@ -308,7 +327,7 @@ function TransactionsContent() {
                   className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
                     page === p
                       ? "bg-primary text-white shadow-md shadow-primary/20"
-                      : "text-on-surface hover:bg-slate-100"
+                      : "text-on-surface hover:bg-surface-container-high"
                   }`}
                 >
                   {p}
@@ -318,9 +337,9 @@ function TransactionsContent() {
             <button
               onClick={() => setPage(Math.min(totalPages, page + 1))}
               disabled={page === totalPages}
-              className="p-2 rounded-lg hover:bg-slate-100 text-slate-600 transition-all disabled:opacity-30"
+              className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant transition-all disabled:opacity-30"
             >
-              <span className="material-symbols-outlined text-[20px]">chevron_right</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[20px]">chevron_right</span>
             </button>
           </div>
         </div>
@@ -330,7 +349,7 @@ function TransactionsContent() {
       <div className="bg-gradient-to-br from-primary to-primary-container p-6 rounded-2xl shadow-xl shadow-primary/10 relative overflow-hidden group">
         <div className="absolute -right-4 -bottom-4 opacity-10 scale-150 group-hover:rotate-12 transition-transform duration-700">
           <span
-            className="material-symbols-outlined text-[140px] text-white"
+            aria-hidden="true" className="material-symbols-outlined text-[140px] text-white"
             style={{ fontVariationSettings: "'FILL' 1" }}
           >
             insights
@@ -367,12 +386,12 @@ function TransactionsContent() {
               onClick={() => setSelectedTransaction(null)}
               className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-error hover:text-white transition-all"
             >
-              <span className="material-symbols-outlined text-[18px]">close</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">close</span>
             </button>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${selectedTransaction.amount.startsWith("+") ? "bg-emerald-100" : "bg-slate-100"}`}>
-                <span className={`material-symbols-outlined text-xl ${selectedTransaction.amount.startsWith("+") ? "text-emerald-700" : "text-slate-600"}`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${selectedTransaction.amount.startsWith("+") ? "bg-emerald-100" : "bg-surface-container-high"}`}>
+                <span aria-hidden="true" className={`material-symbols-outlined text-xl ${selectedTransaction.amount.startsWith("+") ? "text-emerald-700" : "text-on-surface-variant"}`}>
                   {selectedTransaction.amount.startsWith("+") ? "arrow_downward" : "arrow_upward"}
                 </span>
               </div>
@@ -383,17 +402,17 @@ function TransactionsContent() {
             </div>
 
             <div className="space-y-4">
-              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+              <div className="flex justify-between items-center py-3 border-b border-surface">
                 <span className="text-sm text-on-surface-variant font-medium">Amount</span>
                 <span className={`text-lg font-bold ${selectedTransaction.amountClass}`} style={{ fontFamily: "'Manrope', sans-serif" }}>
                   {selectedTransaction.amount}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+              <div className="flex justify-between items-center py-3 border-b border-surface">
                 <span className="text-sm text-on-surface-variant font-medium">Date</span>
                 <span className="text-sm font-semibold text-on-surface">{selectedTransaction.date}</span>
               </div>
-              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+              <div className="flex justify-between items-center py-3 border-b border-surface">
                 <span className="text-sm text-on-surface-variant font-medium">Category</span>
                 <div className="flex items-center gap-2">
                   <span className={`px-3 py-1 ${tempCategory?.catClass ?? selectedTransaction.catClass} text-[11px] font-bold rounded-full uppercase tracking-wide`}>
@@ -403,14 +422,14 @@ function TransactionsContent() {
                     onClick={() => setShowRecategorize(!showRecategorize)}
                     className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                   >
-                    <span className="material-symbols-outlined text-[14px]">edit</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px]">edit</span>
                   </button>
                 </div>
               </div>
 
               {/* Inline Recategorize */}
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showRecategorize ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"}`}>
-                <div className="pb-3 border-b border-slate-100">
+                <div className="pb-3 border-b border-surface">
                   <p className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Reassign Category</p>
                   <div className="flex flex-wrap gap-1.5">
                     {categoryOptions.map((opt) => {
@@ -429,7 +448,7 @@ function TransactionsContent() {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center py-3 border-b border-slate-100">
+              <div className="flex justify-between items-center py-3 border-b border-surface">
                 <span className="text-sm text-on-surface-variant font-medium">Property</span>
                 <span className="text-sm font-semibold text-on-surface">{selectedTransaction.property}</span>
               </div>
@@ -437,7 +456,7 @@ function TransactionsContent() {
 
             {selectedTransaction.highlight && !tempCategory && (
               <div className="mt-6 bg-amber-50 border border-amber-200/50 rounded-xl p-4 flex items-start gap-3">
-                <span className="material-symbols-outlined text-amber-600 text-xl">psychology</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-amber-600 text-xl">psychology</span>
                 <div>
                   <p className="text-sm font-bold text-amber-800">Needs Review</p>
                   <p className="text-xs text-amber-700 mt-0.5">AI couldn&apos;t confidently categorize this transaction. Use the edit button above to assign a category.</p>
@@ -447,7 +466,7 @@ function TransactionsContent() {
 
             {tempCategory && (
               <div className="mt-6 bg-emerald-50 border border-emerald-200/50 rounded-xl p-4 flex items-start gap-3">
-                <span className="material-symbols-outlined text-emerald-700 text-xl">check_circle</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-emerald-700 text-xl">check_circle</span>
                 <div>
                   <p className="text-sm font-bold text-emerald-800">Recategorized</p>
                   <p className="text-xs text-emerald-700 mt-0.5">Changed to &quot;{tempCategory.label}&quot;. Save on the detail page to persist.</p>
@@ -460,7 +479,7 @@ function TransactionsContent() {
                 href={`/transactions/${selectedTransaction.id}`}
                 className="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
               >
-                <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
                 View Full Details
               </Link>
               <div className="flex gap-3">

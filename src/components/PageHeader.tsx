@@ -23,7 +23,7 @@ export default function PageHeader({
             href={breadcrumb.href}
             className="flex items-center gap-1 text-primary text-sm font-medium group"
           >
-            <span className="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">
+            <span aria-hidden="true" className="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">
               arrow_back
             </span>
             <span className="tracking-tight">{breadcrumb.label}</span>

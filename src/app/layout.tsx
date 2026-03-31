@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "The Wealth Architect",
+  title: {
+    default: "The Wealth Architect",
+    template: "%s — The Wealth Architect",
+  },
   description: "Luxury Real Estate Curator",
 };
 

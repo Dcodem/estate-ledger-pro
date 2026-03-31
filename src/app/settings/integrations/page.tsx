@@ -2,42 +2,12 @@
 import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
+import AnimatedTabs from "@/components/AnimatedTabs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-function SettingsTabs() {
-  const pathname = usePathname();
-  const tabs = [
-    { label: "Account", href: "/settings" },
-    { label: "Integrations", href: "/settings/integrations" },
-    { label: "Notifications", href: "/settings/notifications" },
-  ];
-  return (
-    <div className="flex gap-8 border-b border-outline-variant/30">
-      {tabs.map((t) => {
-        const active = pathname === t.href;
-        return (
-          <Link
-            key={t.href}
-            href={t.href}
-            className={`pb-3 text-sm font-medium transition-colors relative ${
-              active
-                ? "font-semibold text-primary"
-                : "text-on-surface-variant hover:text-primary"
-            }`}
-          >
-            {t.label}
-            {active && (
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary" />
-            )}
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
-
 export default function IntegrationsPage() {
+  const pathname = usePathname();
   const [chaseDisconnected, setChaseDisconnected] = useState(false);
   const [wellsCancelled, setWellsCancelled] = useState(false);
   const [amexReconnecting, setAmexReconnecting] = useState<"idle" | "loading" | "done">("idle");
@@ -49,7 +19,17 @@ export default function IntegrationsPage() {
         title="Settings"
         subtitle="Manage your account and preferences"
       />
-      <SettingsTabs />
+      <AnimatedTabs
+        layoutId="settings-tabs"
+        variant="underline"
+        tabs={[
+          { label: "Account", href: "/settings" },
+          { label: "Integrations", href: "/settings/integrations" },
+          { label: "Notifications", href: "/settings/notifications" },
+          { label: "Users", href: "/settings/users" },
+        ]}
+        activeValue={pathname}
+      />
 
       {/* Bank Connections Section */}
       <section className="space-y-6 max-w-4xl">
@@ -60,7 +40,7 @@ export default function IntegrationsPage() {
           <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between group">
             <div className="flex items-center gap-5">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                <span className="material-symbols-outlined text-[28px]">account_balance</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[28px]">account_balance</span>
               </div>
               <div>
                 <div className="flex items-center gap-3">
@@ -76,10 +56,10 @@ export default function IntegrationsPage() {
               onClick={() => { setChaseDisconnected(true); setTimeout(() => setChaseDisconnected(false), 2000); }}
               aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-                chaseDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
+                chaseDisconnected ? "bg-surface-container-high text-on-surface-variant" : "text-error hover:bg-error-container/20"
               }`}
             >
-              {chaseDisconnected && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {chaseDisconnected && <span aria-hidden="true" className="material-symbols-outlined text-[14px]">check</span>}
               {chaseDisconnected ? "Disconnected" : "Disconnect"}
             </button>
           </div>
@@ -88,7 +68,7 @@ export default function IntegrationsPage() {
           <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-red-50 text-red-700">
-                <span className="material-symbols-outlined text-[28px]">account_balance</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[28px]">account_balance</span>
               </div>
               <div>
                 <div className="flex items-center gap-3">
@@ -105,10 +85,10 @@ export default function IntegrationsPage() {
               onClick={() => { setWellsCancelled(true); setTimeout(() => setWellsCancelled(false), 2000); }}
               aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-                wellsCancelled ? "bg-amber-50 text-amber-700" : "text-slate-500 hover:bg-slate-100"
+                wellsCancelled ? "bg-amber-50 text-amber-700" : "text-on-surface-variant hover:bg-surface-container-high"
               }`}
             >
-              {wellsCancelled && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {wellsCancelled && <span aria-hidden="true" className="material-symbols-outlined text-[14px]">check</span>}
               {wellsCancelled ? "Cancelled" : "Cancel"}
             </button>
           </div>
@@ -116,8 +96,8 @@ export default function IntegrationsPage() {
           {/* American Express */}
           <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between border-l-4 border-error">
             <div className="flex items-center gap-5">
-              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-slate-900 text-white">
-                <span className="material-symbols-outlined text-[28px]">credit_card</span>
+              <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-inverse-surface text-inverse-on-surface">
+                <span aria-hidden="true" className="material-symbols-outlined text-[28px]">credit_card</span>
               </div>
               <div>
                 <div className="flex items-center gap-3">
@@ -142,8 +122,8 @@ export default function IntegrationsPage() {
                 : "text-primary hover:bg-primary/10 border border-primary/20"
               }`}
             >
-              {amexReconnecting === "done" && <span className="material-symbols-outlined text-[14px]">check</span>}
-              {amexReconnecting === "loading" && <span className="material-symbols-outlined text-[14px] animate-spin">sync</span>}
+              {amexReconnecting === "done" && <span aria-hidden="true" className="material-symbols-outlined text-[14px]">check</span>}
+              {amexReconnecting === "loading" && <span aria-hidden="true" className="material-symbols-outlined text-[14px] animate-spin">sync</span>}
               {amexReconnecting === "done" ? "Connected!" : amexReconnecting === "loading" ? "Connecting..." : "Reconnect"}
             </button>
           </div>
@@ -152,7 +132,7 @@ export default function IntegrationsPage() {
           <div className="bg-surface-container-lowest p-6 rounded-xl card-shadow flex items-center justify-between">
             <div className="flex items-center gap-5">
               <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-fixed-dim text-primary">
-                <span className="material-symbols-outlined text-[28px]">monitoring</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[28px]">monitoring</span>
               </div>
               <div>
                 <div className="flex items-center gap-3">
@@ -168,20 +148,20 @@ export default function IntegrationsPage() {
               onClick={() => { setVanguardDisconnected(true); setTimeout(() => setVanguardDisconnected(false), 2000); }}
               aria-live="polite"
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5 ${
-                vanguardDisconnected ? "bg-slate-100 text-slate-500" : "text-error hover:bg-error-container/20"
+                vanguardDisconnected ? "bg-surface-container-high text-on-surface-variant" : "text-error hover:bg-error-container/20"
               }`}
             >
-              {vanguardDisconnected && <span className="material-symbols-outlined text-[14px]">check</span>}
+              {vanguardDisconnected && <span aria-hidden="true" className="material-symbols-outlined text-[14px]">check</span>}
               {vanguardDisconnected ? "Disconnected" : "Disconnect"}
             </button>
           </div>
 
           {/* Add Bank Card */}
-          <Link href="/settings/integrations/add-bank" className="group w-full border-2 border-dashed border-slate-200 hover:border-primary/50 hover:bg-primary-fixed/20 transition-all duration-300 p-8 rounded-xl flex flex-col items-center justify-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-slate-100 group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center">
-              <span className="material-symbols-outlined text-lg">add</span>
+          <Link href="/settings/integrations/add-bank" className="group w-full border-2 border-dashed border-outline-variant hover:border-primary/50 hover:bg-primary-fixed/20 transition-all duration-300 p-8 rounded-xl flex flex-col items-center justify-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-surface-container-high group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center">
+              <span aria-hidden="true" className="material-symbols-outlined text-lg">add</span>
             </div>
-            <span className="text-sm font-semibold text-slate-600 group-hover:text-primary transition-colors">
+            <span className="text-sm font-semibold text-on-surface-variant group-hover:text-primary transition-colors">
               + Add Bank Account
             </span>
           </Link>

@@ -32,7 +32,7 @@ export default function OnboardingStep3() {
               <div className="mb-10 relative">
                 <div className="w-24 h-24 rounded-full border-4 border-surface-container-high border-t-primary animate-spin" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-primary text-3xl">
+                  <span aria-hidden="true" className="material-symbols-outlined text-primary text-3xl">
                     cognition
                   </span>
                 </div>
@@ -54,7 +54,7 @@ export default function OnboardingStep3() {
                 <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-low transition-all duration-300">
                   <div className="flex items-center space-x-4">
                     <span
-                      className="material-symbols-outlined text-emerald-700"
+                      aria-hidden="true" className="material-symbols-outlined text-emerald-700"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       check_circle
@@ -68,7 +68,7 @@ export default function OnboardingStep3() {
                 {/* Row 2: In Progress */}
                 <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-lowest border border-primary/20 shadow-sm transition-all duration-300">
                   <div className="flex items-center space-x-4">
-                    <span className="material-symbols-outlined text-primary animate-spin">
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary animate-spin">
                       progress_activity
                     </span>
                     <span className="font-medium text-on-surface">Detecting Properties</span>
@@ -80,10 +80,10 @@ export default function OnboardingStep3() {
                 {/* Row 3: Pending */}
                 <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-low opacity-60 transition-all duration-300">
                   <div className="flex items-center space-x-4">
-                    <span className="material-symbols-outlined text-slate-500">schedule</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant">schedule</span>
                     <span className="font-medium text-on-surface">Flagging Anomalies</span>
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                     Pending
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export default function OnboardingStep3() {
 
               {/* Footer Info */}
               <div className="flex items-center space-x-2 text-on-surface-variant/80 bg-surface-container-high/40 px-6 py-2 rounded-full">
-                <span className="material-symbols-outlined text-sm">timer</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-sm">timer</span>
                 <p className="text-sm font-medium">Estimated time: ~2 minutes</p>
               </div>
             </div>
@@ -108,14 +108,14 @@ export default function OnboardingStep3() {
           {/* Step 1 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
               Step 1
             </span>
           </div>
           {/* Step 2 (Completed) */}
           <div className="flex flex-col items-center space-y-2">
             <div className="h-1.5 w-8 rounded-full bg-primary/30" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-on-surface-variant">
               Step 2
             </span>
           </div>
@@ -124,7 +124,7 @@ export default function OnboardingStep3() {
             <div className="h-1.5 w-16 rounded-full bg-primary shadow-[0_0_8px_rgba(99,14,212,0.4)]" />
             <div className="flex items-center space-x-2 text-teal-700">
               <span
-                className="material-symbols-outlined text-[11px]"
+                aria-hidden="true" className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
@@ -136,8 +136,8 @@ export default function OnboardingStep3() {
           </div>
           {/* Step 4 (Inactive) */}
           <div className="flex flex-col items-center space-y-2">
-            <div className="h-1.5 w-8 rounded-full bg-slate-200" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">
+            <div className="h-1.5 w-8 rounded-full bg-surface-container-high" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-outline-variant">
               Final
             </span>
           </div>

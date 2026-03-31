@@ -11,7 +11,7 @@ export default function OnboardingStep4() {
             Estate Ledger
           </span>
           <div className="flex items-center space-x-8">
-            <span className="text-slate-500 font-[Cinzel] font-bold text-lg tracking-tight">
+            <span className="text-on-surface-variant font-[Cinzel] font-bold text-lg tracking-tight">
               Setup Guide
             </span>
           </div>
@@ -28,9 +28,9 @@ export default function OnboardingStep4() {
               <div className="flex justify-center mb-10">
                 <div className="inline-flex items-center bg-white/60 backdrop-blur-md px-8 py-3 rounded-full border border-white/40 shadow-sm space-x-8">
                   {/* Step 1 (Inactive) */}
-                  <div className="flex items-center space-x-2 text-slate-300">
+                  <div className="flex items-center space-x-2 text-outline-variant">
                     <span
-                      className="material-symbols-outlined text-[8px]"
+                      aria-hidden="true" className="material-symbols-outlined text-[8px]"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       fiber_manual_record
@@ -40,9 +40,9 @@ export default function OnboardingStep4() {
                     </span>
                   </div>
                   {/* Step 2 (Inactive) */}
-                  <div className="flex items-center space-x-2 text-slate-300">
+                  <div className="flex items-center space-x-2 text-outline-variant">
                     <span
-                      className="material-symbols-outlined text-[8px]"
+                      aria-hidden="true" className="material-symbols-outlined text-[8px]"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       fiber_manual_record
@@ -52,9 +52,9 @@ export default function OnboardingStep4() {
                     </span>
                   </div>
                   {/* Step 3 (Inactive) */}
-                  <div className="flex items-center space-x-2 text-slate-300">
+                  <div className="flex items-center space-x-2 text-outline-variant">
                     <span
-                      className="material-symbols-outlined text-[8px]"
+                      aria-hidden="true" className="material-symbols-outlined text-[8px]"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       fiber_manual_record
@@ -66,7 +66,7 @@ export default function OnboardingStep4() {
                   {/* Step 4 (Active) */}
                   <div className="flex items-center space-x-2 text-primary">
                     <span
-                      className="material-symbols-outlined text-[11px]"
+                      aria-hidden="true" className="material-symbols-outlined text-[11px]"
                       style={{ fontVariationSettings: "'FILL' 1" }}
                     >
                       fiber_manual_record
@@ -95,7 +95,7 @@ export default function OnboardingStep4() {
                 <div className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-primary-fixed-dim flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary">receipt_long</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary">receipt_long</span>
                     </div>
                     <span className="text-primary font-bold font-[Cinzel] text-sm uppercase tracking-wider">
                       88% Match
@@ -108,7 +108,7 @@ export default function OnboardingStep4() {
                 <div className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-primary-fixed-dim flex items-center justify-center">
-                      <span className="material-symbols-outlined text-primary">domain</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary">domain</span>
                     </div>
                     <span className="text-primary font-bold font-[Cinzel] text-sm uppercase tracking-wider">
                       Validated
@@ -121,7 +121,7 @@ export default function OnboardingStep4() {
                 <div className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-error-container flex items-center justify-center">
-                      <span className="material-symbols-outlined text-error">priority_high</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-error">priority_high</span>
                     </div>
                     <span className="text-error font-bold font-[Cinzel] text-sm uppercase tracking-wider">
                       Action Required
@@ -225,7 +225,7 @@ export default function OnboardingStep4() {
                           </div>
                         </td>
                         <td className="px-8 py-6">
-                          <span className="px-3 py-1 bg-error-container text-[#93000a] rounded-full text-xs font-semibold">
+                          <span className="px-3 py-1 bg-error-container text-error rounded-full text-xs font-semibold">
                             Needs Review
                           </span>
                         </td>

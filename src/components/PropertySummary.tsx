@@ -120,7 +120,7 @@ export default function PropertySummary(props: PropertySummaryProps) {
   return (
     <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 p-6">
       <div className="flex items-center gap-2 mb-3">
-        <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
         <p className="text-[11px] font-bold text-primary uppercase tracking-widest">AI Property Summary</p>
       </div>
 
@@ -130,7 +130,7 @@ export default function PropertySummary(props: PropertySummaryProps) {
         <div className="flex flex-wrap gap-3 mb-4">
           {highlights.map((h) => (
             <div key={h.label} className="flex items-center gap-2 px-3 py-2 bg-surface-container-low rounded-lg">
-              <span className="material-symbols-outlined text-[16px] text-primary">{h.icon}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">{h.icon}</span>
               <div>
                 <p className="text-[11px] font-bold text-on-surface leading-tight">{h.label}</p>
                 <p className="text-[11px] text-on-surface-variant">{h.detail}</p>
@@ -142,7 +142,7 @@ export default function PropertySummary(props: PropertySummaryProps) {
 
       {riskNote && (
         <div className="flex items-start gap-2 px-3 py-2.5 bg-amber-50 rounded-lg border border-amber-100">
-          <span className="material-symbols-outlined text-[16px] text-amber-600 mt-0.5">warning</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-amber-600 mt-0.5">warning</span>
           <p className="text-[12px] text-amber-700 font-medium leading-relaxed">{riskNote}</p>
         </div>
       )}

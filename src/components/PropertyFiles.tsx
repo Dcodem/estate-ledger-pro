@@ -153,7 +153,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
           onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-2 group"
         >
-          <span className={`material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-200 ${expanded ? "rotate-0" : "-rotate-90"}`}>
+          <span aria-hidden="true" className={`material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-200 ${expanded ? "rotate-0" : "-rotate-90"}`}>
             expand_more
           </span>
           <h2 className="text-xl font-bold">Property Documents</h2>
@@ -163,7 +163,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
           onClick={() => { setExpanded(true); setShowUploadModal(true); }}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"
         >
-          <span className="material-symbols-outlined text-[18px]">upload_file</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[18px]">upload_file</span>
           Upload File
         </button>
       </div>
@@ -184,7 +184,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <span className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[18px]">auto_awesome</span>
               <p className="text-[11px] font-bold text-primary uppercase tracking-widest">AI Document Analysis</p>
             </div>
             <p className="text-sm text-on-surface leading-relaxed">{summary.overview}</p>
@@ -202,7 +202,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                           : "bg-amber-50 text-amber-700"
                       }`}
                     >
-                      <span className="material-symbols-outlined text-[14px]">
+                      <span aria-hidden="true" className="material-symbols-outlined text-[14px]">
                         {m.severity === "high" ? "error" : "warning"}
                       </span>
                       {m.label}
@@ -221,7 +221,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                       key={e.label}
                       className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-orange-50 text-orange-600"
                     >
-                      <span className="material-symbols-outlined text-[14px]">schedule</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[14px]">schedule</span>
                       {e.label.replace(/_/g, " ").replace(/\.\w+$/, "")} ({e.date})
                     </span>
                   ))}
@@ -231,7 +231,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
 
             {summary.score === 100 && summary.expiring.length === 0 && (
               <div className="mt-3 flex items-center gap-1.5 text-emerald-700">
-                <span className="material-symbols-outlined text-[16px]">verified</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[16px]">verified</span>
                 <p className="text-[12px] font-bold">All essential documents are current and on file.</p>
               </div>
             )}
@@ -242,16 +242,16 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
       {/* File Grid */}
       {files.length > 0 ? (
         <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] overflow-hidden border border-outline-variant/10">
-          <div className="divide-y divide-slate-50">
+          <div className="divide-y divide-surface">
             {files.map((file) => {
               const { icon, bg, text } = typeIcons[file.type] || typeIcons.document;
               return (
                 <div
                   key={file.id}
-                  className="flex items-center gap-4 px-6 py-4 hover:bg-slate-50/50 transition-all group"
+                  className="flex items-center gap-4 px-6 py-4 hover:bg-surface-container-low/50 transition-all group"
                 >
                   <div className={`w-10 h-10 rounded-lg ${bg} flex items-center justify-center shrink-0`}>
-                    <span className={`material-symbols-outlined text-[20px] ${text}`}>{icon}</span>
+                    <span aria-hidden="true" className={`material-symbols-outlined text-[20px] ${text}`}>{icon}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-on-surface truncate">{file.name}</p>
@@ -263,7 +263,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                     onClick={() => mockDownload(file.name)}
                     className="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all opacity-0 group-hover:opacity-100"
                   >
-                    <span className="material-symbols-outlined text-[18px]">download</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[18px]">download</span>
                   </button>
                 </div>
               );
@@ -272,7 +272,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
         </div>
       ) : (
         <div className="bg-surface-container-lowest rounded-xl border-2 border-dashed border-outline-variant/30 p-12 text-center">
-          <span className="material-symbols-outlined text-[40px] text-on-surface-variant/40 mb-3 block">folder_open</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[40px] text-on-surface-variant/40 mb-3 block">folder_open</span>
           <p className="text-sm font-semibold text-on-surface-variant">No documents yet</p>
           <p className="text-xs text-on-surface-variant/60 mt-1">Upload lease agreements, insurance certificates, and other property documents</p>
         </div>
@@ -296,7 +296,7 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                   onClick={() => setShowUploadModal(false)}
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-all"
                 >
-                  <span className="material-symbols-outlined text-[20px]">close</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[20px]">close</span>
                 </button>
               )}
             </div>
@@ -337,11 +337,11 @@ export default function PropertyFiles({ initialFiles }: { initialFiles: Property
                 className={`border-2 border-dashed rounded-xl py-12 flex flex-col items-center gap-4 cursor-pointer transition-all ${
                   isDragging
                     ? "border-primary bg-primary/5"
-                    : "border-outline-variant/30 hover:border-primary/30 hover:bg-slate-50/50"
+                    : "border-outline-variant/30 hover:border-primary/30 hover:bg-surface-container-low/50"
                 }`}
               >
                 <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-surface-container-low"}`}>
-                  <span className={`material-symbols-outlined text-[32px] ${isDragging ? "text-primary" : "text-on-surface-variant"}`}>
+                  <span aria-hidden="true" className={`material-symbols-outlined text-[32px] ${isDragging ? "text-primary" : "text-on-surface-variant"}`}>
                     cloud_upload
                   </span>
                 </div>

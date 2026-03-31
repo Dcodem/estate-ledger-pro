@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NumberFlow from "@number-flow/react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import PropertyFiles from "@/components/PropertyFiles";
@@ -38,18 +39,16 @@ const tenant = {
   notes: "Long-term tenant, excellent payment history. Lease renewal discussion scheduled for Apr 2025.",
 };
 const txns = [
-  { date: "Mar 15", desc: "Lawn Care", cat: "Maintenance", amount: "-$320", amountClass: "text-on-surface" },
-  { date: "Mar 14", desc: "Insurance Premium", cat: "Insurance", amount: "-$180", amountClass: "text-on-surface" },
-  { date: "Mar 1", desc: "Rent Collection", cat: "Rental Income", amount: "+$4,500", amountClass: "text-emerald-700" },
-  { date: "Feb 28", desc: "Property Tax", cat: "Taxes", amount: "-$450", amountClass: "text-on-surface" },
+  { date: "Mar 15", desc: "Lawn Care", cat: "Maintenance", amount: "-$320", amountClass: "text-on-surface", txnId: "txn-016" },
+  { date: "Mar 14", desc: "Insurance Premium", cat: "Insurance", amount: "-$180", amountClass: "text-on-surface", txnId: "txn-017" },
+  { date: "Mar 1", desc: "Rent Collection", cat: "Rental Income", amount: "+$4,500", amountClass: "text-emerald-700", txnId: "txn-018" },
+  { date: "Feb 28", desc: "Property Tax", cat: "Taxes", amount: "-$450", amountClass: "text-on-surface", txnId: "txn-019" },
 ];
 
 export default function OakRidgePage() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState(txns.map((t) => t.cat));
-  const [editState, setEditState] = useState<"idle" | "loading" | "done">("idle");
-  const [financialsState, setFinancialsState] = useState<"idle" | "loading" | "done">("idle");
   const [addTxnState, setAddTxnState] = useState<"idle" | "loading" | "done">("idle");
   const [modalSaved, setModalSaved] = useState(false);
 
@@ -60,24 +59,13 @@ export default function OakRidgePage() {
         subtitle="North Highlands"
         breadcrumb={{ label: "Back to Properties", href: "/properties" }}
         actions={
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => { if (editState !== "idle") return; setEditState("loading"); setTimeout(() => { setEditState("done"); setTimeout(() => setEditState("idle"), 2000); }, 1500); }}
-              disabled={editState !== "idle"}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${editState === "done" ? "bg-emerald-500 text-white" : editState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-            >
-              <span className="material-symbols-outlined text-[18px]">{editState === "done" ? "check" : editState === "loading" ? "hourglass_top" : "edit"}</span>
-              {editState === "done" ? "Saved!" : editState === "loading" ? "Saving..." : "Edit Details"}
-            </button>
-            <button
-              onClick={() => { if (financialsState !== "idle") return; setFinancialsState("loading"); setTimeout(() => { setFinancialsState("done"); setTimeout(() => setFinancialsState("idle"), 2000); }, 1500); }}
-              disabled={financialsState !== "idle"}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all ${financialsState === "done" ? "bg-emerald-500 text-white" : financialsState === "loading" ? "bg-primary/70 text-white cursor-wait" : "bg-primary text-on-primary hover:shadow-md"}`}
-            >
-              <span className="material-symbols-outlined text-[18px]">{financialsState === "done" ? "check" : financialsState === "loading" ? "hourglass_top" : "bar_chart"}</span>
-              {financialsState === "done" ? "Report Ready!" : financialsState === "loading" ? "Loading..." : "View Financials"}
-            </button>
-          </div>
+          <Link
+            href="/properties/oak-ridge/edit"
+            className="flex items-center gap-2 px-4 py-2 border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+          >
+            <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">edit</span>
+            Edit Property
+          </Link>
         }
       />
 
@@ -97,23 +85,23 @@ export default function OakRidgePage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
-          <p className="text-2xl font-bold text-on-surface mt-1">100%</p>
+          <NumberFlow value={1} format={{ style: "percent" }} className="text-2xl font-bold text-on-surface mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">Single unit</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
-          <p className="text-2xl font-bold text-primary mt-1">$4,500</p>
+          <NumberFlow value={4500} format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }} className="text-2xl font-bold text-primary mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">Average/Mo</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Cap Rate</p>
-          <p className="text-2xl font-bold text-on-surface mt-1">6.8%</p>
+          <NumberFlow value={0.068} format={{ style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }} className="text-2xl font-bold text-on-surface mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">Annualized</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Property Manager</p>
           <div className="flex items-center gap-2 mt-2">
-            <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-400 flex items-center justify-center text-[11px] font-bold text-white">RB</div>
+            <div className="w-7 h-7 rounded-full border-2 border-white bg-outline flex items-center justify-center text-[11px] font-bold text-white">RB</div>
             <span className="text-sm font-medium text-on-surface">R. Barrett</span>
           </div>
         </div>
@@ -134,17 +122,17 @@ export default function OakRidgePage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2">
           <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
-          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-surface-variant">
             {txns.map((t, i) => (
               <div
                 key={i}
-                className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
-                onClick={() => window.location.href = `/transactions?property=oak-ridge`}
+                className="px-5 py-4 hover:bg-surface-container-low/50 transition-all cursor-pointer group/row"
+                onClick={() => window.location.href = `/transactions/${t.txnId}`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
                     {t.desc}
-                    <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
                   </p>
                   <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`}>
                     {t.amount}
@@ -152,12 +140,12 @@ export default function OakRidgePage() {
                 </div>
                 <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
                   <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
-                  <span className="text-slate-300">·</span>
+                  <span className="text-outline-variant">·</span>
                   <div className="group/cat flex items-center gap-1">
                     <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
                       categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700"
                       : categories[i] === "Maintenance" ? "bg-blue-50 text-blue-600"
-                      : categories[i] === "Insurance" ? "bg-slate-100 text-slate-600"
+                      : categories[i] === "Insurance" ? "bg-surface-container-high text-on-surface-variant"
                       : "bg-amber-50 text-amber-700"
                     }`}>
                       {categories[i]}
@@ -166,7 +154,7 @@ export default function OakRidgePage() {
                       onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
                       className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
                     >
-                      <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
                     </button>
                   </div>
                 </div>
@@ -179,12 +167,12 @@ export default function OakRidgePage() {
               disabled={addTxnState !== "idle"}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
             >
-              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
               {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
             </button>
             <Link href="/transactions?property=oak-ridge" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
               View All Transactions
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
         </div>
@@ -199,12 +187,12 @@ export default function OakRidgePage() {
                   <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-surface">
                 {financials.map((f, i) => (
-                  <tr key={i} className={`hover:bg-slate-50/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
+                  <tr key={i} className={`hover:bg-surface-container-low/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
                         <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
                       </div>
                     </td>
@@ -225,7 +213,7 @@ export default function OakRidgePage() {
         <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 p-6">
           <div className="flex items-start gap-4 mb-6">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-primary text-[24px]">person</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[24px]">person</span>
             </div>
             <div>
               <p className="text-lg font-bold text-on-surface">{tenant.name}</p>

@@ -1,5 +1,5 @@
 export function SkeletonPulse({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
-  return <div className={`animate-pulse bg-slate-200 rounded ${className}`} style={style} />;
+  return <div className={`animate-pulse bg-surface-container-high rounded ${className}`} style={style} />;
 }
 
 export function KPISkeletons() {
@@ -60,7 +60,7 @@ export function TableSkeleton({ rows = 3 }: { rows?: number }) {
           ))}
         </div>
         {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex gap-6 py-6 px-6 border-b border-slate-50">
+          <div key={i} className="flex gap-6 py-6 px-6 border-b border-surface">
             <div className="flex-1 flex items-center gap-3">
               <SkeletonPulse className="w-10 h-10 rounded" />
               <SkeletonPulse className="w-24 h-4" />

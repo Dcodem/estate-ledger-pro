@@ -35,7 +35,7 @@ export default function OnboardingStep2() {
               {fileRemoved ? (
                 <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-center border-2 border-dashed border-outline-variant/40 transition-all">
                   <div className="text-center py-4">
-                    <span className="material-symbols-outlined text-on-surface-variant/40 text-4xl mb-2">upload_file</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant/40 text-4xl mb-2">upload_file</span>
                     <p className="text-sm text-on-surface-variant font-medium">File removed. Upload a new file to continue.</p>
                   </div>
                 </div>
@@ -43,7 +43,7 @@ export default function OnboardingStep2() {
                 <div className="w-full bg-surface-container-low rounded-xl p-6 mb-10 flex items-center justify-between border-2 border-dashed border-transparent transition-all">
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
-                      <span className="material-symbols-outlined">description</span>
+                      <span aria-hidden="true" className="material-symbols-outlined">description</span>
                     </div>
                     <div className="text-left">
                       <div className="font-[Cinzel] font-bold text-on-surface">
@@ -55,7 +55,7 @@ export default function OnboardingStep2() {
                   <div className="flex items-center space-x-6">
                     <div className="flex items-center text-emerald-700 font-semibold text-sm">
                       <span
-                        className="material-symbols-outlined mr-1"
+                        aria-hidden="true" className="material-symbols-outlined mr-1"
                         style={{ fontVariationSettings: "'FILL' 1" }}
                       >
                         check_circle
@@ -97,9 +97,9 @@ export default function OnboardingStep2() {
         <div className="flex items-center justify-center space-x-8">
           <div className="flex items-center space-x-3">
             {/* Step 1 (Complete) */}
-            <div className="flex items-center justify-center space-x-2 text-slate-300">
+            <div className="flex items-center justify-center space-x-2 text-outline-variant">
               <span
-                className="material-symbols-outlined text-[11px]"
+                aria-hidden="true" className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
@@ -111,25 +111,25 @@ export default function OnboardingStep2() {
                 Step 2 of 4
               </span>
               <span
-                className="material-symbols-outlined text-[11px]"
+                aria-hidden="true" className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
               </span>
             </div>
             {/* Step 3 */}
-            <div className="flex items-center justify-center space-x-2 text-slate-300">
+            <div className="flex items-center justify-center space-x-2 text-outline-variant">
               <span
-                className="material-symbols-outlined text-[11px]"
+                aria-hidden="true" className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record
               </span>
             </div>
             {/* Step 4 */}
-            <div className="flex items-center justify-center space-x-2 text-slate-300">
+            <div className="flex items-center justify-center space-x-2 text-outline-variant">
               <span
-                className="material-symbols-outlined text-[11px]"
+                aria-hidden="true" className="material-symbols-outlined text-[11px]"
                 style={{ fontVariationSettings: "'FILL' 1" }}
               >
                 fiber_manual_record

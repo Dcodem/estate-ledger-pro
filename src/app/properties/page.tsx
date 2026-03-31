@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import { SkeletonPulse } from "@/components/LoadingSkeleton";
+import NumberFlow from "@number-flow/react";
 import Link from "next/link";
 
 const properties = [
@@ -45,7 +46,7 @@ const properties = [
   },
 ];
 
-const chartBars = [
+const monthlyBars = [
   { height: "40%", label: "Jan", value: "$14.2k" },
   { height: "55%", label: "Feb", value: "$19.6k" },
   { height: "45%", label: "Mar", value: "$16.0k" },
@@ -55,8 +56,18 @@ const chartBars = [
   { height: "100%", label: "Jul", value: "$35.6k", current: true },
 ];
 
+const yearlyBars = [
+  { height: "60%", label: "2019", value: "$142k" },
+  { height: "68%", label: "2020", value: "$161k" },
+  { height: "75%", label: "2021", value: "$178k" },
+  { height: "82%", label: "2022", value: "$195k" },
+  { height: "88%", label: "2023", value: "$209k" },
+  { height: "100%", label: "2024", value: "$238k", current: true },
+];
+
 export default function PropertiesPage() {
   const [loading, setLoading] = useState(true);
+  const [chartMode, setChartMode] = useState<"monthly" | "yearly">("yearly");
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -104,6 +115,15 @@ export default function PropertiesPage() {
       <PageHeader
         title="Properties"
         subtitle="3 properties in portfolio"
+        actions={
+          <Link
+            href="/properties/add"
+            className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:opacity-90 active:scale-[0.98] transition-all"
+          >
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">add</span>
+            Add Property
+          </Link>
+        }
       />
 
       {/* Property Cards Grid */}
@@ -120,7 +140,8 @@ export default function PropertiesPage() {
                 src={p.image}
                 alt={p.name}
               />
-              <div className={`absolute top-4 right-4 px-3 py-1 backdrop-blur text-[11px] font-bold rounded-full uppercase tracking-wider ${p.statusColor}`}>
+              <div className={`absolute top-4 right-4 px-3 py-1 backdrop-blur text-[11px] font-bold rounded-full uppercase tracking-wider inline-flex items-center gap-1.5 ${p.statusColor}`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-current" />
                 {p.status}
               </div>
             </div>
@@ -129,7 +150,7 @@ export default function PropertiesPage() {
                 <div>
                   <h3 className="text-lg font-bold text-on-surface font-headline leading-tight">{p.name}</h3>
                   <p className="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">location_on</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px]">location_on</span>
                     {p.location}
                   </p>
                 </div>
@@ -146,17 +167,17 @@ export default function PropertiesPage() {
                   <p className="text-[11px] text-on-surface-variant mt-0.5">Average/Mo</p>
                 </div>
               </div>
-              <div className="pt-4 border-t border-slate-50 flex justify-between items-center">
+              <div className="pt-4 border-t border-surface flex justify-between items-center">
                 <div className="flex -space-x-2">
                   {p.avatars.map((a) => (
-                    <div key={a} className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[11px] font-bold">
+                    <div key={a} className="w-7 h-7 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[11px] font-bold">
                       {a}
                     </div>
                   ))}
                 </div>
                 <span className="text-primary text-xs font-bold flex items-center gap-1 group-hover:underline">
                   View Details
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm">arrow_forward</span>
                 </span>
               </div>
             </div>
@@ -174,25 +195,35 @@ export default function PropertiesPage() {
                 <p className="text-xs text-on-surface-variant mt-0.5">Combined monthly revenue across all properties</p>
               </div>
               <div className="flex gap-2">
-                <span className="px-3 py-1 bg-white rounded-full text-[11px] font-bold text-on-surface-variant shadow-sm">Monthly</span>
-                <span className="px-3 py-1 bg-primary text-white rounded-full text-[11px] font-bold shadow-sm">Yearly</span>
+                <button
+                  onClick={() => setChartMode("monthly")}
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold shadow-sm transition-colors ${chartMode === "monthly" ? "bg-primary text-white" : "bg-white text-on-surface-variant"}`}
+                >
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setChartMode("yearly")}
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold shadow-sm transition-colors ${chartMode === "yearly" ? "bg-primary text-white" : "bg-white text-on-surface-variant"}`}
+                >
+                  Yearly
+                </button>
               </div>
             </div>
             <div className="aspect-[21/9] w-full flex items-end gap-3 px-4">
-              {chartBars.map((bar) => (
+              {(chartMode === "monthly" ? monthlyBars : yearlyBars).map((bar) => (
                 <div
                   key={bar.label}
-                  className={`flex-1 rounded-t-lg transition-all relative group ${bar.current ? "bg-primary" : "bg-primary/10 hover:bg-primary/20"}`}
+                  className={`flex-1 rounded-t-lg transition-all relative flex items-center justify-center ${bar.current ? "bg-primary" : "bg-primary/10 hover:bg-primary/20"}`}
                   style={{ height: bar.height }}
                 >
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-white text-[11px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-bold">
+                  <span className={`text-[11px] font-bold ${bar.current ? "text-white" : "text-primary"}`}>
                     {bar.value}
-                  </div>
+                  </span>
                 </div>
               ))}
             </div>
             <div className="flex justify-between mt-4 px-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">
-              {chartBars.map((bar) => (
+              {(chartMode === "monthly" ? monthlyBars : yearlyBars).map((bar) => (
                 <span key={bar.label}>{bar.label}</span>
               ))}
             </div>
@@ -201,11 +232,15 @@ export default function PropertiesPage() {
         <div className="lg:w-1/3">
           <div className="bg-primary p-8 rounded-xl text-white flex flex-col justify-between h-full shadow-xl shadow-primary/10">
             <div>
-              <span className="material-symbols-outlined bg-white/20 p-3 rounded-2xl mb-6 inline-block">account_balance_wallet</span>
+              <span aria-hidden="true" className="material-symbols-outlined bg-white/20 p-3 rounded-2xl mb-6 inline-block">account_balance_wallet</span>
               <p className="text-primary-fixed text-xs font-bold uppercase tracking-widest mb-1">Total Equity</p>
-              <p className="text-4xl font-extrabold font-headline">$2,450,000</p>
+              <NumberFlow
+                value={2450000}
+                className="text-4xl font-extrabold font-headline block"
+                format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
+              />
               <div className="mt-4 flex items-center gap-2 text-green-200 text-sm font-semibold">
-                <span className="material-symbols-outlined text-[20px]">trending_up</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[20px]">trending_up</span>
                 +12.4% vs last year
               </div>
               <p className="mt-2 text-[11px] text-white/90 leading-relaxed">
@@ -213,7 +248,7 @@ export default function PropertiesPage() {
               </p>
             </div>
             <div className="mt-8 pt-8 border-t border-white/10">
-              <Link href="/reports/exports" className="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-slate-50 transition-colors block text-center">
+              <Link href="/reports/exports" className="w-full py-3 bg-white text-primary font-bold rounded-xl text-sm hover:bg-surface-container-low transition-colors block text-center">
                 Download Statement
               </Link>
             </div>

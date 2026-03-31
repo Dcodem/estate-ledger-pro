@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import CommandSearch from "./CommandSearch";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -15,6 +16,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       >
         Skip to main content
       </a>
+      <CommandSearch />
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -31,8 +33,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <footer className="mt-auto py-8 px-6 lg:px-10 border-t border-surface-container text-on-surface-variant flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
           <p>&copy; 2024 The Wealth Architect. Institutional Real Estate Analytics.</p>
           <div className="flex gap-6 font-semibold">
-            <a className="hover:text-primary" href="/settings">Documentation</a>
-            <a className="hover:text-primary" href="/settings">Privacy Policy</a>
+            <a className="hover:text-primary" href="/help/getting-started">Documentation</a>
+            <a className="hover:text-primary" href="/privacy">Privacy Policy</a>
             <a className="hover:text-primary" href="/settings/integrations">Data Integrity</a>
           </div>
         </footer>

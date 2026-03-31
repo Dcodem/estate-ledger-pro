@@ -48,7 +48,7 @@ export default function OnboardingStep1() {
               />
               <div className="relative z-10 flex flex-col items-center">
                 <div className="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <span className="material-symbols-outlined text-primary text-3xl">
+                  <span aria-hidden="true" className="material-symbols-outlined text-primary text-3xl">
                     cloud_upload
                   </span>
                 </div>
@@ -61,19 +61,19 @@ export default function OnboardingStep1() {
               </div>
               <div className="mt-8 flex gap-4">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-highest/50">
-                  <span className="material-symbols-outlined text-on-surface-variant text-base">
+                  <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-base">
                     description
                   </span>
                   <span className="text-xs font-medium text-on-surface-variant">PDF</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-highest/50">
-                  <span className="material-symbols-outlined text-on-surface-variant text-base">
+                  <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-base">
                     table_chart
                   </span>
                   <span className="text-xs font-medium text-on-surface-variant">CSV</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-highest/50">
-                  <span className="material-symbols-outlined text-on-surface-variant text-base">
+                  <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-base">
                     grid_on
                   </span>
                   <span className="text-xs font-medium text-on-surface-variant">Excel</span>
@@ -106,7 +106,7 @@ export default function OnboardingStep1() {
       <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center px-4 pb-12">
         <div className="flex items-center justify-center space-x-2 text-teal-700">
           <span
-            className="material-symbols-outlined text-[11px]"
+            aria-hidden="true" className="material-symbols-outlined text-[11px]"
             style={{ fontVariationSettings: "'FILL' 1" }}
           >
             fiber_manual_record

@@ -1,56 +1,10 @@
 "use client";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
-import Link from "next/link";
+import AnimatedTabs from "@/components/AnimatedTabs";
+import AnimatedToggle from "@/components/AnimatedToggle";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
-function SettingsTabs() {
-  const pathname = usePathname();
-  const tabs = [
-    { label: "Account", href: "/settings" },
-    { label: "Integrations", href: "/settings/integrations" },
-    { label: "Notifications", href: "/settings/notifications" },
-  ];
-  return (
-    <div className="flex gap-8 border-b border-outline-variant/30">
-      {tabs.map((t) => {
-        const active = pathname === t.href;
-        return (
-          <Link
-            key={t.href}
-            href={t.href}
-            className={`pb-3 text-sm font-medium transition-colors relative ${
-              active
-                ? "font-semibold text-primary"
-                : "text-on-surface-variant hover:text-primary"
-            }`}
-          >
-            {t.label}
-            {active && (
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary" />
-            )}
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
-
-function Toggle({ defaultOn }: { defaultOn: boolean }) {
-  const [on, setOn] = useState(defaultOn);
-  return (
-    <label className="relative inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        checked={on}
-        onChange={() => setOn(!on)}
-        className="sr-only peer"
-      />
-      <div className="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary" />
-    </label>
-  );
-}
 
 const groups = [
   {
@@ -81,6 +35,7 @@ const groups = [
 ];
 
 export default function NotificationsPage() {
+  const pathname = usePathname();
   const [prefsSaved, setPrefsSaved] = useState(false);
 
   const handleSavePrefs = () => {
@@ -94,7 +49,17 @@ export default function NotificationsPage() {
         title="Settings"
         subtitle="Manage your account and preferences"
       />
-      <SettingsTabs />
+      <AnimatedTabs
+        layoutId="settings-tabs"
+        variant="underline"
+        tabs={[
+          { label: "Account", href: "/settings" },
+          { label: "Integrations", href: "/settings/integrations" },
+          { label: "Notifications", href: "/settings/notifications" },
+          { label: "Users", href: "/settings/users" },
+        ]}
+        activeValue={pathname}
+      />
 
       <div className="max-w-4xl space-y-8">
         {/* Notification Settings Table */}
@@ -120,10 +85,10 @@ export default function NotificationsPage() {
                   >
                     <div className="text-sm font-medium text-on-surface">{item.name}</div>
                     <div className="flex justify-center">
-                      <Toggle defaultOn={item.email} />
+                      <AnimatedToggle defaultOn={item.email} />
                     </div>
                     <div className="flex justify-center">
-                      <Toggle defaultOn={item.inApp} />
+                      <AnimatedToggle defaultOn={item.inApp} />
                     </div>
                   </div>
                 ))}
@@ -143,7 +108,7 @@ export default function NotificationsPage() {
                 : "bg-gradient-to-br from-primary to-primary-container text-white hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0"
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">{prefsSaved ? "check" : "save"}</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[18px]">{prefsSaved ? "check" : "save"}</span>
             {prefsSaved ? "Saved!" : "Save Preferences"}
           </button>
         </div>
@@ -152,7 +117,7 @@ export default function NotificationsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 bg-surface-container-high/50 rounded-xl flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary shrink-0">
-              <span className="material-symbols-outlined">security</span>
+              <span aria-hidden="true" className="material-symbols-outlined">security</span>
             </div>
             <div>
               <h4 className="font-bold text-sm text-on-surface mb-1">Privacy Focused</h4>
@@ -163,7 +128,7 @@ export default function NotificationsPage() {
           </div>
           <div className="p-6 bg-surface-container-high/50 rounded-xl flex items-start gap-4">
             <div className="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary shrink-0">
-              <span className="material-symbols-outlined">bolt</span>
+              <span aria-hidden="true" className="material-symbols-outlined">bolt</span>
             </div>
             <div>
               <h4 className="font-bold text-sm text-on-surface mb-1">Real-time Delivery</h4>

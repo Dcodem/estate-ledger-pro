@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useState, useEffect, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import { SkeletonPulse } from "@/components/LoadingSkeleton";
@@ -20,6 +21,7 @@ export default function TransactionDetailPage({
 }) {
   const { id } = use(params);
   const txn = getTransactionById(id);
+  const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +41,6 @@ export default function TransactionDetailPage({
   const [duplicated, setDuplicated] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const [splitToast, setSplitToast] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -74,8 +75,7 @@ export default function TransactionDetailPage({
   };
 
   const handleSplit = () => {
-    setSplitToast(true);
-    setTimeout(() => setSplitToast(false), 2500);
+    router.push(`/transactions/${id}/split`);
   };
 
   const handleDelete = () => {
@@ -91,7 +91,7 @@ export default function TransactionDetailPage({
     return (
       <AppLayout>
         <div className="flex flex-col items-center justify-center py-32 gap-4">
-          <span className="material-symbols-outlined text-[48px] text-slate-300">receipt_long</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-[48px] text-outline-variant">receipt_long</span>
           <h2 className="text-xl font-bold text-on-surface">Transaction not found</h2>
           <p className="text-sm text-on-surface-variant">The transaction you&apos;re looking for doesn&apos;t exist.</p>
           <Link href="/transactions" className="mt-4 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-bold shadow-md shadow-primary/20 hover:opacity-90 transition-all">
@@ -107,7 +107,7 @@ export default function TransactionDetailPage({
       <AppLayout>
         <div className="flex flex-col items-center justify-center py-32 gap-4">
           <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-            <span className="material-symbols-outlined text-[32px] text-red-600">delete</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[32px] text-red-600">delete</span>
           </div>
           <h2 className="text-xl font-bold text-on-surface">Transaction Deleted</h2>
           <p className="text-sm text-on-surface-variant">&quot;{txn.title}&quot; has been removed.</p>
@@ -158,7 +158,7 @@ export default function TransactionDetailPage({
                   : "bg-primary text-white shadow-primary/20 hover:opacity-90"
               }`}
             >
-              <span className="material-symbols-outlined text-[18px]">
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">
                 {saved ? "check" : "save"}
               </span>
               {saved ? "Saved" : "Save Changes"}
@@ -167,25 +167,17 @@ export default function TransactionDetailPage({
         }
       />
 
-      {/* Split toast */}
-      <div role="status" aria-live="polite" className={`fixed top-6 right-6 z-50 transition-all duration-300 ${splitToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
-        <div className="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/20 px-5 py-3 flex items-center gap-3">
-          <span className="material-symbols-outlined text-primary text-[20px]">info</span>
-          <p className="text-sm font-semibold text-on-surface">Split Transaction is coming soon</p>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Details */}
         <div className="lg:col-span-2 space-y-6">
           {/* Transaction Overview Card */}
           <div className="bg-surface-container-lowest rounded-2xl card-shadow border border-outline-variant/10 overflow-hidden">
             {/* Amount header */}
-            <div className={`px-8 py-6 ${isIncome ? "bg-gradient-to-r from-emerald-50 to-emerald-100/50" : "bg-gradient-to-r from-slate-50 to-slate-100/50"}`}>
+            <div className={`px-8 py-6 ${isIncome ? "bg-gradient-to-r from-emerald-50 to-emerald-100/50" : "bg-gradient-to-r from-surface-container-low to-surface-container-high/50"}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${isIncome ? "bg-emerald-100" : "bg-slate-200"}`}>
-                    <span className={`material-symbols-outlined text-2xl ${isIncome ? "text-emerald-700" : "text-slate-600"}`}>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${isIncome ? "bg-emerald-100" : "bg-surface-container-high"}`}>
+                    <span aria-hidden="true" className={`material-symbols-outlined text-2xl ${isIncome ? "text-emerald-700" : "text-on-surface-variant"}`}>
                       {isIncome ? "arrow_downward" : "arrow_upward"}
                     </span>
                   </div>
@@ -198,17 +190,17 @@ export default function TransactionDetailPage({
                     </p>
                   </div>
                 </div>
-                <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${isIncome ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600"}`}>
+                <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${isIncome ? "bg-emerald-100 text-emerald-700" : "bg-surface-container-high text-on-surface-variant"}`}>
                   {isIncome ? "Credit" : "Debit"}
                 </span>
               </div>
             </div>
 
             {/* Detail rows */}
-            <div className="px-8 py-6 space-y-0 divide-y divide-slate-100">
+            <div className="px-8 py-6 space-y-0 divide-y divide-surface-variant">
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">calendar_today</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">calendar_today</span>
                   Date
                 </span>
                 <span className="text-sm font-bold text-on-surface">{txn.date}</span>
@@ -216,7 +208,7 @@ export default function TransactionDetailPage({
 
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">apartment</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">apartment</span>
                   Property
                 </span>
                 <span className="text-sm font-bold text-on-surface">{txn.property}</span>
@@ -224,7 +216,7 @@ export default function TransactionDetailPage({
 
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">account_balance</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">account_balance</span>
                   Bank Account
                 </span>
                 <span className="text-sm font-bold text-on-surface">{txn.bankAccount}</span>
@@ -232,7 +224,7 @@ export default function TransactionDetailPage({
 
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">label</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">label</span>
                   Category
                 </span>
                 <div className="flex items-center gap-3">
@@ -243,7 +235,7 @@ export default function TransactionDetailPage({
                     onClick={() => setShowRecategorize(!showRecategorize)}
                     className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                   >
-                    <span className="material-symbols-outlined text-[14px]">edit</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px]">edit</span>
                     Change
                   </button>
                 </div>
@@ -277,7 +269,7 @@ export default function TransactionDetailPage({
 
               <div className="flex justify-between items-center py-4">
                 <span className="text-sm text-on-surface-variant font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">tag</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">tag</span>
                   Reference
                 </span>
                 <span className="text-sm font-mono text-on-surface-variant">{txn.id.toUpperCase()}</span>
@@ -288,7 +280,7 @@ export default function TransactionDetailPage({
           {/* Notes Section */}
           <div className="bg-surface-container-lowest rounded-2xl card-shadow border border-outline-variant/10 p-8">
             <h3 className="text-sm font-bold text-on-surface mb-4 flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-on-surface-variant">sticky_note_2</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">sticky_note_2</span>
               Notes
             </h3>
             <textarea
@@ -303,7 +295,7 @@ export default function TransactionDetailPage({
           <div className="bg-surface-container-lowest rounded-2xl card-shadow border border-outline-variant/10 p-8">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-on-surface flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">receipt</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">receipt</span>
                 Receipts &amp; Attachments
                 {receipts.length > 0 && (
                   <span className="px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-bold rounded-full">{receipts.length}</span>
@@ -313,7 +305,7 @@ export default function TransactionDetailPage({
                 onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg transition-all"
               >
-                <span className="material-symbols-outlined text-[16px]">add</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[16px]">add</span>
                 Add File
               </button>
             </div>
@@ -334,7 +326,7 @@ export default function TransactionDetailPage({
                   <div key={i} className="flex items-center justify-between bg-surface-container-low rounded-xl px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        <span className="material-symbols-outlined text-primary text-[18px]">
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary text-[18px]">
                           {r.name.endsWith(".pdf") ? "picture_as_pdf" : "image"}
                         </span>
                       </div>
@@ -347,7 +339,7 @@ export default function TransactionDetailPage({
                       onClick={() => removeReceipt(i)}
                       className="w-7 h-7 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-red-50 hover:text-red-600 transition-all"
                     >
-                      <span className="material-symbols-outlined text-[16px]">close</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">close</span>
                     </button>
                   </div>
                 ))}
@@ -363,11 +355,11 @@ export default function TransactionDetailPage({
               className={`border-2 border-dashed rounded-xl py-8 flex flex-col items-center gap-3 cursor-pointer transition-all ${
                 isDragging
                   ? "border-primary bg-primary/5"
-                  : "border-slate-200 hover:border-primary/30 hover:bg-slate-50/50"
+                  : "border-outline-variant hover:border-primary/30 hover:bg-surface-container-low/50"
               }`}
             >
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-slate-100"}`}>
-                <span className={`material-symbols-outlined text-2xl ${isDragging ? "text-primary" : "text-slate-500"}`}>
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isDragging ? "bg-primary/10" : "bg-surface-container-high"}`}>
+                <span aria-hidden="true" className={`material-symbols-outlined text-2xl ${isDragging ? "text-primary" : "text-on-surface-variant"}`}>
                   cloud_upload
                 </span>
               </div>
@@ -391,7 +383,7 @@ export default function TransactionDetailPage({
                 onClick={() => setShowRecategorize(true)}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
               >
-                <span className="material-symbols-outlined text-[20px] text-primary">category</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[20px] text-primary">category</span>
                 Recategorize
               </button>
               <button
@@ -403,7 +395,7 @@ export default function TransactionDetailPage({
                     : "text-on-surface hover:bg-surface-container-low"
                 }`}
               >
-                <span className={`material-symbols-outlined text-[20px] ${duplicated ? "text-emerald-700" : "text-primary"}`}>
+                <span aria-hidden="true" className={`material-symbols-outlined text-[20px] ${duplicated ? "text-emerald-700" : "text-primary"}`}>
                   {duplicated ? "check_circle" : "content_copy"}
                 </span>
                 {duplicated ? "Duplicated!" : "Duplicate Entry"}
@@ -412,7 +404,7 @@ export default function TransactionDetailPage({
                 onClick={() => { setShowReceiptZone(true); fileInputRef.current?.click(); }}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
               >
-                <span className="material-symbols-outlined text-[20px] text-primary">attach_file</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[20px] text-primary">attach_file</span>
                 Attach Receipt
                 {receipts.length > 0 && (
                   <span className="ml-auto px-2 py-0.5 bg-primary/10 text-primary text-[11px] font-bold rounded-full">{receipts.length}</span>
@@ -420,14 +412,10 @@ export default function TransactionDetailPage({
               </button>
               <button
                 onClick={handleSplit}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                  splitToast
-                    ? "bg-primary/5 text-primary"
-                    : "text-on-surface hover:bg-surface-container-low"
-                }`}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
               >
-                <span className="material-symbols-outlined text-[20px] text-primary">call_split</span>
-                {splitToast ? "Coming Soon..." : "Split Transaction"}
+                <span aria-hidden="true" className="material-symbols-outlined text-[20px] text-primary">call_split</span>
+                Split Transaction
               </button>
               <div className="border-t border-outline-variant/10 my-2" />
 
@@ -437,7 +425,7 @@ export default function TransactionDetailPage({
                   onClick={() => setShowDeleteConfirm(true)}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all"
                 >
-                  <span className="material-symbols-outlined text-[20px]">delete</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[20px]">delete</span>
                   Delete Transaction
                 </button>
               ) : (
@@ -466,7 +454,7 @@ export default function TransactionDetailPage({
           {txn.highlight && (
             <div className="bg-amber-50 border border-amber-200/50 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-3">
-                <span className="material-symbols-outlined text-amber-600">psychology</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-amber-600">psychology</span>
                 <h3 className="text-sm font-bold text-amber-800">AI Analysis</h3>
               </div>
               <p className="text-xs text-amber-700 leading-relaxed">
@@ -476,7 +464,7 @@ export default function TransactionDetailPage({
                 href="/transactions/ai-review"
                 className="mt-4 flex items-center gap-2 text-xs font-bold text-amber-800 hover:underline"
               >
-                <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                <span aria-hidden="true" className="material-symbols-outlined text-[14px]">open_in_new</span>
                 View in AI Review
               </Link>
             </div>

@@ -76,7 +76,7 @@ export default function AddBankPage() {
             <div className={`${selectedBank?.accent || "bg-primary"} px-6 py-4 flex items-center justify-between`}>
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white text-[20px]">{selectedBank?.icon}</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-white text-[20px]">{selectedBank?.icon}</span>
                 </div>
                 <span className="text-white font-bold text-sm">{selectedBank?.name}</span>
               </div>
@@ -85,7 +85,7 @@ export default function AddBankPage() {
                   onClick={() => { setStep("select"); setSelectedBank(null); setUsername(""); setPassword(""); }}
                   className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-all"
                 >
-                  <span className="material-symbols-outlined text-[16px]">close</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[16px]">close</span>
                 </button>
               )}
             </div>
@@ -95,7 +95,7 @@ export default function AddBankPage() {
               {step === "credentials" && (
                 <div className="space-y-6">
                   <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-primary text-[18px]">lock</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary text-[18px]">lock</span>
                     <p className="text-xs text-on-surface-variant font-medium">Secured by Plaid</p>
                   </div>
 
@@ -140,7 +140,7 @@ export default function AddBankPage() {
                   >
                     {authLoading ? (
                       <span className="flex items-center justify-center gap-2">
-                        <span className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
                         Verifying...
                       </span>
                     ) : "Continue"}
@@ -172,7 +172,7 @@ export default function AddBankPage() {
                           <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                             acc.type === "Checking" ? "bg-blue-50" : acc.type === "Savings" ? "bg-emerald-50" : "bg-amber-50"
                           }`}>
-                            <span className={`material-symbols-outlined text-[20px] ${
+                            <span aria-hidden="true" className={`material-symbols-outlined text-[20px] ${
                               acc.type === "Checking" ? "text-blue-600" : acc.type === "Savings" ? "text-emerald-600" : "text-amber-600"
                             }`}>
                               {acc.type === "Credit Card" ? "credit_card" : "account_balance"}
@@ -187,7 +187,7 @@ export default function AddBankPage() {
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-1 ml-auto ${
                               isSelected ? "border-primary bg-primary" : "border-outline-variant"
                             }`}>
-                              {isSelected && <span className="material-symbols-outlined text-white text-[14px]">check</span>}
+                              {isSelected && <span aria-hidden="true" className="material-symbols-outlined text-white text-[14px]">check</span>}
                             </div>
                           </div>
                         </button>
@@ -213,7 +213,7 @@ export default function AddBankPage() {
               {step === "connected" && (
                 <div className="text-center py-6 space-y-6">
                   <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mx-auto">
-                    <span className="material-symbols-outlined text-emerald-600 text-[40px]">check_circle</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-emerald-600 text-[40px]">check_circle</span>
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-on-surface mb-1">Successfully Connected!</h3>
@@ -224,7 +224,7 @@ export default function AddBankPage() {
                   <div className="bg-surface-container-low rounded-xl p-4 text-left space-y-3">
                     {mockAccounts.filter((a) => selectedAccounts.includes(a.id)).map((acc) => (
                       <div key={acc.id} className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-emerald-600 text-[18px]">check</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-emerald-600 text-[18px]">check</span>
                         <span className="text-sm font-medium text-on-surface">{acc.name} ····{acc.last4}</span>
                       </div>
                     ))}
@@ -243,7 +243,7 @@ export default function AddBankPage() {
             {step !== "connected" && (
               <div className="px-6 py-4 bg-surface-container-low/50 border-t border-outline-variant/10">
                 <div className="flex items-center gap-2 justify-center">
-                  <span className="material-symbols-outlined text-[14px] text-on-surface-variant">lock</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-on-surface-variant">lock</span>
                   <p className="text-[11px] text-on-surface-variant">
                     Your credentials are encrypted end-to-end and never stored on our servers.
                   </p>
@@ -268,7 +268,7 @@ export default function AddBankPage() {
       {/* Search */}
       <div className="max-w-4xl mb-8">
         <div className="relative">
-          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">
+          <span aria-hidden="true" className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">
             search
           </span>
           <input
@@ -297,7 +297,7 @@ export default function AddBankPage() {
               <div
                 className={`w-14 h-14 flex items-center justify-center rounded-xl ${bank.color}`}
               >
-                <span className="material-symbols-outlined text-[30px]">
+                <span aria-hidden="true" className="material-symbols-outlined text-[30px]">
                   {bank.icon}
                 </span>
               </div>
@@ -313,7 +313,7 @@ export default function AddBankPage() {
 
         {filtered.length === 0 && (
           <div className="bg-surface-container-lowest rounded-xl card-shadow p-10 text-center">
-            <span className="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">
+            <span aria-hidden="true" className="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">
               search_off
             </span>
             <p className="text-sm text-on-surface-variant">
@@ -328,7 +328,7 @@ export default function AddBankPage() {
       <div className="max-w-4xl mt-10 mb-4">
         <div className="flex items-start gap-4 bg-surface-container-lowest rounded-xl card-shadow p-6 border border-outline-variant/20">
           <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full bg-primary-fixed-dim text-primary">
-            <span className="material-symbols-outlined text-xl">lock</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-xl">lock</span>
           </div>
           <div>
             <p className="text-sm font-semibold text-on-surface mb-1">

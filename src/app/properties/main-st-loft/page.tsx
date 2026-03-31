@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NumberFlow from "@number-flow/react";
 import AppLayout from "@/components/AppLayout";
 import PageHeader from "@/components/PageHeader";
 import PropertyFiles from "@/components/PropertyFiles";
@@ -39,18 +40,16 @@ const financials = [
   { item: "Net Operating Income", amount: "$6,000", amountClass: "text-emerald-700 font-extrabold", icon: "account_balance_wallet", isTotal: true },
 ];
 const txns = [
-  { date: "Mar 15", desc: "Rent - Unit A,C,F", cat: "Rental Income", amount: "+$4,400", amountClass: "text-emerald-700" },
-  { date: "Mar 14", desc: "Rent - Unit B", cat: "Rental Income", amount: "+$1,350", amountClass: "text-emerald-700" },
-  { date: "Mar 13", desc: "Rent - Unit E", cat: "Rental Income", amount: "+$1,450", amountClass: "text-emerald-700" },
-  { date: "Mar 10", desc: "Plumbing Repair", cat: "Maintenance", amount: "-$680", amountClass: "text-on-surface" },
+  { date: "Mar 15", desc: "Rent - Unit A,C,F", cat: "Rental Income", amount: "+$4,400", amountClass: "text-emerald-700", txnId: "txn-020" },
+  { date: "Mar 14", desc: "Rent - Unit B", cat: "Rental Income", amount: "+$1,350", amountClass: "text-emerald-700", txnId: "txn-011" },
+  { date: "Mar 13", desc: "Rent - Unit E", cat: "Rental Income", amount: "+$1,450", amountClass: "text-emerald-700", txnId: "txn-014" },
+  { date: "Mar 10", desc: "Plumbing Repair", cat: "Maintenance", amount: "-$680", amountClass: "text-on-surface", txnId: "txn-009" },
 ];
 
 export default function MainStLoftPage() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState(txns.map((t) => t.cat));
-  const [editState, setEditState] = useState<"idle" | "loading" | "done">("idle");
-  const [financialsState, setFinancialsState] = useState<"idle" | "loading" | "done">("idle");
   const [addTxnState, setAddTxnState] = useState<"idle" | "loading" | "done">("idle");
   const [modalSaved, setModalSaved] = useState(false);
 
@@ -61,24 +60,13 @@ export default function MainStLoftPage() {
         subtitle="Downtown District"
         breadcrumb={{ label: "Back to Properties", href: "/properties" }}
         actions={
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => { if (editState !== "idle") return; setEditState("loading"); setTimeout(() => { setEditState("done"); setTimeout(() => setEditState("idle"), 2000); }, 1500); }}
-              disabled={editState !== "idle"}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${editState === "done" ? "bg-emerald-500 text-white" : editState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
-            >
-              <span className="material-symbols-outlined text-[18px]">{editState === "done" ? "check" : editState === "loading" ? "hourglass_top" : "edit"}</span>
-              {editState === "done" ? "Saved!" : editState === "loading" ? "Saving..." : "Edit Details"}
-            </button>
-            <button
-              onClick={() => { if (financialsState !== "idle") return; setFinancialsState("loading"); setTimeout(() => { setFinancialsState("done"); setTimeout(() => setFinancialsState("idle"), 2000); }, 1500); }}
-              disabled={financialsState !== "idle"}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all ${financialsState === "done" ? "bg-emerald-500 text-white" : financialsState === "loading" ? "bg-primary/70 text-white cursor-wait" : "bg-primary text-on-primary hover:shadow-md"}`}
-            >
-              <span className="material-symbols-outlined text-[18px]">{financialsState === "done" ? "check" : financialsState === "loading" ? "hourglass_top" : "bar_chart"}</span>
-              {financialsState === "done" ? "Report Ready!" : financialsState === "loading" ? "Loading..." : "View Financials"}
-            </button>
-          </div>
+          <Link
+            href="/properties/main-st-loft/edit"
+            className="flex items-center gap-2 px-4 py-2 border border-outline-variant/20 rounded-xl text-sm font-semibold text-on-surface hover:bg-surface-container-low transition-all"
+          >
+            <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-primary">edit</span>
+            Edit Property
+          </Link>
         }
       />
 
@@ -98,25 +86,25 @@ export default function MainStLoftPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Occupancy</p>
-          <p className="text-2xl font-bold text-on-surface mt-1">92%</p>
+          <NumberFlow value={0.92} format={{ style: "percent" }} className="text-2xl font-bold text-on-surface mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">6 units total</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Monthly Yield</p>
-          <p className="text-2xl font-bold text-primary mt-1">$8,200</p>
+          <NumberFlow value={8200} format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }} className="text-2xl font-bold text-primary mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">Average/Mo</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Cap Rate</p>
-          <p className="text-2xl font-bold text-on-surface mt-1">7.4%</p>
+          <NumberFlow value={0.074} format={{ style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }} className="text-2xl font-bold text-on-surface mt-1 block" />
           <p className="text-[11px] text-on-surface-variant mt-0.5">Annualized</p>
         </div>
         <div className="bg-surface-container-low p-4 rounded-xl">
           <p className="text-[11px] text-on-surface-variant font-semibold uppercase tracking-wider">Property Managers</p>
           <div className="flex items-center gap-1 mt-2">
             <div className="flex -space-x-2">
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[11px] font-bold">AS</div>
-              <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-300 flex items-center justify-center text-[11px] font-bold">MK</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-surface-container-high flex items-center justify-center text-[11px] font-bold">AS</div>
+              <div className="w-7 h-7 rounded-full border-2 border-white bg-outline-variant flex items-center justify-center text-[11px] font-bold">MK</div>
             </div>
           </div>
         </div>
@@ -137,17 +125,17 @@ export default function MainStLoftPage() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-2">
           <h2 className="text-xl font-bold mb-4">Recent Transactions</h2>
-          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-slate-100">
+          <div className="bg-surface-container-lowest rounded-xl shadow-[0_12px_32px_rgba(20,27,43,0.04)] border border-outline-variant/10 divide-y divide-surface-variant">
             {txns.map((t, i) => (
               <div
                 key={i}
-                className="px-5 py-4 hover:bg-slate-50/50 transition-all cursor-pointer group/row"
-                onClick={() => window.location.href = `/transactions?property=main-st-loft`}
+                className="px-5 py-4 hover:bg-surface-container-low/50 transition-all cursor-pointer group/row"
+                onClick={() => window.location.href = `/transactions/${t.txnId}`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-sm font-bold text-on-surface truncate flex items-center gap-1.5">
                     {t.desc}
-                    <span className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover/row:opacity-100 transition-opacity">open_in_new</span>
                   </p>
                   <span className={`text-sm font-bold whitespace-nowrap ${t.amountClass}`}>
                     {t.amount}
@@ -155,10 +143,10 @@ export default function MainStLoftPage() {
                 </div>
                 <div className="flex items-center gap-2 mt-1.5" onClick={(e) => e.stopPropagation()}>
                   <span className="text-[11px] text-on-surface-variant font-medium">{t.date}</span>
-                  <span className="text-slate-300">·</span>
+                  <span className="text-outline-variant">·</span>
                   <div className="group/cat flex items-center gap-1">
                     <span className={`px-2 py-0.5 text-[11px] font-bold rounded-full uppercase tracking-wide ${
-                      categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"
+                      categories[i] === "Rental Income" ? "bg-emerald-50 text-emerald-700" : "bg-surface-container-high text-on-surface-variant"
                     }`}>
                       {categories[i]}
                     </span>
@@ -166,7 +154,7 @@ export default function MainStLoftPage() {
                       onClick={() => { setEditingIndex(i); setSelectedCategory(categories[i]); }}
                       className="opacity-0 group-hover/cat:opacity-100 transition-opacity p-0.5 rounded hover:bg-surface-container-low"
                     >
-                      <span className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-[12px] text-on-surface-variant">edit</span>
                     </button>
                   </div>
                 </div>
@@ -179,12 +167,12 @@ export default function MainStLoftPage() {
               disabled={addTxnState !== "idle"}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all ${addTxnState === "done" ? "bg-emerald-500 text-white" : addTxnState === "loading" ? "bg-surface-container-high text-on-surface-variant cursor-wait" : "bg-surface-container-lowest border border-outline-variant/20 text-on-surface hover:shadow-md"}`}
             >
-              <span className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[18px]">{addTxnState === "done" ? "check" : addTxnState === "loading" ? "hourglass_top" : "add"}</span>
               {addTxnState === "done" ? "Added!" : addTxnState === "loading" ? "Adding..." : "Add Transaction"}
             </button>
             <Link href="/transactions?property=main-st-loft" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
               View All Transactions
-              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
         </div>
@@ -199,12 +187,12 @@ export default function MainStLoftPage() {
                   <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-surface">
                 {financials.map((f, i) => (
-                  <tr key={i} className={`hover:bg-slate-50/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
+                  <tr key={i} className={`hover:bg-surface-container-low/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
                         <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
                       </div>
                     </td>
@@ -234,9 +222,9 @@ export default function MainStLoftPage() {
                 <th className="px-6 py-4 text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Notes</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-surface">
               {units.map((u, i) => (
-                <tr key={i} className="hover:bg-slate-50/50 transition-all">
+                <tr key={i} className="hover:bg-surface-container-low/50 transition-all">
                   <td className="px-6 py-4 text-sm font-bold text-on-surface">{u.unit}</td>
                   <td className="px-6 py-4 text-sm text-on-surface-variant">{u.tenant}</td>
                   <td className="px-6 py-4 text-sm font-semibold text-on-surface">{u.rent}</td>

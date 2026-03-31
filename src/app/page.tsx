@@ -5,6 +5,9 @@ import AppLayout from "@/components/AppLayout";
 import KPICard from "@/components/KPICard";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import PageHeader from "@/components/PageHeader";
+import AnimatedTabs from "@/components/AnimatedTabs";
+import InfoTooltip from "@/components/InfoTooltip";
+import NumberFlow from "@number-flow/react";
 import Link from "next/link";
 import {
   BarChart,
@@ -16,14 +19,43 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const chartData = [
-  { month: "Jan", revenue: 2800, expenses: 1900 },
-  { month: "Feb", revenue: 3500, expenses: 1650 },
-  { month: "Mar", revenue: 2100, expenses: 3100 },
-  { month: "Apr", revenue: 4000, expenses: 1200 },
-  { month: "May", revenue: 3300, expenses: 2100 },
-  { month: "Jun", revenue: 4200, expenses: 950 },
-];
+type Period = "1m" | "3m" | "6m";
+type SortKey = "name" | "revenue" | "expenses" | "netIncome" | "roi";
+type SortDir = "asc" | "desc";
+
+const periodLabels: Record<Period, string> = {
+  "1m": "Jun 2024",
+  "3m": "Apr - Jun 2024",
+  "6m": "Jan - Jun 2024",
+};
+
+const periodKPIs: Record<Period, { revenue: number; expenses: number; net: number; roi: number; revTrend: string; expTrend: string; revUp: boolean; expUp: boolean }> = {
+  "1m": { revenue: 4200, expenses: 950, net: 3250, roi: 9.1, revTrend: "+27.3%", expTrend: "-54.8%", revUp: true, expUp: false },
+  "3m": { revenue: 11500, expenses: 4250, net: 7250, roi: 8.7, revTrend: "+18.2%", expTrend: "-8.4%", revUp: true, expUp: false },
+  "6m": { revenue: 18700, expenses: 10500, net: 7200, roi: 8.42, revTrend: "+12.4%", expTrend: "-2.1%", revUp: true, expUp: false },
+};
+
+const chartDataByPeriod: Record<Period, { month: string; revenue: number; expenses: number }[]> = {
+  "1m": [
+    { month: "Week 1", revenue: 800, expenses: 300 },
+    { month: "Week 2", revenue: 1100, expenses: 200 },
+    { month: "Week 3", revenue: 950, expenses: 150 },
+    { month: "Week 4", revenue: 1350, expenses: 300 },
+  ],
+  "3m": [
+    { month: "Apr", revenue: 4000, expenses: 1200 },
+    { month: "May", revenue: 3300, expenses: 2100 },
+    { month: "Jun", revenue: 4200, expenses: 950 },
+  ],
+  "6m": [
+    { month: "Jan", revenue: 2800, expenses: 1900 },
+    { month: "Feb", revenue: 3500, expenses: 1650 },
+    { month: "Mar", revenue: 2100, expenses: 3100 },
+    { month: "Apr", revenue: 4000, expenses: 1200 },
+    { month: "May", revenue: 3300, expenses: 2100 },
+    { month: "Jun", revenue: 4200, expenses: 950 },
+  ],
+};
 
 const propertyRows = [
   {
@@ -70,7 +102,32 @@ const propertyRows = [
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
-  const [showExportToast, setShowExportToast] = useState(false);
+  const [period, setPeriod] = useState<Period>("6m");
+  const [sortKey, setSortKey] = useState<SortKey>("roi");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("desc");
+    }
+  };
+
+  const sortedRows = [...propertyRows].sort((a, b) => {
+    const parseNum = (v: string) => parseFloat(v.replace(/[$,]/g, ""));
+    let aVal: number, bVal: number;
+    switch (sortKey) {
+      case "name": return sortDir === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+      case "revenue": aVal = parseNum(a.revenue); bVal = parseNum(b.revenue); break;
+      case "expenses": aVal = parseNum(a.expenses); bVal = parseNum(b.expenses); break;
+      case "netIncome": aVal = parseNum(a.netIncome); bVal = parseNum(b.netIncome); break;
+      case "roi": aVal = a.roi; bVal = b.roi; break;
+      default: return 0;
+    }
+    return sortDir === "asc" ? aVal - bVal : bVal - aVal;
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -94,52 +151,50 @@ export default function DashboardPage() {
       <PageHeader
         title="Performance Summary"
         subtitle={lastUpdated ? `Last updated at ${lastUpdated}` : undefined}
-        badge="Jan 2024 - Jun 2024"
-        actions={
-          <button
-            onClick={() => {
-              setShowExportToast(true);
-              setTimeout(() => setShowExportToast(false), 2500);
-            }}
-            className="px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition-all shadow-sm bg-secondary text-white hover:bg-primary"
-          >
-            <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
-            Export PDF
-          </button>
-        }
+        badge={periodLabels[period]}
       />
 
-      {/* Export coming soon toast */}
-      <div role="status" aria-live="polite" className={`fixed top-6 right-6 z-50 transition-all duration-300 ${showExportToast ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
-        <div className="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/20 px-5 py-3 flex items-center gap-3">
-          <span className="material-symbols-outlined text-primary text-[20px]">info</span>
-          <p className="text-sm font-semibold text-on-surface">PDF export is coming soon</p>
-        </div>
-      </div>
+      {/* Period Toggle */}
+      <AnimatedTabs
+        layoutId="dashboard-period"
+        variant="pill"
+        tabs={[
+          { label: "This Month", value: "1m" },
+          { label: "Last 3 Mo", value: "3m" },
+          { label: "6 Months", value: "6m" },
+        ]}
+        activeValue={period}
+        onChange={(v) => setPeriod(v as Period)}
+      />
 
       {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
           label="Total Revenue"
-          value="$18,700"
+          value={`$${periodKPIs[period].revenue.toLocaleString()}`}
+          numericValue={periodKPIs[period].revenue}
           icon="payments"
-          trend="+12.4%"
-          trendUp
+          trend={periodKPIs[period].revTrend}
+          trendUp={periodKPIs[period].revUp}
+          trendTooltip="vs. same period last year"
           className="animate-fade-in-up stagger-1"
         />
         <KPICard
           label="Total Expenses"
-          value="$110,500"
+          value={`$${periodKPIs[period].expenses.toLocaleString()}`}
+          numericValue={periodKPIs[period].expenses}
           icon="receipt_long"
           iconBg="bg-secondary-fixed-dim"
           iconColor="text-secondary"
-          trend="-2.1%"
-          trendUp={false}
+          trend={periodKPIs[period].expTrend}
+          trendUp={periodKPIs[period].expUp}
+          trendTooltip="vs. same period last year"
           className="animate-fade-in-up stagger-2"
         />
         <KPICard
           label="Net Income"
-          value="$7,200"
+          value={`$${periodKPIs[period].net.toLocaleString()}`}
+          numericValue={periodKPIs[period].net}
           icon="account_balance_wallet"
           iconBg="bg-primary/10"
           iconColor="text-primary"
@@ -152,7 +207,12 @@ export default function DashboardPage() {
             <p className="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">
               Portfolio ROI
             </p>
-            <h3 className="text-2xl font-bold mt-1">8.42%</h3>
+            <NumberFlow
+              value={periodKPIs[period].roi / 100}
+              className="text-2xl font-bold mt-1 block"
+              format={{ style: "percent", maximumFractionDigits: 2 }}
+              transformTiming={{ duration: 500, easing: "ease-out" }}
+            />
           </div>
           <div className="relative w-14 h-14 flex items-center justify-center">
             <svg className="w-full h-full transform -rotate-90">
@@ -173,11 +233,12 @@ export default function DashboardPage() {
                 fill="transparent"
                 stroke="currentColor"
                 strokeDasharray="150.79"
-                strokeDashoffset="30"
+                strokeDashoffset={150.79 - (150.79 * periodKPIs[period].roi / 12)}
                 strokeWidth="4"
+                style={{ transition: "stroke-dashoffset 0.6s ease" }}
               />
             </svg>
-            <span className="absolute text-[11px] font-bold">8.4%</span>
+            <span className="absolute text-[11px] font-bold">{periodKPIs[period].roi.toFixed(1)}%</span>
           </div>
         </div>
       </div>
@@ -206,7 +267,7 @@ export default function DashboardPage() {
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart
-              data={chartData}
+              data={chartDataByPeriod[period]}
               margin={{ top: 0, right: 0, left: -10, bottom: 0 }}
               role="img"
               aria-label="Revenue vs Expenses bar chart, January through June 2024"
@@ -273,7 +334,7 @@ export default function DashboardPage() {
           <div className="p-6 flex-1 flex flex-col">
             <h4 className="text-xl font-bold mb-1">Oak Ridge Estate</h4>
             <p className="text-xs text-on-surface-variant flex items-center gap-1 mb-6">
-              <span className="material-symbols-outlined text-[14px]">location_on</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[14px]">location_on</span>
               Beverly Hills, CA
             </p>
             <div className="space-y-4">
@@ -304,27 +365,44 @@ export default function DashboardPage() {
           <h3 className="text-xl font-bold">Property Comparison</h3>
           <Link href="/properties" className="flex items-center gap-2 text-xs font-semibold text-primary cursor-pointer hover:underline">
             View Detailed Metrics
-            <span className="material-symbols-outlined text-sm">chevron_right</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">chevron_right</span>
           </Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest bg-surface-container-low">
-                <th className="py-4 px-6 rounded-l-lg">Property</th>
-                <th className="py-4 px-6">Revenue</th>
-                <th className="py-4 px-6">Expenses</th>
-                <th className="py-4 px-6">Net Income</th>
-                <th className="py-4 px-6">ROI %</th>
+                {([
+                  { key: "name", label: "Property", className: "rounded-l-lg" },
+                  { key: "revenue", label: "Revenue" },
+                  { key: "expenses", label: "Expenses" },
+                  { key: "netIncome", label: "Net Income" },
+                  { key: "roi", label: "ROI %" },
+                ] as { key: SortKey; label: string; className?: string }[]).map((col) => (
+                  <th
+                    key={col.key}
+                    className={`py-4 px-6 cursor-pointer hover:text-primary transition-colors select-none ${col.className ?? ""}`}
+                    onClick={() => handleSort(col.key)}
+                  >
+                    <span className="inline-flex items-center gap-1">
+                      {col.label}
+                      {sortKey === col.key && (
+                        <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary">
+                          {sortDir === "asc" ? "arrow_upward" : "arrow_downward"}
+                        </span>
+                      )}
+                    </span>
+                  </th>
+                ))}
                 <th className="py-4 px-6 rounded-r-lg text-right">Status</th>
               </tr>
             </thead>
             <tbody className="text-sm">
-              {propertyRows.map((row) => (
-                <tr key={row.name} className="hover:bg-slate-50 transition-colors cursor-pointer">
+              {sortedRows.map((row) => (
+                <tr key={row.name} className="hover:bg-surface-container-low transition-colors cursor-pointer">
                   <td className="py-6 px-6 font-bold">
                     <Link href={`/properties/${row.slug}`} className="flex items-center gap-3 hover:text-primary transition-colors">
-                      <div className="w-10 h-10 rounded bg-slate-100 overflow-hidden shrink-0">
+                      <div className="w-10 h-10 rounded bg-surface-container-high overflow-hidden shrink-0">
                         <img
                           alt={row.alt}
                           className="w-full h-full object-cover"
@@ -350,8 +428,9 @@ export default function DashboardPage() {
                   </td>
                   <td className="py-6 px-6 text-right">
                     <span
-                      className={`px-3 py-1 ${row.statusBg} ${row.statusText} text-[11px] font-bold rounded-full`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 ${row.statusBg} ${row.statusText} text-[11px] font-bold rounded-full`}
                     >
+                      <span className={`w-1.5 h-1.5 rounded-full ${row.statusText.replace("text-", "bg-")}`} />
                       {row.status}
                     </span>
                   </td>
