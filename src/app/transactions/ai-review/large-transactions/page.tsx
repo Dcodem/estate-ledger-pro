@@ -10,7 +10,7 @@ function parseAmount(s: string): number {
   return Number(s.replace(/[^0-9.]/g, "")) || 0;
 }
 
-type Resolution = "verified" | "flagged" | "unflagged" | "reverted";
+type Resolution = "verified" | "flagged" | "unflagged" | "reverted" | "split";
 
 interface LogEntry {
   id: number;
@@ -18,6 +18,18 @@ interface LogEntry {
   resolution: Resolution;
   vendor: string;
   timestamp: string;
+}
+
+interface SplitLine {
+  id: number;
+  description: string;
+  amount: string;
+  category: string;
+}
+
+interface SplitRecord {
+  txIndex: number;
+  lines: SplitLine[];
 }
 
 const resolutionConfig: Record<Resolution, { label: string; icon: string; color: string; bgColor: string }> = {
@@ -45,6 +57,12 @@ const resolutionConfig: Record<Resolution, { label: string; icon: string; color:
     color: "text-on-surface-variant",
     bgColor: "bg-surface-container-high",
   },
+  split: {
+    label: "Split Transaction",
+    icon: "call_split",
+    color: "text-violet-700",
+    bgColor: "bg-violet-50",
+  },
 };
 
 function getNow() {
@@ -70,6 +88,11 @@ export default function LargeTransactionsPage() {
   const [exported, setExported] = useState(false);
   const [log, setLog] = useState<LogEntry[]>([]);
   const [page, setPage] = useState(1);
+  const [actionsOpen, setActionsOpen] = useState<number | null>(null);
+  const [splitModal, setSplitModal] = useState<number | null>(null);
+  const [splitLines, setSplitLines] = useState<SplitLine[]>([]);
+  const [splits, setSplits] = useState<Record<number, SplitRecord>>({});
+  let splitIdCounter = 0;
 
   // Re-read threshold from localStorage when the page gains focus (e.g. user changed it in Settings)
   useEffect(() => {
@@ -77,6 +100,14 @@ export default function LargeTransactionsPage() {
     window.addEventListener("focus", sync);
     return () => window.removeEventListener("focus", sync);
   }, []);
+
+  // Close actions dropdown on outside click
+  useEffect(() => {
+    if (actionsOpen === null) return;
+    const close = () => setActionsOpen(null);
+    window.addEventListener("click", close);
+    return () => window.removeEventListener("click", close);
+  }, [actionsOpen]);
 
   // Filter transactions by threshold, then filter out verified ones
   const thresholdFiltered = allTransactions.filter((tx) => parseAmount(tx.amount) >= threshold);
@@ -121,6 +152,37 @@ export default function LargeTransactionsPage() {
       setFlagged((prev) => ({ ...prev, [txIndex]: true }));
     }
     addLogEntry(txIndex, "reverted");
+  };
+
+  const openSplit = (i: number) => {
+    const tx = allTransactions[i];
+    const total = parseAmount(tx.amount);
+    setSplitLines([
+      { id: ++splitIdCounter, description: "", amount: (total / 2).toFixed(2), category: tx.tags[0]?.label || "" },
+      { id: ++splitIdCounter, description: "", amount: (total / 2).toFixed(2), category: tx.tags[0]?.label || "" },
+    ]);
+    setSplitModal(i);
+    setActionsOpen(null);
+  };
+
+  const addSplitLine = () => {
+    setSplitLines((prev) => [...prev, { id: ++splitIdCounter, description: "", amount: "0.00", category: "" }]);
+  };
+
+  const updateSplitLine = (id: number, field: keyof SplitLine, value: string) => {
+    setSplitLines((prev) => prev.map((l) => (l.id === id ? { ...l, [field]: value } : l)));
+  };
+
+  const removeSplitLine = (id: number) => {
+    setSplitLines((prev) => (prev.length <= 2 ? prev : prev.filter((l) => l.id !== id)));
+  };
+
+  const confirmSplit = () => {
+    if (splitModal === null) return;
+    setSplits((prev) => ({ ...prev, [splitModal]: { txIndex: splitModal, lines: splitLines } }));
+    addLogEntry(splitModal, "split");
+    setSplitModal(null);
+    setSplitLines([]);
   };
 
   // Find the latest non-reverted entry for each transaction
@@ -198,6 +260,24 @@ export default function LargeTransactionsPage() {
                   View Full Details
                 </Link>
 
+                {/* Split indicator */}
+                {splits[i] && (
+                  <div className="mt-4 px-4 py-3 bg-violet-50 rounded-lg border border-violet-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span aria-hidden="true" className="material-symbols-outlined text-violet-700 text-[16px]">call_split</span>
+                      <span className="text-[12px] font-bold text-violet-700 uppercase tracking-widest">Split into {splits[i].lines.length} items</span>
+                    </div>
+                    <div className="space-y-1">
+                      {splits[i].lines.map((line) => (
+                        <div key={line.id} className="flex justify-between text-[12px]">
+                          <span className="text-on-surface-variant">{line.description || line.category || "Uncategorized"}</span>
+                          <span className="font-bold text-on-surface">${Number(line.amount).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Bottom section */}
                 <div className="flex items-end justify-between border-t border-surface pt-4 mt-4">
                   <div className="flex items-center gap-3">
@@ -220,7 +300,41 @@ export default function LargeTransactionsPage() {
                       </>
                     )}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 items-center">
+                    {/* Actions dropdown */}
+                    <div className="relative">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setActionsOpen(actionsOpen === i ? null : i); }}
+                        className="w-9 h-9 flex items-center justify-center rounded-lg text-on-surface-variant bg-surface-container-high hover:bg-surface-container-highest transition-colors"
+                      >
+                        <span aria-hidden="true" className="material-symbols-outlined text-[20px]">more_vert</span>
+                      </button>
+                      {actionsOpen === i && (
+                        <div className="absolute right-0 bottom-full mb-2 w-52 bg-surface-container-lowest rounded-xl shadow-xl border border-outline-variant/10 py-1 z-20">
+                          <button
+                            onClick={() => openSplit(i)}
+                            className="w-full px-4 py-2.5 text-left text-[13px] font-medium text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-3"
+                          >
+                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-violet-600">call_split</span>
+                            Split Transaction
+                          </button>
+                          <button
+                            onClick={() => { setActionsOpen(null); }}
+                            className="w-full px-4 py-2.5 text-left text-[13px] font-medium text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-3"
+                          >
+                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">attach_file</span>
+                            Attach Receipt
+                          </button>
+                          <button
+                            onClick={() => { setActionsOpen(null); }}
+                            className="w-full px-4 py-2.5 text-left text-[13px] font-medium text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-3"
+                          >
+                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">edit_note</span>
+                            Add Note
+                          </button>
+                        </div>
+                      )}
+                    </div>
                     {flagged[i] ? (
                       <button
                         onClick={() => handleFlag(i)}
@@ -453,6 +567,132 @@ export default function LargeTransactionsPage() {
           </div>
         </div>
       </div>
+
+      {/* Split Transaction Modal */}
+      {splitModal !== null && (() => {
+        const tx = allTransactions[splitModal];
+        const total = parseAmount(tx.amount);
+        const allocated = splitLines.reduce((sum, l) => sum + (Number(l.amount) || 0), 0);
+        const remaining = total - allocated;
+        const isBalanced = Math.abs(remaining) < 0.01;
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setSplitModal(null)}>
+            <div className="bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-xl mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-outline-variant/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-violet-100 rounded-lg flex items-center justify-center">
+                      <span aria-hidden="true" className="material-symbols-outlined text-violet-700 text-[20px]">call_split</span>
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] font-bold text-on-surface">Split Transaction</h3>
+                      <p className="text-[12px] text-on-surface-variant">{tx.vendor}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setSplitModal(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors">
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-[20px]">close</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Original amount */}
+              <div className="px-6 pt-5 pb-3 flex items-center justify-between">
+                <span className="text-[12px] font-bold text-on-surface-variant uppercase tracking-widest">Original Amount</span>
+                <span className="text-[20px] font-extrabold text-on-surface">{tx.amount}</span>
+              </div>
+
+              {/* Split lines */}
+              <div className="px-6 space-y-3 max-h-[320px] overflow-y-auto">
+                {splitLines.map((line, idx) => (
+                  <div key={line.id} className="flex gap-3 items-start p-3 bg-surface-container-low/50 rounded-lg">
+                    <div className="w-6 h-6 bg-violet-100 rounded text-violet-700 text-[11px] font-bold flex items-center justify-center shrink-0 mt-1">
+                      {idx + 1}
+                    </div>
+                    <div className="flex-1 grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        placeholder="Description"
+                        value={line.description}
+                        onChange={(e) => updateSplitLine(line.id, "description", e.target.value)}
+                        className="col-span-2 px-3 py-2 text-[13px] bg-surface-container-lowest border border-outline-variant/20 rounded-lg text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Category"
+                        value={line.category}
+                        onChange={(e) => updateSplitLine(line.id, "category", e.target.value)}
+                        className="px-3 py-2 text-[13px] bg-surface-container-lowest border border-outline-variant/20 rounded-lg text-on-surface placeholder-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[13px] font-bold">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={line.amount}
+                          onChange={(e) => updateSplitLine(line.id, "amount", e.target.value)}
+                          className="w-full pl-7 pr-3 py-2 text-[13px] bg-surface-container-lowest border border-outline-variant/20 rounded-lg text-on-surface font-bold text-right focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => removeSplitLine(line.id)}
+                      disabled={splitLines.length <= 2}
+                      className="w-7 h-7 flex items-center justify-center rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors mt-1 shrink-0"
+                    >
+                      <span aria-hidden="true" className="material-symbols-outlined text-[16px]">close</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add line button */}
+              <div className="px-6 pt-3">
+                <button
+                  onClick={addSplitLine}
+                  className="w-full py-2 text-[12px] font-bold text-primary hover:bg-primary/5 rounded-lg transition-colors flex items-center justify-center gap-1"
+                >
+                  <span aria-hidden="true" className="material-symbols-outlined text-[16px]">add</span>
+                  Add Line Item
+                </button>
+              </div>
+
+              {/* Balance indicator */}
+              <div className="px-6 py-4">
+                <div className={`flex items-center justify-between px-4 py-3 rounded-lg ${isBalanced ? "bg-emerald-50" : "bg-orange-50"}`}>
+                  <span className={`text-[12px] font-bold uppercase tracking-widest ${isBalanced ? "text-emerald-700" : "text-orange-600"}`}>
+                    {isBalanced ? "Balanced" : "Remaining"}
+                  </span>
+                  <span className={`text-[16px] font-extrabold ${isBalanced ? "text-emerald-700" : "text-orange-600"}`}>
+                    {isBalanced ? "$0.00" : `$${Math.abs(remaining).toFixed(2)}`}
+                    {!isBalanced && remaining < 0 && " over"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 pb-5 flex justify-end gap-3">
+                <button
+                  onClick={() => setSplitModal(null)}
+                  className="px-5 py-2.5 text-[13px] font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmSplit}
+                  disabled={!isBalanced || splitLines.some((l) => !l.amount || Number(l.amount) <= 0)}
+                  className="px-5 py-2.5 text-[13px] font-bold text-white bg-violet-600 rounded-lg shadow-md shadow-violet-200 hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                >
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">check</span>
+                  Confirm Split
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </AppLayout>
   );
 }
