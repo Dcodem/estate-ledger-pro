@@ -19,9 +19,9 @@ const categories = [
 ];
 
 const properties = [
-  "Kensington Manor",
-  "Windsor Lodge",
-  "Belgravia Townhouse",
+  "Main St. Loft",
+  "Oak Ridge Estate",
+  "Downtown Plaza",
 ];
 
 const tabs = ["All", "High Confidence", "Medium", "Low"];

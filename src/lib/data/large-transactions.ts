@@ -20,7 +20,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Bank Transfer",
     tags: [
       { label: "Renovation", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Bel Air Estate", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Main St. Loft", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "electric_bolt",
     hasReceipt: true,
@@ -35,7 +35,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Amex Platinum",
     tags: [
       { label: "Maintenance", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Malibu Coastal", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Oak Ridge Estate", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "park",
     hasReceipt: false,
@@ -50,7 +50,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Auto-Pay",
     tags: [
       { label: "Utilities", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Aspen Lodge", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Downtown Plaza", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "electric_bolt",
     hasReceipt: true,
@@ -65,7 +65,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Wire Transfer",
     tags: [
       { label: "Security", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Bel Air Estate", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Main St. Loft", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "security",
     hasReceipt: true,
@@ -110,7 +110,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Amex Platinum",
     tags: [
       { label: "Maintenance", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Aspen Lodge", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Downtown Plaza", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "cleaning_services",
     hasReceipt: false,
@@ -140,7 +140,7 @@ export const allTransactions: LargeTransaction[] = [
     method: "Wire Transfer",
     tags: [
       { label: "Renovation", style: "bg-secondary-fixed-dim/30 text-on-secondary-container" },
-      { label: "Malibu Coastal", style: "bg-primary-fixed-dim/30 text-primary-container" },
+      { label: "Oak Ridge Estate", style: "bg-primary-fixed-dim/30 text-primary-container" },
     ],
     icon: "design_services",
     hasReceipt: true,

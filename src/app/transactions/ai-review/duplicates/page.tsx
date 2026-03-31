@@ -180,6 +180,16 @@ export default function DuplicatesPage() {
                               <p className={`text-sm font-extrabold text-on-surface ${amountMatch ? "bg-yellow-100/70 px-1 -mx-1 rounded" : ""}`} style={{ fontFamily: "'Manrope', sans-serif" }}>{t.amount}</p>
                             </div>
                           </div>
+                          <div className="flex justify-between">
+                            <div>
+                              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Property</p>
+                              <p className="text-xs font-bold text-on-surface">{t.property}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Category</p>
+                              <p className="text-xs font-bold text-on-surface">{t.category}</p>
+                            </div>
+                          </div>
                           <div>
                             <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Account</p>
                             <p className="text-xs text-on-surface-variant">{t.bankAccount}</p>
