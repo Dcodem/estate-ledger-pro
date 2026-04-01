@@ -10,7 +10,7 @@ function parseAmount(s: string): number {
   return Number(s.replace(/[^0-9.]/g, "")) || 0;
 }
 
-type Resolution = "verified" | "flagged" | "unflagged" | "reverted" | "split";
+type Resolution = "verified" | "flagged" | "unflagged" | "reverted" | "split" | "note_added" | "receipt_attached";
 
 interface LogEntry {
   id: number;
@@ -63,6 +63,18 @@ const resolutionConfig: Record<Resolution, { label: string; icon: string; color:
     color: "text-violet-700",
     bgColor: "bg-violet-50",
   },
+  note_added: {
+    label: "Note Added",
+    icon: "edit_note",
+    color: "text-blue-700",
+    bgColor: "bg-blue-50",
+  },
+  receipt_attached: {
+    label: "Receipt Attached",
+    icon: "attach_file",
+    color: "text-teal-700",
+    bgColor: "bg-teal-50",
+  },
 };
 
 function getNow() {
@@ -92,6 +104,12 @@ export default function LargeTransactionsPage() {
   const [splitModal, setSplitModal] = useState<number | null>(null);
   const [splitLines, setSplitLines] = useState<SplitLine[]>([]);
   const [splits, setSplits] = useState<Record<number, SplitRecord>>({});
+  const [notes, setNotes] = useState<Record<number, string>>({});
+  const [receipts, setReceipts] = useState<Record<number, string>>({});
+  const [noteModal, setNoteModal] = useState<number | null>(null);
+  const [noteText, setNoteText] = useState("");
+  const [receiptModal, setReceiptModal] = useState<number | null>(null);
+  const [receiptFile, setReceiptFile] = useState<string>("");
   let splitIdCounter = 0;
 
   // Re-read threshold from localStorage when the page gains focus (e.g. user changed it in Settings)
@@ -183,6 +201,34 @@ export default function LargeTransactionsPage() {
     addLogEntry(splitModal, "split");
     setSplitModal(null);
     setSplitLines([]);
+  };
+
+  const openNote = (i: number) => {
+    setNoteText(notes[i] || "");
+    setNoteModal(i);
+    setActionsOpen(null);
+  };
+
+  const confirmNote = () => {
+    if (noteModal === null || !noteText.trim()) return;
+    setNotes((prev) => ({ ...prev, [noteModal]: noteText.trim() }));
+    addLogEntry(noteModal, "note_added");
+    setNoteModal(null);
+    setNoteText("");
+  };
+
+  const openReceipt = (i: number) => {
+    setReceiptFile("");
+    setReceiptModal(i);
+    setActionsOpen(null);
+  };
+
+  const confirmReceipt = (fileName: string) => {
+    if (receiptModal === null || !fileName) return;
+    setReceipts((prev) => ({ ...prev, [receiptModal]: fileName }));
+    addLogEntry(receiptModal, "receipt_attached");
+    setReceiptModal(null);
+    setReceiptFile("");
   };
 
   // Find the latest non-reverted entry for each transaction
@@ -278,6 +324,30 @@ export default function LargeTransactionsPage() {
                   </div>
                 )}
 
+                {/* Note indicator */}
+                {notes[i] && (
+                  <div className="mt-4 px-4 py-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span aria-hidden="true" className="material-symbols-outlined text-blue-700 text-[16px]">edit_note</span>
+                      <span className="text-[12px] font-bold text-blue-700 uppercase tracking-widest">Note</span>
+                      <button onClick={() => openNote(i)} className="ml-auto text-[11px] font-bold text-blue-600 hover:underline">Edit</button>
+                    </div>
+                    <p className="text-[12px] text-on-surface-variant leading-relaxed">{notes[i]}</p>
+                  </div>
+                )}
+
+                {/* User-attached receipt indicator */}
+                {receipts[i] && (
+                  <div className="mt-4 px-4 py-3 bg-teal-50 rounded-lg border border-teal-200">
+                    <div className="flex items-center gap-2">
+                      <span aria-hidden="true" className="material-symbols-outlined text-teal-700 text-[16px]">attach_file</span>
+                      <span className="text-[12px] font-bold text-teal-700 uppercase tracking-widest">Attached</span>
+                      <span className="text-[12px] text-on-surface-variant ml-1 truncate">{receipts[i]}</span>
+                      <button onClick={() => openReceipt(i)} className="ml-auto text-[11px] font-bold text-teal-600 hover:underline shrink-0">Replace</button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Bottom section */}
                 <div className="flex items-end justify-between border-t border-surface pt-4 mt-4">
                   <div className="flex items-center gap-3">
@@ -319,18 +389,18 @@ export default function LargeTransactionsPage() {
                             Split Transaction
                           </button>
                           <button
-                            onClick={() => { setActionsOpen(null); }}
+                            onClick={() => openReceipt(i)}
                             className="w-full px-4 py-2.5 text-left text-[13px] font-medium text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-3"
                           >
-                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">attach_file</span>
-                            Attach Receipt
+                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-teal-600">attach_file</span>
+                            {receipts[i] ? "Replace Receipt" : "Attach Receipt"}
                           </button>
                           <button
-                            onClick={() => { setActionsOpen(null); }}
+                            onClick={() => openNote(i)}
                             className="w-full px-4 py-2.5 text-left text-[13px] font-medium text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-3"
                           >
-                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">edit_note</span>
-                            Add Note
+                            <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-blue-600">edit_note</span>
+                            {notes[i] ? "Edit Note" : "Add Note"}
                           </button>
                         </div>
                       )}
@@ -687,6 +757,138 @@ export default function LargeTransactionsPage() {
                 >
                   <span aria-hidden="true" className="material-symbols-outlined text-[18px]">check</span>
                   Confirm Split
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+      {/* Add Note Modal */}
+      {noteModal !== null && (() => {
+        const tx = allTransactions[noteModal];
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setNoteModal(null)}>
+            <div className="bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="px-6 py-5 border-b border-outline-variant/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <span aria-hidden="true" className="material-symbols-outlined text-blue-700 text-[20px]">edit_note</span>
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] font-bold text-on-surface">{notes[noteModal] ? "Edit Note" : "Add Note"}</h3>
+                      <p className="text-[12px] text-on-surface-variant">{tx.vendor}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setNoteModal(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors">
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-[20px]">close</span>
+                  </button>
+                </div>
+              </div>
+              <div className="px-6 py-5">
+                <textarea
+                  value={noteText}
+                  onChange={(e) => setNoteText(e.target.value)}
+                  placeholder="Add context, justification, or reviewer comments..."
+                  rows={4}
+                  className="w-full px-4 py-3 text-[13px] bg-surface-container-low/50 border border-outline-variant/20 rounded-lg text-on-surface placeholder-outline resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                  autoFocus
+                />
+                <p className="text-[11px] text-on-surface-variant mt-2">This note will be visible in the resolution log and attached to the transaction record.</p>
+              </div>
+              <div className="px-6 pb-5 flex justify-end gap-3">
+                <button
+                  onClick={() => setNoteModal(null)}
+                  className="px-5 py-2.5 text-[13px] font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmNote}
+                  disabled={!noteText.trim()}
+                  className="px-5 py-2.5 text-[13px] font-bold text-white bg-blue-600 rounded-lg shadow-md shadow-blue-200 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                >
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">check</span>
+                  {notes[noteModal] ? "Update Note" : "Save Note"}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Attach Receipt Modal */}
+      {receiptModal !== null && (() => {
+        const tx = allTransactions[receiptModal];
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setReceiptModal(null)}>
+            <div className="bg-surface-container-lowest rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="px-6 py-5 border-b border-outline-variant/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                      <span aria-hidden="true" className="material-symbols-outlined text-teal-700 text-[20px]">attach_file</span>
+                    </div>
+                    <div>
+                      <h3 className="text-[16px] font-bold text-on-surface">Attach Receipt</h3>
+                      <p className="text-[12px] text-on-surface-variant">{tx.vendor} — {tx.amount}</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setReceiptModal(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors">
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-[20px]">close</span>
+                  </button>
+                </div>
+              </div>
+              <div className="px-6 py-6">
+                {receiptFile ? (
+                  <div className="flex items-center gap-4 p-4 bg-teal-50 rounded-lg border border-teal-200">
+                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center shrink-0">
+                      <span aria-hidden="true" className="material-symbols-outlined text-teal-700 text-[24px]">description</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-bold text-on-surface truncate">{receiptFile}</p>
+                      <p className="text-[11px] text-on-surface-variant">Ready to attach</p>
+                    </div>
+                    <button
+                      onClick={() => setReceiptFile("")}
+                      className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-teal-100 transition-colors shrink-0"
+                    >
+                      <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-[18px]">close</span>
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center gap-3 p-8 border-2 border-dashed border-outline-variant/30 rounded-xl hover:border-teal-400 hover:bg-teal-50/30 transition-colors cursor-pointer">
+                    <span aria-hidden="true" className="material-symbols-outlined text-[40px] text-outline-variant">cloud_upload</span>
+                    <div className="text-center">
+                      <p className="text-[13px] font-bold text-on-surface">Drop file here or click to browse</p>
+                      <p className="text-[11px] text-on-surface-variant mt-1">PDF, PNG, JPG up to 10MB</p>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept=".pdf,.png,.jpg,.jpeg"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) setReceiptFile(file.name);
+                      }}
+                    />
+                  </label>
+                )}
+              </div>
+              <div className="px-6 pb-5 flex justify-end gap-3">
+                <button
+                  onClick={() => setReceiptModal(null)}
+                  className="px-5 py-2.5 text-[13px] font-bold text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => confirmReceipt(receiptFile)}
+                  disabled={!receiptFile}
+                  className="px-5 py-2.5 text-[13px] font-bold text-white bg-teal-600 rounded-lg shadow-md shadow-teal-200 hover:bg-teal-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2"
+                >
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">check</span>
+                  Attach Receipt
                 </button>
               </div>
             </div>
