@@ -9,6 +9,7 @@ import AnimatedTabs from "@/components/AnimatedTabs";
 import InfoTooltip from "@/components/InfoTooltip";
 import NumberFlow from "@number-flow/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   BarChart,
   Bar,
@@ -100,6 +101,7 @@ const propertyRows = [
 ];
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [period, setPeriod] = useState<Period>("6m");
@@ -402,9 +404,9 @@ export default function DashboardPage() {
             </thead>
             <tbody className="text-sm">
               {sortedRows.map((row) => (
-                <tr key={row.name} className="hover:bg-surface-container-low transition-colors cursor-pointer">
+                <tr key={row.name} onClick={() => router.push(`/properties/${row.slug}`)} className="hover:bg-surface-container-low transition-colors cursor-pointer">
                   <td className="py-6 px-6 font-bold">
-                    <Link href={`/properties/${row.slug}`} className="flex items-center gap-3 hover:text-primary transition-colors">
+                    <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded bg-surface-container-high overflow-hidden shrink-0">
                         <img
                           alt={row.alt}
@@ -412,8 +414,8 @@ export default function DashboardPage() {
                           src={row.img}
                         />
                       </div>
-                      {row.name}
-                    </Link>
+                      <span className="group-hover:text-primary transition-colors">{row.name}</span>
+                    </div>
                   </td>
                   <td className="py-6 px-6">{row.revenue}</td>
                   <td className="py-6 px-6">{row.expenses}</td>
@@ -433,9 +435,9 @@ export default function DashboardPage() {
                   </td>
                   <td className="py-6 px-6 text-right">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 ${row.statusBg} ${row.statusText} text-[11px] font-bold rounded-full`}
+                      className={`inline-flex items-center justify-center gap-1.5 px-3 py-1 leading-none ${row.statusBg} ${row.statusText} text-[11px] font-bold rounded-full`}
                     >
-                      <span className={`w-1.5 h-1.5 rounded-full ${row.statusText.replace("text-", "bg-")}`} />
+                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${row.statusText.replace("text-", "bg-")}`} />
                       {row.status}
                     </span>
                   </td>

@@ -198,19 +198,27 @@ export default function DowntownPlazaPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface">
-                {financials.map((f, i) => (
-                  <tr key={i} className={`hover:bg-surface-container-low/50 transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""}`}>
+                {financials.map((f, i) => {
+                  const isClickable = f.item === "Rental Income";
+                  return (
+                  <tr
+                    key={i}
+                    className={`transition-all ${f.isTotal ? "bg-surface-container-low/30" : ""} ${isClickable ? "hover:bg-surface-container-low/50 cursor-pointer group" : ""}`}
+                    onClick={isClickable ? () => window.location.href = `/transactions?property=downtown-plaza&category=${encodeURIComponent(f.item)}` : undefined}
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <span aria-hidden="true" className="material-symbols-outlined text-[18px] text-on-surface-variant">{f.icon}</span>
-                        <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"}`}>{f.item}</span>
+                        <span className={`text-sm ${f.isTotal ? "font-bold text-on-surface" : "text-on-surface-variant"} ${isClickable ? "group-hover:text-primary transition-colors" : ""}`}>{f.item}</span>
+                        {isClickable && <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>}
                       </div>
                     </td>
                     <td className={`px-6 py-4 text-right text-sm font-bold ${f.amountClass}`}>
                       {f.amount}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -234,7 +242,7 @@ export default function DowntownPlazaPage() {
             </thead>
             <tbody className="divide-y divide-surface">
               {units.map((u, i) => (
-                <tr key={i} className="hover:bg-surface-container-low/50 transition-all">
+                <tr key={i}>
                   <td className="px-6 py-4 text-sm font-bold text-on-surface">{u.unit}</td>
                   <td className="px-6 py-4 text-sm text-on-surface-variant">{u.tenant}</td>
                   <td className="px-6 py-4 text-sm font-semibold text-on-surface">{u.rent}</td>

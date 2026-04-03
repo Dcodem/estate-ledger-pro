@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { SkeletonPulse, TableSkeleton } from "@/components/LoadingSkeleton";
 import { allTransactions, categoryOptions } from "@/lib/transactions";
 
-const ITEMS_PER_PAGE = 5;
+const PAGE_SIZE_OPTIONS = [5, 10, 15, 20] as const;
 const propertyOptions = ["All Properties", "Main St. Loft", "Oak Ridge Estate", "Downtown Plaza"];
 const timePeriods = ["Last 30 Days", "Last 90 Days", "Year to Date", "2023", "All Time"];
 
@@ -23,6 +23,8 @@ function TransactionsContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"All" | "Income" | "Expenses">("All");
+  const [itemsPerPage, setItemsPerPage] = useState<number>(5);
+  const [categoryFilter, setCategoryFilter] = useState<string>("All Categories");
   const [page, setPage] = useState(1);
   const [propertyFilter, setPropertyFilter] = useState("All Properties");
   const [timePeriod, setTimePeriod] = useState("Last 30 Days");
@@ -43,14 +45,19 @@ function TransactionsContent() {
     if (slug && propertySlugMap[slug]) {
       setPropertyFilter(propertySlugMap[slug]);
     }
+    const cat = searchParams.get("category");
+    if (cat) {
+      setCategoryFilter(cat);
+    }
   }, [searchParams]);
 
-  const hasActiveFilters = filter !== "All" || propertyFilter !== "All Properties" || timePeriod !== "Last 30 Days";
+  const hasActiveFilters = filter !== "All" || propertyFilter !== "All Properties" || timePeriod !== "Last 30 Days" || categoryFilter !== "All Categories";
 
   const resetAllFilters = () => {
     setFilter("All");
     setPropertyFilter("All Properties");
     setTimePeriod("Last 30 Days");
+    setCategoryFilter("All Categories");
     setPage(1);
   };
 
@@ -60,6 +67,9 @@ function TransactionsContent() {
     return true;
   }).filter((t) => {
     if (propertyFilter !== "All Properties") return t.property === propertyFilter;
+    return true;
+  }).filter((t) => {
+    if (categoryFilter !== "All Categories") return t.category === categoryFilter;
     return true;
   });
 
@@ -86,8 +96,8 @@ function TransactionsContent() {
       })
     : filtered;
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const paginated = sortedFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginated = sortedFiltered.slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const needsReview = allTransactions.filter((t) => t.highlight).length;
 
   if (loading) {
@@ -309,9 +319,24 @@ function TransactionsContent() {
 
         {/* Pagination */}
         <div className="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between border-t border-surface">
-          <span className="text-xs font-medium text-on-surface-variant">
-            Showing <span className="text-on-surface font-bold">{(page - 1) * ITEMS_PER_PAGE + 1}-{Math.min(page * ITEMS_PER_PAGE, filtered.length)}</span> of {filtered.length} transactions
-          </span>
+          <div className="flex items-center gap-4">
+            <span className="text-xs font-medium text-on-surface-variant">
+              Showing <span className="text-on-surface font-bold">{(page - 1) * itemsPerPage + 1}-{Math.min(page * itemsPerPage, filtered.length)}</span> of {filtered.length}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-on-surface-variant">Show</span>
+              <select
+                aria-label="Transactions per page"
+                value={itemsPerPage}
+                onChange={(e) => { setItemsPerPage(Number(e.target.value)); setPage(1); }}
+                className="bg-surface-container-lowest border border-outline-variant/20 rounded-lg px-2 py-1 text-xs font-bold text-on-surface appearance-none cursor-pointer focus:ring-2 focus:ring-primary/20 outline-none"
+              >
+                {PAGE_SIZE_OPTIONS.map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+          </div>
           <div className="flex items-center gap-2">
             <button
               aria-label="Previous page"
