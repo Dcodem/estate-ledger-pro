@@ -32,7 +32,7 @@ const sections = [
     content: [
       {
         subtitle: "Core Product Functionality",
-        text: "Your financial and property data powers the core features of Estate Ledger Pro, including transaction categorization, statement generation, export creation, and portfolio analytics.",
+        text: "Your financial and property data powers the core features of The Wealth Architect, including transaction categorization, statement generation, export creation, and portfolio analytics.",
       },
       {
         subtitle: "AI Processing",
@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
     <AppLayout>
       <PageHeader
         title="Privacy Policy"
-        subtitle="How Estate Ledger Pro handles your data"
+        subtitle="How The Wealth Architect handles your data"
       />
 
       <div className="max-w-3xl space-y-8">
@@ -143,7 +143,7 @@ export default function PrivacyPolicyPage() {
               Last Updated: March 15, 2024
             </p>
             <p className="text-xs text-on-surface-variant mt-0.5">
-              This policy applies to all users of Estate Ledger Pro by The
+              This policy applies to all users of The Wealth Architect by The
               Wealth Architect.
             </p>
           </div>

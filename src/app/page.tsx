@@ -29,10 +29,10 @@ const periodLabels: Record<Period, string> = {
   "6m": "Jan - Jun 2024",
 };
 
-const periodKPIs: Record<Period, { revenue: number; expenses: number; net: number; roi: number; revTrend: string; expTrend: string; revUp: boolean; expUp: boolean }> = {
-  "1m": { revenue: 4200, expenses: 950, net: 3250, roi: 9.1, revTrend: "+27.3%", expTrend: "-54.8%", revUp: true, expUp: false },
-  "3m": { revenue: 11500, expenses: 4250, net: 7250, roi: 8.7, revTrend: "+18.2%", expTrend: "-8.4%", revUp: true, expUp: false },
-  "6m": { revenue: 18700, expenses: 10500, net: 7200, roi: 8.42, revTrend: "+12.4%", expTrend: "-2.1%", revUp: true, expUp: false },
+const periodKPIs: Record<Period, { revenue: number; expenses: number; net: number; roi: number; revTrend: string; expTrend: string; netTrend: string; revUp: boolean; expUp: boolean; netUp: boolean }> = {
+  "1m": { revenue: 4200, expenses: 950, net: 3250, roi: 9.1, revTrend: "+27.3%", expTrend: "-54.8%", netTrend: "+41.6%", revUp: true, expUp: false, netUp: true },
+  "3m": { revenue: 11500, expenses: 4250, net: 7250, roi: 8.7, revTrend: "+18.2%", expTrend: "-8.4%", netTrend: "+22.8%", revUp: true, expUp: false, netUp: true },
+  "6m": { revenue: 18700, expenses: 10500, net: 7200, roi: 8.42, revTrend: "+12.4%", expTrend: "-2.1%", netTrend: "+15.1%", revUp: true, expUp: false, netUp: true },
 };
 
 const chartDataByPeriod: Record<Period, { month: string; revenue: number; expenses: number }[]> = {
@@ -198,6 +198,9 @@ export default function DashboardPage() {
           icon="account_balance_wallet"
           iconBg="bg-primary/10"
           iconColor="text-primary"
+          trend={periodKPIs[period].netTrend}
+          trendUp={periodKPIs[period].netUp}
+          trendTooltip="vs. same period last year"
           className="animate-fade-in-up stagger-3"
         />
 
@@ -416,15 +419,17 @@ export default function DashboardPage() {
                   <td className="py-6 px-6">{row.expenses}</td>
                   <td className="py-6 px-6 font-semibold">{row.netIncome}</td>
                   <td className="py-6 px-6">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 w-16 bg-surface-container-high rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary"
-                          style={{ width: `${(row.roi / 10) * 100}%` }}
-                        />
+                    <InfoTooltip content={`${row.roi}% return on investment`}>
+                      <div className="flex items-center gap-2 cursor-help">
+                        <div className="flex-1 h-1.5 w-16 bg-surface-container-high rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-primary"
+                            style={{ width: `${(row.roi / 10) * 100}%` }}
+                          />
+                        </div>
+                        {row.roi}%
                       </div>
-                      {row.roi}%
-                    </div>
+                    </InfoTooltip>
                   </td>
                   <td className="py-6 px-6 text-right">
                     <span

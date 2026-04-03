@@ -30,7 +30,7 @@ function TransactionsContent() {
   const [showRecategorize, setShowRecategorize] = useState(false);
   const [tempCategory, setTempCategory] = useState<{ label: string; catClass: string } | null>(null);
   const [alertDismissed, setAlertDismissed] = useState(false);
-  const [txSortKey, setTxSortKey] = useState<"date" | "title" | "category" | "amount" | null>(null);
+  const [txSortKey, setTxSortKey] = useState<"date" | "title" | "category" | "property" | "amount" | null>(null);
   const [txSortDir, setTxSortDir] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function TransactionsContent() {
     return true;
   });
 
-  const handleTxSort = (key: "date" | "title" | "category" | "amount") => {
+  const handleTxSort = (key: "date" | "title" | "category" | "property" | "amount") => {
     if (txSortKey === key) {
       setTxSortDir((d) => (d === "asc" ? "desc" : "asc"));
     } else {
@@ -79,6 +79,7 @@ function TransactionsContent() {
           case "date": cmp = new Date(a.date).getTime() - new Date(b.date).getTime(); break;
           case "title": cmp = a.title.localeCompare(b.title); break;
           case "category": cmp = a.category.localeCompare(b.category); break;
+          case "property": cmp = a.property.localeCompare(b.property); break;
           case "amount": cmp = parseFloat(a.amount.replace(/[$,+]/g, "")) - parseFloat(b.amount.replace(/[$,+]/g, "")); break;
         }
         return txSortDir === "asc" ? cmp : -cmp;
@@ -236,7 +237,7 @@ function TransactionsContent() {
                 { key: "date" as const, label: "Date", align: "" },
                 { key: "title" as const, label: "Description", align: "" },
                 { key: "category" as const, label: "Category", align: "text-center" },
-                { key: null, label: "Property", align: "" },
+                { key: "property" as const, label: "Property", align: "" },
                 { key: "amount" as const, label: "Amount", align: "text-right" },
               ]).map((col) => (
                 <th
@@ -262,7 +263,7 @@ function TransactionsContent() {
                 key={i}
                 onClick={() => { setSelectedTransaction(t); setShowRecategorize(false); setTempCategory(null); }}
                 className={`hover:bg-surface-container-low/50 transition-all cursor-pointer group ${
-                  t.highlight ? "bg-amber-50/20" : ""
+                  t.highlight ? "bg-amber-50/40 border-l-3 border-amber-400" : ""
                 }`}
               >
                 <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">
@@ -313,6 +314,7 @@ function TransactionsContent() {
           </span>
           <div className="flex items-center gap-2">
             <button
+              aria-label="Previous page"
               onClick={() => setPage(Math.max(1, page - 1))}
               disabled={page === 1}
               className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant transition-all disabled:opacity-30"
@@ -335,6 +337,7 @@ function TransactionsContent() {
               ))}
             </div>
             <button
+              aria-label="Next page"
               onClick={() => setPage(Math.min(totalPages, page + 1))}
               disabled={page === totalPages}
               className="p-2 rounded-lg hover:bg-surface-container-high text-on-surface-variant transition-all disabled:opacity-30"
@@ -423,6 +426,7 @@ function TransactionsContent() {
                     className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
                   >
                     <span aria-hidden="true" className="material-symbols-outlined text-[14px]">edit</span>
+                    Change
                   </button>
                 </div>
               </div>

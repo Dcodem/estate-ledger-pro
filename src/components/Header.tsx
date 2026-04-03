@@ -214,7 +214,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
               )}
             </AnimatePresence>
           </div>
-          <Link href="/settings" className="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
+          <Link href="/settings" aria-label="Account settings" className="p-2 hover:bg-surface-container-low rounded-lg transition-colors">
             <span aria-hidden="true" className="material-symbols-outlined">account_circle</span>
           </Link>
         </div>

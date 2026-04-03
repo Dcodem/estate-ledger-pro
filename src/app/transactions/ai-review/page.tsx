@@ -43,7 +43,7 @@ export default function AIToolsHubPage() {
     <AppLayout>
       <PageHeader
         title="AI Hub"
-        subtitle="Intelligent transaction analysis powered by Estate Ledger AI"
+        subtitle="Intelligent transaction analysis powered by The Wealth Architect AI"
 
       />
 
@@ -123,7 +123,7 @@ export default function AIToolsHubPage() {
           <div>
             <h3 className="text-lg font-bold mb-1">AI Engine Status</h3>
             <p className="text-sm text-white/80 leading-relaxed">
-              The Estate Ledger AI has processed 1,247 transactions this month with a 94% auto-categorization rate.
+              The The Wealth Architect AI has processed 1,247 transactions this month with a 94% auto-categorization rate.
               The engine continuously learns from your manual corrections to improve future suggestions.
             </p>
             <div className="flex items-center gap-6 mt-4">

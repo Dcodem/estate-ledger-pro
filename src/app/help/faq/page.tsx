@@ -18,7 +18,7 @@ const faqs = [
       },
       {
         q: "What file formats are supported for importing transactions?",
-        a: "Estate Ledger Pro supports CSV, Excel (.xlsx), and OFX/QFX files for transaction imports. You can upload files from the Transactions page using the Import button.",
+        a: "The Wealth Architect supports CSV, Excel (.xlsx), and OFX/QFX files for transaction imports. You can upload files from the Transactions page using the Import button.",
       },
     ],
   },
@@ -65,7 +65,7 @@ const faqs = [
     questions: [
       {
         q: "How are property-level financials calculated?",
-        a: "Each transaction is assigned to a property. Estate Ledger Pro aggregates all income and expenses per property to calculate revenue, operating costs, net operating income, and yield metrics shown on each property's detail page.",
+        a: "Each transaction is assigned to a property. The Wealth Architect aggregates all income and expenses per property to calculate revenue, operating costs, net operating income, and yield metrics shown on each property's detail page.",
       },
       {
         q: "Can I manage multiple properties?",
@@ -115,7 +115,7 @@ export default function FAQPage() {
     <AppLayout>
       <PageHeader
         title="Frequently Asked Questions"
-        subtitle="Find answers to common questions about Estate Ledger Pro"
+        subtitle="Find answers to common questions about The Wealth Architect"
         breadcrumb={{ label: "Help", href: "/help/getting-started" }}
       />
 

@@ -153,7 +153,7 @@ export default function AddBankPage() {
                 <div className="space-y-6">
                   <div>
                     <h3 className="text-lg font-bold text-on-surface mb-1">Select Accounts</h3>
-                    <p className="text-xs text-on-surface-variant">Choose which accounts to connect to Estate Ledger Pro.</p>
+                    <p className="text-xs text-on-surface-variant">Choose which accounts to connect to The Wealth Architect.</p>
                   </div>
 
                   <div className="space-y-3">

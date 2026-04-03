@@ -561,7 +561,7 @@ export default function TransactionReviewPage() {
               {/* Help text */}
               <div className="mt-4 px-4 text-center">
                 <p className="text-[11px] text-on-surface-variant">
-                  Powered by Estate Ledger AI
+                  Powered by The Wealth Architect AI
                 </p>
               </div>
             </aside>

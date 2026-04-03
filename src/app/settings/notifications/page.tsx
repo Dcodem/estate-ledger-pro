@@ -54,6 +54,7 @@ export default function NotificationsPage() {
         variant="underline"
         tabs={[
           { label: "Account", href: "/settings" },
+          { label: "Categories", href: "/settings/categories" },
           { label: "Integrations", href: "/settings/integrations" },
           { label: "Notifications", href: "/settings/notifications" },
           { label: "Users", href: "/settings/users" },
